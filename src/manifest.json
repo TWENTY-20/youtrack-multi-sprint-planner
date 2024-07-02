@@ -1,0 +1,16 @@
+{
+  "name": "multi-sprint-planner",
+  "title": "Multi Sprint Planner",
+  "description": "Plan backlog items for multiple sprints",
+  "version": "1.0.0",
+  "icon": "demo-app-logo.svg",
+  "minYouTrackVersion": "2024.2",
+  "widgets": [
+    {
+      "key": "main-menu",
+      "name": "Multi Sprint Planner",
+      "indexPath": "index.html",
+      "extensionPoint": "MAIN_MENU_ITEM"
+    }
+  ]
+}
