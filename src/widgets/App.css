@@ -1,7 +1,0 @@
-body.plugin {
-    padding: 32px 32px;
-    background-color: var(--ring-content-background-color);
-    color: var(--ring-text-color);
-    font-size: var(--ring-font-size);
-    height: 100vh;
-}
