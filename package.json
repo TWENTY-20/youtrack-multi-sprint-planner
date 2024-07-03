@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@jetbrains/ring-ui-built": "^6.0.38",
+    "@jetbrains/icons": "^4.2.0",
+    "@jetbrains/ring-ui-built": "^6.0.39",
     "@jetbrains/youtrack-scripting": "^0.0.30",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
