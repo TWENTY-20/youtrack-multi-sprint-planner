@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { host } from "./index";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import AgileSelection from "./AgileSelection";
@@ -11,20 +11,24 @@ import SprintCard from "./SprintCard";
 //Todo: Error catching
 export default function App() {
     const [currentAgile, setCurrentAgile] = useState<any>(null);
-    const [agiles, setAgiles] = useState<any[]>([]);
     const [sprints, setSprints] = useState<any[]>([]);
 
     const [isLoading, setLoading] = useState(true);
 
     useLayoutEffect(() => {
-        Promise.all([
-            host.fetchYouTrack(`agiles?fields=id,name,projects(id),sprintSettings(cardOnSeveralSprints)`).then((agiles: any[]) => {
-                if (agiles.length > 0) {
-                    setAgiles(agiles);
-                    setCurrentAgile(agiles[0]);
-                }
-            }),
-        ]).then(() => setLoading(false));
+        host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintSettings(cardOnSeveralSprints),backlog(id,name,query))`).then((agileUserProfile: any) => {
+            setCurrentAgile(agileUserProfile.defaultAgile);
+            setLoading(false);
+        });
+    }, []);
+
+    const updateUserDefaultAgile = useCallback((agile: any) => {
+        host.fetchYouTrack(`agileUserProfile`, {
+            method: "POST",
+            body: {
+                defaultAgile: { id: agile.id }
+            },
+        });
     }, []);
 
     useEffect(() => {
@@ -49,14 +53,15 @@ export default function App() {
 
     return (
         <div className="flex flex-col space-y-4 h-full">
-            <AgileSelection agiles={agiles} onSelect={(agile) => {
+            <AgileSelection defaultAgile={currentAgile} onSelect={(agile) => {
+                updateUserDefaultAgile(agile);
                 setCurrentAgile(agile);
             }}/>
             <div className="flex grow">
                 <div className="w-1/3">
-                    <BacklogCard/>
+                    <BacklogCard currentAgile={currentAgile}/>
                 </div>
-                <div className="w-2/3 pl-8 flex flex-col space-y-8">
+                <div className="w-2/3 pl-8 flex flex-col space-y-8 overflow-y-scroll">
                     {sprints.map((sprint) => <SprintCard sprint={sprint}/>)}
                 </div>
             </div>
