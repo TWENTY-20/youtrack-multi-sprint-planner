@@ -58,10 +58,10 @@ export default function App() {
                 setCurrentAgile(agile);
             }}/>
             <div className="flex grow">
-                <div className="w-1/3">
+                <div className="w-1/2">
                     <BacklogCard currentAgile={currentAgile}/>
                 </div>
-                <div className="w-2/3 pl-8 flex flex-col space-y-8 overflow-y-scroll">
+                <div className="w-1/2 pl-8 flex flex-col space-y-8 overflow-y-scroll">
                     {sprints.map((sprint) => <SprintCard sprint={sprint}/>)}
                 </div>
             </div>

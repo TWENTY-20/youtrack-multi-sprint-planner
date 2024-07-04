@@ -1,18 +1,24 @@
 import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
-import SavedQueriesComponent from "./SavedSearchComponent";
+import SavedQueriesSelect from "./SavedSearchSelect";
 import List from "@jetbrains/ring-ui-built/components/list/list";
 import { useCallback, useEffect, useState } from "react";
 import { host } from "./index";
+import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
+import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
+import Icon from "@jetbrains/ring-ui-built/components/icon";
+import NewWindow from "@jetbrains/icons/new-window";
 
 export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
     const [currentQuery, setCurrentQuery] = useState<any>(currentAgile.backlog);
     const [issues, setIssues] = useState<any[]>([]);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         if (currentQuery == null) return;
         host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(idReadable,summary,project(id))`)
             .then((res: any) => {
                 setIssues(res.issues);
+                setLoading(false);
             });
     }, [currentQuery]);
 
@@ -25,32 +31,57 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
         });
     }, [currentAgile]);
 
+    function onSavedQuerySelect(savedQuery: any) {
+        updateUserDefaultSavedQuery(savedQuery);
+        setCurrentQuery(savedQuery);
+        setLoading(true);
+    }
+
     return (
         <Island className="w-full h-full">
             <Header border>
-                <div className="flex flex-col font-normal">
-                    <span className="text-2xl mb-3">Backlog</span>
-                    <SavedQueriesComponent
+                <div className="font-normal">
+                    <h2 className="text-2xl mb-3">Backlog</h2>
+                    <span className="mr-1">Saved search:</span>
+                    <SavedQueriesSelect
                         defaultSavedQuery={currentQuery}
-                        onSelect={(savedQuery) => {
-                            updateUserDefaultSavedQuery(savedQuery);
-                            setCurrentQuery(savedQuery);
-                        }}
+                        onSelect={onSavedQuerySelect}
+                        className="mr-4"
                     />
+                    <ClickableLink target="_blank" href={"/issues?q=" + encodeURIComponent(currentQuery.query)}>
+                        <Icon glyph={NewWindow}
+                              className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"/>
+                    </ClickableLink>
                 </div>
+
             </Header>
-            <div className="h-full">
+            <div className="h-full bg-[var(--ring-sidebar-background-color)] px-2">
                 {
-                    issues.length == 0 ?
-                        <div className="flex items-center justify-center h-full text-lg font-bold">
-                            <span>The backlog is empty</span>
+                    isLoading ?
+                        <div className="flex mt-8 justify-center h-full text-lg font-bold">
+                            <Loader message="Loading Backlog..."/>
                         </div>
                         :
-                        <List data={issues.map((issue) => ({
-                            ...issue,
-                            key: issue.idReadable,
-                            label: issue.summary
-                        }))}></List>
+                        issues.length == 0 ?
+                            <div className="flex flex-col space-y-4 mt-12 items-center h-full">
+                                <span className="text-base font-bold">The backlog is empty</span>
+                                <span className="text-center">
+                                    If there are cards on the board, you can focus your efforts there
+                                    <br/>
+                                    or fill the backlog with issues that match{" "}
+                                    <SavedQueriesSelect
+                                        defaultSavedQuery={currentQuery}
+                                        onSelect={onSavedQuerySelect}
+                                        defaultText="other search criteria"
+                                    />
+                                </span>
+                            </div>
+                            :
+                            <List data={issues.map((issue) => ({
+                                ...issue,
+                                key: issue.idReadable,
+                                label: issue.summary
+                            }))}></List>
                 }
             </div>
         </Island>
