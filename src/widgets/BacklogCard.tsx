@@ -7,6 +7,7 @@ import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
+import createIssueListItem from "./CreateIssueListItem";
 
 export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
     const [currentQuery, setCurrentQuery] = useState<any>(currentAgile.backlog);
@@ -15,7 +16,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
 
     useEffect(() => {
         if (currentQuery == null) return;
-        host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(idReadable,summary,project(id))`)
+        host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(idReadable,summary,project(id,name))`)
             .then((res: any) => {
                 setIssues(res.issues);
                 setLoading(false);
@@ -46,7 +47,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
                     <SavedQueriesSelect
                         defaultSavedQuery={currentQuery}
                         onSelect={onSavedQuerySelect}
-                        className="mr-4"
+                        className="mr-3.5"
                     />
                     <ClickableLink target="_blank" href={"/issues?q=" + encodeURIComponent(currentQuery.query)}>
                         <Icon glyph={NewWindow}
@@ -77,11 +78,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
                                 </span>
                             </div>
                             :
-                            <List data={issues.map((issue) => ({
-                                ...issue,
-                                key: issue.idReadable,
-                                label: issue.summary
-                            }))}></List>
+                            <List data={issues.map(createIssueListItem)}></List>
                 }
             </div>
         </Island>
