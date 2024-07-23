@@ -1,29 +1,30 @@
 import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
 import SavedQueriesSelect from "./SavedSearchSelect";
-import List from "@jetbrains/ring-ui-built/components/list/list";
 import { useCallback, useEffect, useState } from "react";
 import { host } from "./index";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
-import createIssueListItem from "./CreateIssueListItem";
+import IssueSortableList from "./IssueSortableList";
+import { DefaultAgile, Issue, SavedQuery } from "./types";
 
-export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
-    const [currentQuery, setCurrentQuery] = useState<any>(currentAgile.backlog);
-    const [issues, setIssues] = useState<any[]>([]);
-    const [isLoading, setLoading] = useState(false);
+//Todo: Infinite scrolling
+export default function BacklogCard({ currentAgile }: { currentAgile: DefaultAgile }) {
+    const [currentQuery, setCurrentQuery] = useState<SavedQuery>(currentAgile.backlog);
+    const [issues, setIssues] = useState<Issue[]>([]);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         if (currentQuery == null) return;
-        host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(idReadable,summary,project(id,name))`)
-            .then((res: any) => {
+        host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(id,idReadable,summary,project(id,name))`)
+            .then((res: { issues: Issue[] }) => {
                 setIssues(res.issues);
                 setLoading(false);
             });
     }, [currentQuery]);
 
-    const updateUserDefaultSavedQuery = useCallback((savedQuery: any) => {
+    const updateUserDefaultSavedQuery = useCallback((savedQuery: SavedQuery) => {
         host.fetchYouTrack(`agiles/${currentAgile.id}`, {
             method: "POST",
             body: {
@@ -32,7 +33,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
         });
     }, [currentAgile]);
 
-    function onSavedQuerySelect(savedQuery: any) {
+    function onSavedQuerySelect(savedQuery: SavedQuery) {
         updateUserDefaultSavedQuery(savedQuery);
         setCurrentQuery(savedQuery);
         setLoading(true);
@@ -56,29 +57,32 @@ export default function BacklogCard({ currentAgile }: { currentAgile: any }) {
                 </div>
 
             </Header>
-            <div className="h-full bg-[var(--ring-sidebar-background-color)] px-2">
+            <div className="h-full bg-[var(--ring-sidebar-background-color)] p-2">
                 {
-                    isLoading ?
-                        <div className="flex mt-8 justify-center h-full text-lg font-bold">
-                            <Loader message="Loading Backlog..."/>
-                        </div>
-                        :
-                        issues.length == 0 ?
-                            <div className="flex flex-col space-y-4 mt-12 items-center h-full">
-                                <span className="text-base font-bold">The backlog is empty</span>
-                                <span className="text-center">
+                    isLoading &&
+                    <div className="flex mt-8 justify-center h-full text-lg font-bold">
+                        <Loader message="Loading Backlog..."/>
+                    </div>
+                }
+                {
+                    !isLoading && issues.length == 0 &&
+                    <div className="flex flex-col space-y-4 mt-12 items-center h-full">
+                        <span className="text-base font-bold">The backlog is empty</span>
+                        <span className="text-center">
                                     If there are cards on the board, you can focus your efforts there
                                     <br/>
                                     or fill the backlog with issues that match{" "}
-                                    <SavedQueriesSelect
-                                        defaultSavedQuery={currentQuery}
-                                        onSelect={onSavedQuerySelect}
-                                        defaultText="other search criteria"
-                                    />
+                            <SavedQueriesSelect
+                                defaultSavedQuery={currentQuery}
+                                onSelect={onSavedQuerySelect}
+                                defaultText="other search criteria"
+                            />
                                 </span>
-                            </div>
-                            :
-                            <List data={issues.map(createIssueListItem)}></List>
+                    </div>
+                }
+                {
+                    !isLoading && issues.length > 0 &&
+                    <IssueSortableList id="backlog" originalIssues={issues} onMoveEnd={setIssues}/>
                 }
             </div>
         </Island>

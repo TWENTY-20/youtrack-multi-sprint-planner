@@ -2,23 +2,24 @@ import Select, { Type } from "@jetbrains/ring-ui-built/components/select/select"
 import { useCallback, useState } from "react";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import { host } from "./index";
+import { SavedQuery } from "./types";
 
 export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSelect, className }: {
-    defaultSavedQuery: any,
+    defaultSavedQuery: SavedQuery,
     defaultText?: string,
-    onSelect?: (item: any) => void,
+    onSelect?: (item: SavedQuery) => void,
     className?: string,
 }) {
-    const [savedQueries, setSavedQueries] = useState<any[] | null>(null);
+    const [savedQueries, setSavedQueries] = useState<SavedQuery[] | null>(null);
 
     const loadSavedQueries = useCallback(() => {
         if (savedQueries != null) return;
-        host.fetchYouTrack(`savedQueries?fields=id,name,query`).then((newSavedQueries: any[]) => {
+        host.fetchYouTrack(`savedQueries?fields=id,name,query`).then((newSavedQueries: SavedQuery[]) => {
             setSavedQueries(newSavedQueries);
         });
     }, [savedQueries]);
 
-    const toSelectItem = (it: any) => it && { key: it.id, label: it.name, model: it };
+    const toSelectItem = (it: SavedQuery) => ({ key: it.id, label: it.name, model: it });
 
     return (
         <Select filter
@@ -26,6 +27,7 @@ export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSe
                 onOpen={loadSavedQueries}
                 data={savedQueries?.map(toSelectItem)}
                 onSelect={(item) => {
+                    if (!item) return;
                     onSelect?.(item.model);
                 }}
                 selected={toSelectItem(defaultSavedQuery)}
@@ -37,7 +39,7 @@ export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSe
                         >
                             <ClickableLink
                                 {...props.buttonProps}
-                                className="max-w-[200px] inline-block align-middle pb-[0.22rem] whitespace-nowrap overflow-hidden text-ellipsis"
+                                className="max-w-[200px] inline-block align-middle pb-[0.22rem] truncate"
                             >
                                 {defaultText ?? defaultSavedQuery.name}
                             </ClickableLink>

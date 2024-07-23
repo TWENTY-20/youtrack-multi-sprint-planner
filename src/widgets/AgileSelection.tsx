@@ -5,19 +5,20 @@ import Button from "@jetbrains/ring-ui-built/components/button/button";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import { host } from "./index";
+import { Agile } from "./types";
 
 export default function AgileSelection({ defaultAgile, onSelect }: {
-    defaultAgile: any,
-    onSelect?: (item: any) => void
+    defaultAgile: Agile,
+    onSelect?: (item: Agile) => void
 }) {
-    const [currentAgile, setCurrentAgile] = useState<any>(defaultAgile);
-    const [agiles, setAgiles] = useState<any[] | null>(null);
+    const [currentAgile, setCurrentAgile] = useState<Agile>(defaultAgile);
+    const [agiles, setAgiles] = useState<Agile[] | null>(null);
 
-    const toSelectItem = (it: any) => it && { key: it.id, label: it.name, model: it };
+    const toSelectItem = (it: Agile) => ({ key: it.id, label: it.name, model: it });
 
     const loadAgiles = useCallback(() => {
         if (agiles != null) return;
-        host.fetchYouTrack(`agiles?fields=id,name`).then((newAgiles: any[]) => {
+        host.fetchYouTrack(`agiles?fields=id,name`).then((newAgiles: Agile[]) => {
             setAgiles(newAgiles);
         });
     }, [agiles]);
@@ -28,6 +29,7 @@ export default function AgileSelection({ defaultAgile, onSelect }: {
                 onOpen={loadAgiles}
                 data={agiles?.map(toSelectItem)}
                 onSelect={(item) => {
+                    if (!item) return;
                     setCurrentAgile(item.model);
                     onSelect?.(item.model);
                 }}

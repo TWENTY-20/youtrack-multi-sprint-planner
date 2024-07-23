@@ -4,45 +4,73 @@ import { host } from "./index";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import AgileSelection from "./AgileSelection";
 import BacklogCard from "./BacklogCard";
-import SprintCard from "./SprintCard";
+import SprintContainer from "./SprintContainer";
+import {
+    closestCenter,
+    DndContext,
+    DragOverlay,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from "@dnd-kit/core";
+import { Agile, DefaultAgile, Issue, Sprint } from "./types";
+import { IssueItem } from "./IssueItem";
+import { useDraggedIssue } from "./DraggedIssueProvider";
 
 
 //Todo: Localization
 //Todo: Error catching
 export default function App() {
-    const [currentAgile, setCurrentAgile] = useState<any>(null);
-    const [sprints, setSprints] = useState<any[]>([]);
+    const [currentAgile, setCurrentAgile] = useState<DefaultAgile | null>(null);
+    const [sprints, setSprints] = useState<Sprint[]>([]);
+
+    const { draggedIssue, setDraggedIssue } = useDraggedIssue();
 
     const [isLoading, setLoading] = useState(true);
 
     useLayoutEffect(() => {
-        host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintSettings(cardOnSeveralSprints),backlog(id,name,query))`).then((agileUserProfile: any) => {
-            setCurrentAgile(agileUserProfile.defaultAgile);
-            setLoading(false);
-        });
+        host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`)
+            .then((agileUserProfile: { defaultAgile: DefaultAgile }) => {
+                setCurrentAgile(agileUserProfile.defaultAgile);
+                setLoading(false);
+            });
     }, []);
 
-    const updateUserDefaultAgile = useCallback((agile: any) => {
-        host.fetchYouTrack(`agileUserProfile`, {
+    const updateUserDefaultAgile = useCallback((agile: Agile) => {
+        // post response is messed up
+        host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
             method: "POST",
             body: {
                 defaultAgile: { id: agile.id }
             },
+        }).then((agileUserProfile: { defaultAgile: DefaultAgile }) => {
+            setCurrentAgile(agileUserProfile.defaultAgile);
         });
     }, []);
 
     useEffect(() => {
         if (currentAgile == null) return;
-        host.fetchYouTrack(`agiles/${currentAgile.id}/sprints?fields=id,name,issues(idReadable,summary,project(id,name),isDraft)`)
-            .then((sprints: any[]) => {
-                // Filter out draft issues
+        setSprints([]);
+        host.fetchYouTrack(`agiles/${currentAgile.id}/sprints?fields=id,name,issues(id,idReadable,summary,project(id,name),isDraft)`)
+            .then((sprints: Sprint[]) => {
+                // Filter out draft issues and add currentAgile as property
                 const cleanedSprints = sprints.map(((sprint) => {
-                    const cleanedIssues = sprint.issues.filter((issue: any) => !issue.isDraft);
-                    return { ...sprint, issues: cleanedIssues };
+                    const cleanedIssues = sprint.issues.filter(issue => !issue.isDraft);
+                    return { ...sprint, agile: currentAgile, issues: cleanedIssues };
                 }));
                 setSprints(cleanedSprints);
             });
     }, [currentAgile]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5
+            }
+        }),
+        useSensor(KeyboardSensor)
+    );
 
     if (isLoading) return <LoaderScreen message="Loading..."/>;
 
@@ -53,18 +81,41 @@ export default function App() {
 
     return (
         <div className="flex flex-col space-y-4 h-full">
-            <AgileSelection defaultAgile={currentAgile} onSelect={(agile) => {
-                updateUserDefaultAgile(agile);
-                setCurrentAgile(agile);
-            }}/>
-            <div className="flex space-x-8 grow">
-                <div className="w-1/2">
-                    <BacklogCard currentAgile={currentAgile}/>
+            <DndContext
+                onDragStart={({ active }) => setDraggedIssue(active.data.current as Issue)}
+                onDragEnd={() => setDraggedIssue(null)}
+                onDragCancel={() => setDraggedIssue(null)}
+                collisionDetection={closestCenter}
+                sensors={sensors}
+            >
+                <AgileSelection defaultAgile={currentAgile} onSelect={(agile) => {
+                    updateUserDefaultAgile(agile);
+                }}/>
+                <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8 grow">
+                    <div className="w-full md:w-1/2">
+                        <BacklogCard currentAgile={currentAgile}/>
+                    </div>
+                    <div className="w-full md:w-1/2 flex flex-col space-y-8 overflow-y-scroll">
+                        {sprints.map((sprint, index) =>
+                            <SprintContainer
+                                sprint={sprint}
+                                onMoveEnd={(issues) => {
+                                    sprints[index] = {
+                                        ...sprint,
+                                        issues: issues
+                                    } as Sprint;
+                                    setSprints(sprints);
+                                }}
+                            />)}
+                    </div>
                 </div>
-                <div className="w-1/2 flex flex-col space-y-8 overflow-y-scroll">
-                    {sprints.map((sprint) => <SprintCard sprint={sprint}/>)}
-                </div>
-            </div>
+                <DragOverlay>
+                    {
+                        draggedIssue &&
+                        <IssueItem issue={draggedIssue}/>
+                    }
+                </DragOverlay>
+            </DndContext>
         </div>
     );
 }
