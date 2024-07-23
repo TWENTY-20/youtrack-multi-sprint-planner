@@ -17,6 +17,7 @@ import {
 import { Agile, DefaultAgile, Issue, Sprint } from "./types";
 import { IssueItem } from "./IssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
+import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 
 
 //Todo: Localization
@@ -38,14 +39,23 @@ export default function App() {
     }, []);
 
     const updateUserDefaultAgile = useCallback((agile: Agile) => {
-        // post response is messed up
+        // Endpoint seems to be somehow messed up?? todo: observe future behaviour
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
             method: "POST",
             body: {
                 defaultAgile: { id: agile.id }
             },
-        }).then((agileUserProfile: { defaultAgile: DefaultAgile }) => {
-            setCurrentAgile(agileUserProfile.defaultAgile);
+        }).then(({ defaultAgile }: { defaultAgile: DefaultAgile }) => {
+            if (defaultAgile.id != agile.id)
+                return host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
+                    method: "POST",
+                    body: {
+                        defaultAgile: { id: agile.id }
+                    },
+                });
+            return defaultAgile;
+        }).then(({ defaultAgile }: { defaultAgile: DefaultAgile }) => {
+            setCurrentAgile(defaultAgile);
         });
     }, []);
 
@@ -75,7 +85,7 @@ export default function App() {
     if (isLoading) return <LoaderScreen message="Loading..."/>;
 
     if (!currentAgile) {
-        host.alert("Could not load projects!");
+        host.alert("Could not load projects! Please try again later...", AlertType.ERROR);
         return <></>;
     }
 
