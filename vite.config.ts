@@ -17,7 +17,15 @@ export default defineConfig({
         outDir: "../../build/widgets",
         assetsDir: "",
         assetsInlineLimit: 0,
-        emptyOutDir: true
+        emptyOutDir: true,
+        sourcemap: false, // enable for debugging purposes
+        rollupOptions: {
+            output: {
+                entryFileNames: "[name].js",
+                chunkFileNames: "[name].js",
+                assetFileNames: "[name].[ext]"
+            }
+        }
     },
     esbuild: {
         supported: {
