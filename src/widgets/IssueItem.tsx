@@ -3,7 +3,7 @@ import { Issue } from "./types";
 import { forwardRef } from "react";
 import { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 
-export const IssueItem = forwardRef<HTMLDivElement, {
+const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,
     attributes?: DraggableAttributes,
     listeners?: DraggableSyntheticListeners,
@@ -50,3 +50,7 @@ export const IssueItem = forwardRef<HTMLDivElement, {
             </div>
     );
 });
+
+IssueItem.displayName = "IssueItem";
+
+export default IssueItem;

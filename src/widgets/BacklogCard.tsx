@@ -21,7 +21,9 @@ export default function BacklogCard({ currentAgile }: { currentAgile: DefaultAgi
             .then((res: { issues: Issue[] }) => {
                 setIssues(res.issues);
                 setLoading(false);
-            });
+            }).catch((e) => {
+            console.log(e);
+        });
     }, [currentQuery]);
 
     const updateUserDefaultSavedQuery = useCallback((savedQuery: SavedQuery) => {
@@ -30,6 +32,8 @@ export default function BacklogCard({ currentAgile }: { currentAgile: DefaultAgi
             body: {
                 backlog: { id: savedQuery.id }
             },
+        }).catch((e) => {
+            console.log(e);
         });
     }, [currentAgile]);
 

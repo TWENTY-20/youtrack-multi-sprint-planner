@@ -1,5 +1,5 @@
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { DragCancelEvent, DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor } from "@dnd-kit/core";
+import { DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor } from "@dnd-kit/core";
 import { useState } from "react";
 import { Issue } from "./types";
 import DraggableIssueItem from "./DraggableIssueItem";
@@ -91,7 +91,7 @@ export default function IssueSortableList(
             setIssues(newIssues);
             onMoveEnd?.(newIssues);
         },
-        onDragCancel(_: DragCancelEvent) {
+        onDragCancel() {
             if (clonedIssues) {
                 setIssues(clonedIssues);
                 setClonedIssues(null);
@@ -108,7 +108,7 @@ export default function IssueSortableList(
                         id={id}
                         strategy={verticalListSortingStrategy}
                     >
-                        {issues.map(issue => <DraggableIssueItem issue={issue}/>)}
+                        {issues.map(issue => <DraggableIssueItem key={issue.id} issue={issue}/>)}
                     </SortableContext>
                     :
                     <EmptyDropzone id={id}/>

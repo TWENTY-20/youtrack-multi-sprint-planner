@@ -14,7 +14,7 @@ import {
     useSensors
 } from "@dnd-kit/core";
 import { Agile, DefaultAgile, Issue, Sprint } from "./types";
-import { IssueItem } from "./IssueItem";
+import IssueItem from "./IssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 
@@ -34,7 +34,9 @@ export default function App() {
             .then((agileUserProfile: { defaultAgile: DefaultAgile }) => {
                 setCurrentAgile(agileUserProfile.defaultAgile);
                 setLoading(false);
-            });
+            }).catch((e) => {
+            console.log(e);
+        });
     }, []);
 
     const updateUserDefaultAgile = useCallback((agile: Agile) => {
@@ -55,6 +57,8 @@ export default function App() {
             return defaultAgile;
         }).then(({ defaultAgile }: { defaultAgile: DefaultAgile }) => {
             setCurrentAgile(defaultAgile);
+        }).catch((e) => {
+            console.log(e);
         });
     }, []);
 
@@ -69,7 +73,9 @@ export default function App() {
                     return { ...sprint, agile: currentAgile, issues: cleanedIssues };
                 }));
                 setSprints(cleanedSprints);
-            });
+            }).catch((e) => {
+            console.log(e);
+        });
     }, [currentAgile]);
 
     const sensors = useSensors(

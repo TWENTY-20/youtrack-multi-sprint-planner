@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { Issue } from "./types";
-import { IssueItem } from "./IssueItem";
+import IssueItem from "./IssueItem";
 
 export default function DraggableIssueItem({ issue }: { issue: Issue }) {
     const {
