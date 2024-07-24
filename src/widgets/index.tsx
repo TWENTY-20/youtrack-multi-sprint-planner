@@ -6,7 +6,7 @@ import App from "./App";
 import { Host } from "./types";
 import { DraggedIssueProvider } from "./DraggedIssueProvider";
 
-declare var YTApp: {
+declare const YTApp: {
     register: () => Promise<Host>
 };
 

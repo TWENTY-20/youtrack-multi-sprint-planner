@@ -1,52 +1,22 @@
-# Getting Started with Create React App
+# YouTrack Multi Sprint Planner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Once installed into [JetBrains YouTrack](https://www.jetbrains.com/youtrack/), this App utilizes available extension
+points for sprint planning.
 
-## Available Scripts
+### Installation
 
-In the project directory, you can run:
+#### Manual way
 
-### `npm run build`
+1. Archive "src" folder into a single ZIP file
+2. Go to `%YOUTRACK_URL%/admin/apps` (you need admin permissions to do so)
+3. Import app from ZIP archive
+4. Attach app to desired projects on `%YOUTRACK_URL%/admin/editProject/%PROJECT_ID%?tab=apps` page
+5. Open an issue in desired project and check App widgets appear
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### CLI way (useful for developing)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-## Learn More
-
-You can learn more in
-the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved
-here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. `npm install`
+2. `npm run pack && npm run upload -- --host %YOUTRACK_URL% --token perm:cm9vdA==.NT...`, where token is a permanent
+   token, granted on `%YOUTRACK_URL%/youtrack/users/me?tab=account-security`
+3. Attach to desired projects, as described above
+4. Apply changes to sources and repat p.2 

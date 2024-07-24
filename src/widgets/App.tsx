@@ -1,4 +1,3 @@
-import "./App.css";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { host } from "./index";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
@@ -108,6 +107,7 @@ export default function App() {
                     <div className="w-full md:w-1/2 flex flex-col space-y-8 overflow-y-scroll">
                         {sprints.map((sprint, index) =>
                             <SprintContainer
+                                key={sprint.id}
                                 sprint={sprint}
                                 onMoveEnd={(issues) => {
                                     sprints[index] = {
