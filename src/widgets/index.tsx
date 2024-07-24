@@ -7,6 +7,7 @@ import { Host } from "./types";
 import { DraggedIssueProvider } from "./DraggedIssueProvider";
 
 declare const YTApp: {
+    locale: string,
     register: () => Promise<Host>
 };
 
