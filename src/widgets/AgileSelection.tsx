@@ -32,6 +32,7 @@ export default function AgileSelection({ defaultAgile, onSelect }: {
                 data={agiles?.map(toSelectItem)}
                 onSelect={(item) => {
                     if (!item) return;
+                    if (item.model.id === currentAgile.id) return;
                     setCurrentAgile(item.model);
                     onSelect?.(item.model);
                 }}
