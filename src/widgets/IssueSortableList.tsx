@@ -16,18 +16,23 @@ function prefixIssues(issues: Issue[], prefix: string) {
     return issues.map(issue => prefixIssue(issue, prefix));
 }
 
+function removePrefix(id: string) {
+    if (!id.includes(prefixDivisionSign)) throw new Error("Given issue is not prefixed!");
+    return id.split(prefixDivisionSign)[1];
+}
+
 function removeIssuePrefix(issue: Issue) {
-    if (!issue.id.includes(prefixDivisionSign)) throw new Error("Given issue is not prefixed!");
-    return { ...issue, id: issue.id.split(prefixDivisionSign)[1] };
+    return { ...issue, id: removePrefix(issue.id) };
 }
 
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, onIssueRemove, onIssueAdd, onIssueReorder
+        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder
     }: {
         id: string,
         originalIssues: Issue[],
+        cardOnSeveralSprints?: boolean,
         onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
         onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
@@ -103,18 +108,36 @@ export default function IssueSortableList(
         onDragEnd({ active }: DragEndEvent) {
             (async () => {
                 // over.id and active.id are the same because list moving happens in onDragOver
+                // activeId still has the prefix of its original list
                 const activeId = active.id;
                 if (activeId == null || typeof activeId != "string") return;
 
-                if (!clonedIssues) return;
-
                 const activeIndex = issues.findIndex(issue => issue.id === active.id);
+
+                // Check if a duplicate of the dragged issue is in another sprint and remove it if issues can only be on one sprint
+                if (cardOnSeveralSprints != undefined && !cardOnSeveralSprints && activeIndex == -1) {
+                    const oldIndex = issues.findIndex(issue => issue.id === prefix + removePrefix(activeId));
+                    if (oldIndex > -1) {
+                        const oldIssue = removeIssuePrefix(issues[oldIndex]);
+                        try {
+                            await onIssueRemove?.(oldIssue, oldIndex);
+                        } catch (_) { /* empty */
+                        }
+                        issues.splice(oldIndex, 1);
+                        setIssues(issues);
+                        if (clonedIssues) setClonedIssues(null);
+                        return;
+                    }
+                }
+
+                if (!clonedIssues) return;
 
                 // Issue originated from the current container but got moved somewhere else
                 if (activeId.startsWith(prefix) && activeIndex == -1) {
                     const oldIndex = clonedIssues.findIndex(issue => issue.id === activeId);
+                    const oldIssue = removeIssuePrefix(clonedIssues[oldIndex]);
                     try {
-                        await onIssueRemove?.(removeIssuePrefix(clonedIssues[oldIndex]), oldIndex);
+                        await onIssueRemove?.(oldIssue, oldIndex);
                     } catch (_) {
                         setIssues(clonedIssues);
                     }
@@ -122,7 +145,10 @@ export default function IssueSortableList(
                     return;
                 }
 
-                if (activeIndex == -1) return;
+                if (activeIndex == -1) {
+                    setClonedIssues(null);
+                    return;
+                }
 
                 const newIssues = issues.slice();
                 let movedIssue = newIssues.splice(activeIndex, 1)[0];
@@ -149,11 +175,11 @@ export default function IssueSortableList(
                     } else {
                         await onIssueAdd?.(movedIssue, newIndex);
                     }
+                    setIssues(newIssues);
                 } catch (_) {
                     setIssues(clonedIssues);
                 }
 
-                setIssues(newIssues);
                 setDraggedIssue(null);
                 setClonedIssues(null);
             })().catch(console.log);

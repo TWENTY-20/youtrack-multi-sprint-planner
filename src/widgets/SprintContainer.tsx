@@ -2,8 +2,9 @@ import Island, { Header } from "@jetbrains/ring-ui-built/components/island/islan
 import IssueSortableList from "./IssueSortableList";
 import { Issue, Sprint } from "./types";
 
-export default function SprintContainer({ sprint, onIssueRemove, onIssueAdd, onIssueReorder }: {
+export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder }: {
     sprint: Sprint,
+    cardOnSeveralSprints: boolean,
     onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
     onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
     onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
@@ -15,6 +16,7 @@ export default function SprintContainer({ sprint, onIssueRemove, onIssueAdd, onI
                 <IssueSortableList
                     id={sprint.id}
                     originalIssues={sprint.issues}
+                    cardOnSeveralSprints={cardOnSeveralSprints}
                     onIssueRemove={onIssueRemove}
                     onIssueAdd={onIssueAdd}
                     onIssueReorder={onIssueReorder}

@@ -101,8 +101,10 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
         });
     }
 
-    function onIssueRemove(_: Issue, oldIndex: number) {
+    function onIssueRemove(issue: Issue, oldIndex: number) {
         if (currentAgile.sprintsSettings.cardOnSeveralSprints) throw "Issue can be assigned to multiple sprints!";
+        if (!currentAgile.projects.some(project => project.id === issue.project.id))
+            throw "Issue cannot be used in this agile!";
         issues.splice(oldIndex, 1);
         setIssues(issues);
     }

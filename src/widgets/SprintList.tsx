@@ -62,6 +62,9 @@ export default function SprintList({ agile }: { agile: ExtendedAgile }) {
             body: {
                 id: issue.id
             }
+        }).catch((error: APIError) => {
+            host.alert(error.data.error_description, AlertType.ERROR);
+            throw new Error(error.data.error_description);
         });
 
         const issues = sprint.issues;
@@ -82,6 +85,7 @@ export default function SprintList({ agile }: { agile: ExtendedAgile }) {
                     <SprintContainer
                         key={sprint.id}
                         sprint={sprint}
+                        cardOnSeveralSprints={agile.sprintsSettings.cardOnSeveralSprints}
                         onIssueRemove={(issue, oldIndex) => onIssueRemove(issue, oldIndex, sprint)}
                         onIssueAdd={(issue, newIndex) => onIssueAdd(issue, newIndex, sprint)}
                         onIssueReorder={(issue, oldIndex, newIndex) => onIssueReorder(issue, oldIndex, newIndex, sprint)}
