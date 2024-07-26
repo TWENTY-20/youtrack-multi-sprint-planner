@@ -20,7 +20,7 @@ export interface SavedQuery {
     query: string
 }
 
-export interface DefaultAgile extends Agile {
+export interface ExtendedAgile extends Agile {
     projects: Pick<Project, "id">[],
     sprintsSettings: {
         cardOnSeveralSprints: boolean
@@ -46,4 +46,13 @@ export interface Issue {
     summary: string,
     project: Project,
     isDraft?: boolean
+}
+
+export interface APIError {
+    data: {
+        error: string,
+        error_description: string
+    },
+    message: string,
+    status: number
 }

@@ -1,25 +1,44 @@
-import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor } from "@dnd-kit/core";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Issue } from "./types";
 import DraggableIssueItem from "./DraggableIssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
 import EmptyDropzone from "./EmptyDropzone";
 
+const prefixDivisionSign = "_";
+
+function prefixIssue(issue: Issue, prefix: string) {
+    return { ...issue, id: prefix + issue.id };
+}
+
+function prefixIssues(issues: Issue[], prefix: string) {
+    return issues.map(issue => prefixIssue(issue, prefix));
+}
+
+function removeIssuePrefix(issue: Issue) {
+    if (!issue.id.includes(prefixDivisionSign)) throw new Error("Given issue is not prefixed!");
+    return { ...issue, id: issue.id.split(prefixDivisionSign)[1] };
+}
+
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, onMoveEnd
+        originalIssues, id, onIssueRemove, onIssueAdd, onIssueReorder
     }: {
         id: string,
         originalIssues: Issue[],
-        onMoveEnd?: (newIssues: Issue[]) => void,
+        onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
+        onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
+        onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
     }) {
 
-    const [issues, setIssues] = useState<Issue[]>(originalIssues);
+    const prefix = useMemo(() => id + prefixDivisionSign, [id]);
+
+    const [issues, setIssues] = useState<Issue[]>(prefixIssues(originalIssues, prefix));
     const [clonedIssues, setClonedIssues] = useState<Issue[] | null>(null);
 
-    const { draggedIssue } = useDraggedIssue();
+    const { draggedIssue, setDraggedIssue } = useDraggedIssue();
 
     useDndMonitor({
         onDragStart({ active }: DragStartEvent) {
@@ -28,6 +47,8 @@ export default function IssueSortableList(
 
             const activeIndex = issues.findIndex(issue => issue.id === activeId);
             if (activeIndex == -1) return;
+
+            setDraggedIssue(active.data.current as Issue);
 
             setClonedIssues([...issues]);
         },
@@ -74,28 +95,71 @@ export default function IssueSortableList(
                     ...issues.slice(newIndex, issues.length)
                 ]);
         },
-        onDragEnd({ active, over }: DragEndEvent) {
-            const overId = over?.id;
-            if (overId == null) return;
+        onDragEnd({ active }: DragEndEvent) {
+            (async () => {
+                // over.id and active.id are the same because list moving happens in onDragOver
+                const activeId = active.id;
+                if (activeId == null || typeof activeId != "string") return;
 
-            if (clonedIssues)
+                if (!clonedIssues) return;
+
+                const activeIndex = issues.findIndex(issue => issue.id === active.id);
+
+                // Issue originated from the current container but got moved somewhere else
+                if (activeId.startsWith(prefix) && activeIndex == -1) {
+                    const oldIndex = clonedIssues.findIndex(issue => issue.id === activeId);
+                    try {
+                        await onIssueRemove?.(removeIssuePrefix(clonedIssues[oldIndex]), oldIndex);
+                    } catch (_) {
+                        setIssues(clonedIssues);
+                    }
+                    setClonedIssues(null);
+                    return;
+                }
+
+                if (activeIndex == -1) return;
+
+                const newIssues = issues.slice();
+                let movedIssue = newIssues.splice(activeIndex, 1)[0];
+
+                let movedIssueIsFromThisList = movedIssue.id.startsWith(prefix);
+                movedIssue = removeIssuePrefix(movedIssue);
+
+                if (!movedIssueIsFromThisList) {
+                    const duplicateIndex = newIssues.findIndex(issue => issue.id === prefix + movedIssue.id);
+                    if (duplicateIndex > -1) {
+                        newIssues.splice(duplicateIndex, 1);
+                        movedIssueIsFromThisList = true;
+                    }
+                }
+
+                const newIndex = activeIndex < 0 ? newIssues.length + activeIndex : activeIndex;
+                newIssues.splice(newIndex, 0, prefixIssue(movedIssue, prefix));
+
+                try {
+                    if (movedIssueIsFromThisList) {
+                        const oldIndex = clonedIssues.findIndex(issue => issue.id === activeId);
+                        if (oldIndex != newIndex)
+                            await onIssueReorder?.(movedIssue, oldIndex, newIndex);
+                    } else {
+                        await onIssueAdd?.(movedIssue, newIndex);
+                    }
+                } catch (_) {
+                    setIssues(clonedIssues);
+                }
+
+                setIssues(newIssues);
+                setDraggedIssue(null);
                 setClonedIssues(null);
-
-            const overIndex = issues.findIndex(issue => issue.id === overId);
-            const activeIndex = issues.findIndex(issue => issue.id === active.id);
-
-            if (overIndex == -1 || activeIndex == -1) return;
-
-            const newIssues = arrayMove(issues, activeIndex, overIndex);
-
-            setIssues(newIssues);
-            onMoveEnd?.(newIssues);
+            })().catch(console.log);
         },
         onDragCancel() {
             if (clonedIssues) {
                 setIssues(clonedIssues);
                 setClonedIssues(null);
             }
+
+            if (draggedIssue) setDraggedIssue(null);
         }
     });
 
