@@ -143,7 +143,7 @@ export default function IssueSortableList(
 
                 try {
                     if (movedIssueIsFromThisList) {
-                        const oldIndex = clonedIssues.findIndex(issue => issue.id === activeId);
+                        const oldIndex = clonedIssues.findIndex(issue => issue.id === prefix + movedIssue.id);
                         if (oldIndex != newIndex)
                             await onIssueReorder?.(movedIssue, oldIndex, newIndex);
                     } else {
