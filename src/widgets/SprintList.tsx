@@ -5,6 +5,7 @@ import { APIError, ExtendedAgile, Issue, Sprint } from "./types.ts";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
 
+//todo: Pagination?
 export default function SprintList({ agile }: { agile: ExtendedAgile }) {
     const [sprints, setSprints] = useState<Sprint[]>([]);
 

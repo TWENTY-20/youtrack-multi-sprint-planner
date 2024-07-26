@@ -1,6 +1,6 @@
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor } from "@dnd-kit/core";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Issue } from "./types";
 import DraggableIssueItem from "./DraggableIssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
@@ -36,6 +36,11 @@ export default function IssueSortableList(
     const prefix = useMemo(() => id + prefixDivisionSign, [id]);
 
     const [issues, setIssues] = useState<Issue[]>(prefixIssues(originalIssues, prefix));
+
+    useEffect(() => {
+        setIssues(prefixIssues(originalIssues, prefix));
+    }, [originalIssues, prefix]);
+
     const [clonedIssues, setClonedIssues] = useState<Issue[] | null>(null);
 
     const { draggedIssue, setDraggedIssue } = useDraggedIssue();

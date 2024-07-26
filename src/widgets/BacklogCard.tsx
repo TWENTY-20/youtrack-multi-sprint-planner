@@ -1,6 +1,6 @@
 import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
 import SavedQueriesSelect from "./SavedSearchSelect";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { host } from "./index";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
@@ -12,21 +12,60 @@ import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
 
 //Todo: Infinite scrolling
+const TOP_ISSUE_AMOUNT = 20;
+
 export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
     const [currentQuery, setCurrentQuery] = useState<SavedQuery>(currentAgile.backlog);
     const [issues, setIssues] = useState<Issue[]>([]);
     const [isLoading, setLoading] = useState(true);
+    const [loadingMoreIssues, setLoadingMoreIssues] = useState(false);
+    const [moreIssuesToLoad, setMoreIssuesToLoad] = useState(true);
+
+    const scrollContainer = useRef<HTMLDivElement>(null);
+
+    const loadIssuesPaginated = useCallback(async (start: number) => {
+        return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
+            .then((issues: Issue[]) => {
+                if (issues.length < TOP_ISSUE_AMOUNT) setMoreIssuesToLoad(false);
+                return issues;
+            });
+    }, [currentQuery]);
 
     useEffect(() => {
-        if (currentQuery == null) return;
-        host.fetchYouTrack(`savedQueries/${currentQuery.id}?fields=issues(id,idReadable,summary,project(id,name))`)
-            .then((res: { issues: Issue[] }) => {
-                setIssues(res.issues);
+        loadIssuesPaginated(0)
+            .then((issues) => {
+                setIssues(issues);
                 setLoading(false);
-            }).catch((e) => {
-            console.log(e);
+            }).catch(() => {
+            host.alert("Could not load issues", AlertType.ERROR);
         });
-    }, [currentQuery]);
+    }, [loadIssuesPaginated]);
+
+    useEffect(() => {
+        const scrollable = scrollContainer.current;
+        if (!scrollable) return;
+        const handleScroll = () => {
+            // Users only have to scroll near the bottom
+            const offset = 16;
+            if (
+                scrollable.scrollHeight == 0
+                || scrollable.scrollHeight > scrollable.scrollTop + scrollable.clientHeight + offset
+                || isLoading
+                || loadingMoreIssues
+                || !moreIssuesToLoad
+            ) return;
+
+            setLoadingMoreIssues(true);
+            loadIssuesPaginated(issues.length).then((newIssues) => {
+                setIssues((issues) => [...issues, ...newIssues]);
+                setLoadingMoreIssues(false);
+            }).catch(() => {
+            });
+        };
+        scrollable.addEventListener("scroll", handleScroll);
+
+        return () => scrollable.removeEventListener("scroll", handleScroll);
+    }, [isLoading, issues.length, loadIssuesPaginated, loadingMoreIssues, moreIssuesToLoad]);
 
     const updateUserDefaultSavedQuery = useCallback((savedQuery: SavedQuery) => {
         host.fetchYouTrack(`agiles/${currentAgile.id}`, {
@@ -123,7 +162,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                 </div>
 
             </Header>
-            <div className="h-full bg-[var(--ring-sidebar-background-color)] p-2 overflow-y-auto">
+            <div ref={scrollContainer} className="h-full bg-[var(--ring-sidebar-background-color)] p-2 overflow-y-auto">
                 {
                     isLoading &&
                     <div className="flex mt-8 justify-center h-full text-lg font-bold">
@@ -134,9 +173,8 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                     !isLoading && issues.length == 0 &&
                     <div className="flex flex-col space-y-4 mt-12 items-center">
                         <span className="text-base font-bold">The backlog is empty</span>
-                        <span className="text-center">
+                        <span className="text-center text-wrap w-1/2">
                                     If there are cards on the board, you can focus your efforts there
-                                    <br/>
                                     or fill the backlog with issues that match{" "}
                             <SavedQueriesSelect
                                 defaultSavedQuery={currentQuery}
