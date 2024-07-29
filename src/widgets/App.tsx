@@ -17,10 +17,13 @@ import IssueItem from "./IssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import SprintList from "./SprintList.tsx";
+import { useTranslation } from "react-i18next";
 
 
 //Todo: Localization
 export default function App() {
+    const { t } = useTranslation();
+
     const [currentAgile, setCurrentAgile] = useState<ExtendedAgile | null>(null);
 
     const { draggedIssue } = useDraggedIssue();
@@ -69,10 +72,10 @@ export default function App() {
         useSensor(KeyboardSensor)
     );
 
-    if (isLoading) return <LoaderScreen message="Loading..."/>;
+    if (isLoading) return <LoaderScreen message={t("loading")}/>;
 
     if (!currentAgile) {
-        host.alert("Could not load projects! Please try again later...", AlertType.ERROR);
+        host.alert(t("loadAgileError"), AlertType.ERROR);
         return <></>;
     }
 

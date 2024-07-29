@@ -1,8 +1,9 @@
 import Select, { Type } from "@jetbrains/ring-ui-built/components/select/select";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import { host } from "./index";
 import { SavedQuery } from "./types";
+import { useTranslation } from "react-i18next";
 
 export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSelect, className }: {
     defaultSavedQuery: SavedQuery,
@@ -10,21 +11,25 @@ export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSe
     onSelect?: (item: SavedQuery) => void,
     className?: string,
 }) {
+    const { t } = useTranslation();
+
     const [savedQueries, setSavedQueries] = useState<SavedQuery[] | null>(null);
 
-    const loadSavedQueries = useCallback(() => {
+    function loadSavedQueries() {
         if (savedQueries != null) return;
         host.fetchYouTrack(`savedQueries?fields=id,name,query`).then((newSavedQueries: SavedQuery[]) => {
             setSavedQueries(newSavedQueries);
         }).catch(() => {
         });
-    }, [savedQueries]);
+    }
 
     const toSelectItem = (it: SavedQuery) => ({ key: it.id, label: it.name, model: it });
 
     return (
-        <Select filter
+        <Select filter={{ placeholder: t("filterItems") }}
                 loading={savedQueries == null}
+                loadingMessage={t("loading")}
+                notFoundMessage={t("noOptionsFound")}
                 onOpen={loadSavedQueries}
                 data={savedQueries?.map(toSelectItem)}
                 onSelect={(item) => {

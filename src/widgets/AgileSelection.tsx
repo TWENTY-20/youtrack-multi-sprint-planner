@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Select, { Type } from "@jetbrains/ring-ui-built/components/select/select";
 import { ControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
@@ -6,28 +6,32 @@ import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import { host } from "./index";
 import { Agile } from "./types";
+import { useTranslation } from "react-i18next";
 
 export default function AgileSelection({ defaultAgile, onSelect }: {
     defaultAgile: Agile,
     onSelect?: (item: Agile) => void
 }) {
+    const { t } = useTranslation();
+
     const [currentAgile, setCurrentAgile] = useState<Agile>(defaultAgile);
     const [agiles, setAgiles] = useState<Agile[] | null>(null);
 
     const toSelectItem = (it: Agile) => ({ key: it.id, label: it.name, model: it });
 
-    const loadAgiles = useCallback(() => {
+    function loadAgiles() {
         if (agiles != null) return;
         host.fetchYouTrack(`agiles?fields=id,name`).then((newAgiles: Agile[]) => {
             setAgiles(newAgiles);
         }).catch(() => {
-            host.alert("Cannot load agile boards.");
         });
-    }, [agiles]);
+    }
 
     return (
-        <Select filter
+        <Select filter={{ placeholder: t("filterItems") }}
                 loading={agiles == null}
+                loadingMessage={t("loading")}
+                notFoundMessage={t("noOptionsFound")}
                 onOpen={loadAgiles}
                 data={agiles?.map(toSelectItem)}
                 onSelect={(item) => {

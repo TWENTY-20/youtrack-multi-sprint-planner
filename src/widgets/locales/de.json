@@ -1,0 +1,12 @@
+{
+  "loading": "Laden...",
+  "filterItems": "Elemente filtern",
+  "noOptionsFound": "Keine Optionen gefunden",
+  "loadAgileError": "Agile Board konnte nicht geladen werden! Bitte versuchen Sie es später noch einmal...",
+  "loadIssuesError": "Karten konnten nicht geladen werden",
+  "orderNotSavedError": "Reihenfolge wurde nicht gespeichert, weil Sie keine Berechtigungen haben",
+  "backlog": "Backlog",
+  "savedSearch": "Gespeicherte Suche",
+  "loadingBacklog": "Backlog wird geladen...",
+  "backlogEmpty": "Das Backlog ist leer"
+}

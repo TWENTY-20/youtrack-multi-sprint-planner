@@ -10,10 +10,13 @@ import IssueSortableList from "./IssueSortableList";
 import { ExtendedAgile, Issue, SavedQuery } from "./types";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
+import { useTranslation } from "react-i18next";
 
 const TOP_ISSUE_AMOUNT = 40;
 
 export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
+    const { t } = useTranslation();
+
     const [currentQuery, setCurrentQuery] = useState<SavedQuery>(currentAgile.backlog);
     const [issues, setIssues] = useState<Issue[]>([]);
     const [isLoading, setLoading] = useState(true);
@@ -37,9 +40,9 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                 setIssues(issues);
                 setLoading(false);
             }).catch(() => {
-            host.alert("Could not load issues", AlertType.ERROR);
+            host.alert(t("loadIssuesError"), AlertType.ERROR);
         });
-    }, [loadIssuesPaginated, currentQuery]);
+    }, [loadIssuesPaginated, currentQuery, t]);
 
     useEffect(() => {
         const scrollable = scrollContainer.current;
@@ -96,7 +99,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                 }
             }
         }).catch(() => {
-            host.alert("Order was not saved, because you have no permissions", AlertType.WARNING);
+            host.alert(t("orderNotSavedError"), AlertType.WARNING);
             throw new Error("Could not reorder issues!");
         });
     }
@@ -150,8 +153,8 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
         <Island className="w-full h-full">
             <Header border>
                 <div className="font-normal">
-                    <h2 className="text-2xl mb-3">Backlog</h2>
-                    <span className="mr-1">Saved search:</span>
+                    <h2 className="text-2xl mb-3">{t("backlog")}</h2>
+                    <span className="mr-1">{t("savedSearch")}:</span>
                     <SavedQueriesSelect
                         defaultSavedQuery={currentQuery}
                         onSelect={onSavedQuerySelect}
@@ -168,22 +171,13 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                 {
                     isLoading &&
                     <div className="flex mt-8 justify-center h-full text-lg font-bold">
-                        <Loader message="Loading Backlog..."/>
+                        <Loader message={t("loadingBacklog")}/>
                     </div>
                 }
                 {
                     !isLoading && issues.length == 0 &&
-                    <div className="flex flex-col space-y-4 mt-12 items-center">
-                        <span className="text-base font-bold">The backlog is empty</span>
-                        <span className="text-center text-wrap w-1/2">
-                                    If there are cards on the board, you can focus your efforts there
-                                    or fill the backlog with issues that match{" "}
-                            <SavedQueriesSelect
-                                defaultSavedQuery={currentQuery}
-                                onSelect={onSavedQuerySelect}
-                                defaultText="other search criteria"
-                            />
-                                </span>
+                    <div className="flex mt-12 justify-center">
+                        <span className="text-base font-bold">{t("backlogEmpty")}</span>
                     </div>
                 }
                 {

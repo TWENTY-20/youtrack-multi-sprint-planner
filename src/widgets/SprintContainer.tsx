@@ -7,6 +7,7 @@ import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
 
+// Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
 const DEFAULT_HEIGHT = 0;
 const VISIBLE = 1;

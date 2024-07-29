@@ -1,0 +1,12 @@
+{
+  "loading": "Loading...",
+  "filterItems": "Filter items",
+  "noOptionsFound": "No options found",
+  "loadAgileError": "Could not load agile board! Please try again later...",
+  "loadIssuesError": "Could not load cards",
+  "orderNotSavedError": "Order was not saved, because you have no permissions",
+  "backlog": "Backlog",
+  "savedSearch": "Saved search",
+  "loadingBacklog": "Loading Backlog...",
+  "backlogEmpty": "The backlog is empty"
+}
