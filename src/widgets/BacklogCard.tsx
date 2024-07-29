@@ -11,7 +11,6 @@ import { ExtendedAgile, Issue, SavedQuery } from "./types";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
 
-//Todo: Infinite scrolling
 const TOP_ISSUE_AMOUNT = 20;
 
 export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
@@ -32,6 +31,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
     }, [currentQuery]);
 
     useEffect(() => {
+        setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
             .then((issues) => {
                 setIssues(issues);
@@ -39,7 +39,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
             }).catch(() => {
             host.alert("Could not load issues", AlertType.ERROR);
         });
-    }, [loadIssuesPaginated]);
+    }, [loadIssuesPaginated, currentQuery]);
 
     useEffect(() => {
         const scrollable = scrollContainer.current;
