@@ -74,7 +74,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                 backlog: { id: savedQuery.id }
             },
         }).catch((e) => {
-            console.log(e);
+            console.error(e);
         });
     }, [currentAgile]);
 

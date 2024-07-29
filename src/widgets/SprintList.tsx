@@ -20,7 +20,7 @@ export default function SprintList({ agile }: { agile: ExtendedAgile }) {
                 }));
                 setSprints(cleanedSprints);
             }).catch((e) => {
-            console.log(e);
+            console.error(e);
         });
     }, [agile]);
 

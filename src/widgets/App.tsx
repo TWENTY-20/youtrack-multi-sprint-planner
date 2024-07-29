@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { host } from "./index";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import AgileSelection from "./AgileSelection";
@@ -20,7 +20,6 @@ import SprintList from "./SprintList.tsx";
 
 
 //Todo: Localization
-//Todo: Error catching
 export default function App() {
     const [currentAgile, setCurrentAgile] = useState<ExtendedAgile | null>(null);
 
@@ -28,13 +27,13 @@ export default function App() {
 
     const [isLoading, setLoading] = useState(true);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`)
             .then((agileUserProfile: { defaultAgile: ExtendedAgile }) => {
                 setCurrentAgile(agileUserProfile.defaultAgile);
-                setLoading(false);
-            }).catch((e) => {
-            console.log(e);
+            }).catch(() => {
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
 
@@ -56,8 +55,8 @@ export default function App() {
             return defaultAgile;
         }).then(({ defaultAgile }: { defaultAgile: ExtendedAgile }) => {
             setCurrentAgile(defaultAgile);
-        }).catch((e) => {
-            console.log(e);
+        }).catch(() => {
+            setCurrentAgile(null);
         });
     }, []);
 

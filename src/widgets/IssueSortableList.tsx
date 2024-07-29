@@ -182,7 +182,8 @@ export default function IssueSortableList(
 
                 setDraggedIssue(null);
                 setClonedIssues(null);
-            })().catch(console.log);
+            })().catch(() => {
+            });
         },
         onDragCancel() {
             if (clonedIssues) {

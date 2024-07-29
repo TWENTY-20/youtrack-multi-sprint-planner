@@ -20,8 +20,8 @@ export default function AgileSelection({ defaultAgile, onSelect }: {
         if (agiles != null) return;
         host.fetchYouTrack(`agiles?fields=id,name`).then((newAgiles: Agile[]) => {
             setAgiles(newAgiles);
-        }).catch((e) => {
-            console.log(e);
+        }).catch(() => {
+            host.alert("Cannot load agile boards.");
         });
     }, [agiles]);
 
