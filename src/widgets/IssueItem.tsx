@@ -13,7 +13,7 @@ const IssueItem = forwardRef<HTMLDivElement, {
 
     return (
         isDragging ?
-            <div className="h-16 w-full"
+            <div className="h-8 w-full"
                  ref={ref}
                  style={{ background: "rgba(var(--ring-border-hover-components), 0.5)" }}
                  {...attributes}
@@ -22,7 +22,7 @@ const IssueItem = forwardRef<HTMLDivElement, {
             :
             <div
                 className={
-                    "flex flex-col justify-between h-16 py-1 px-2 bg-[var(--ring-content-background-color)] " +
+                    "flex flex-col justify-between h-8 py-1 px-2 bg-[var(--ring-content-background-color)] " +
                     "border border-[var(--ring-line-color)] " +
                     className
                 }
@@ -32,14 +32,12 @@ const IssueItem = forwardRef<HTMLDivElement, {
             >
                 <div className="flex">
                     <ClickableLink
-                        className="text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline"
+                        className="mr-4 text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline"
                         target="_blank" href={`/issue/${issue.idReadable}`}
                     >
                         {issue.idReadable}
                     </ClickableLink>
-                </div>
-                <div className="flex justify-between">
-                    <span className="truncate">{issue.summary}</span>
+                    <span className="truncate mr-auto">{issue.summary}</span>
                     <ClickableLink
                         className="text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline truncate"
                         target="_blank" href={`/projects/${issue.project.id}`}

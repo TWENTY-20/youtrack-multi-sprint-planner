@@ -87,11 +87,11 @@ export default function App() {
                     updateUserDefaultAgile(agile);
                 }}/>
                 <div
-                    className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8 md:overflow-y-hidden md:h-full">
-                    <div className="w-full md:w-1/2">
+                    className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 lg:overflow-y-hidden lg:h-full overflow-x-hidden">
+                    <div className="w-full lg:w-1/2">
                         <BacklogCard currentAgile={currentAgile}/>
                     </div>
-                    <div className="w-full md:w-1/2">
+                    <div className="w-full lg:w-1/2">
                         <SprintList agile={currentAgile}/>
                     </div>
                 </div>

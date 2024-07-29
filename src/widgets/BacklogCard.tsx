@@ -11,7 +11,7 @@ import { ExtendedAgile, Issue, SavedQuery } from "./types";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
 
-const TOP_ISSUE_AMOUNT = 20;
+const TOP_ISSUE_AMOUNT = 40;
 
 export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
     const [currentQuery, setCurrentQuery] = useState<SavedQuery>(currentAgile.backlog);
