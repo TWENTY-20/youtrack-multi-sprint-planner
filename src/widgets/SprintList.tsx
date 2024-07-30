@@ -1,6 +1,6 @@
 import SprintContainer from "./SprintContainer.tsx";
 import { useEffect, useState } from "react";
-import { host } from "./index.tsx";
+import { host } from "./youTrackApp.ts";
 import { APIError, ExtendedAgile, Issue, Sprint } from "./types.ts";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";

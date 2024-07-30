@@ -1,0 +1,12 @@
+{
+  "loading": "로드 중...",
+  "filterItems": "필터 항목",
+  "noOptionsFound": "옵션을 찾을 수 없습니다.",
+  "loadAgileError": "애자일 보드를 로드할 수 없습니다! 나중에 다시 시도하세요...",
+  "loadIssuesError": "카드를 로드할 수 없습니다.",
+  "orderNotSavedError": "권한이 없기 때문에 주문이 저장되지 않았습니다.",
+  "backlog": "백로그",
+  "savedSearch": "저장된 검색",
+  "loadingBacklog": "백로그를 로드하는 중...",
+  "backlogEmpty": "백로그가 비어 있음"
+}

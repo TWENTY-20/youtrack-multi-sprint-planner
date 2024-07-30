@@ -1,0 +1,12 @@
+{
+  "loading": "Načítání...",
+  "filterItems": "Filtrovat položky",
+  "noOptionsFound": "Nenalezeny žádné možnosti",
+  "loadAgileError": "Nelze načíst agilní desku! Zkuste to prosím později...",
+  "loadIssuesError": "Nelze načíst karty",
+  "orderNotSavedError": "Objednávka nebyla uložena, protože nemáte oprávnění",
+  "backlog": "Nevyřízené položky",
+  "savedSearch": "Uložené hledání",
+  "loadingBacklog": "Načítání čekajících položek...",
+  "backlogEmpty": "Nevyřízené záležitosti jsou prázdné"
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { host } from "./index";
+import { host } from "./youTrackApp.ts";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import AgileSelection from "./AgileSelection";
 import BacklogCard from "./BacklogCard";

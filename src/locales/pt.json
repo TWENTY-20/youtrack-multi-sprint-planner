@@ -1,0 +1,12 @@
+{
+  "loading": "Carregando...",
+  "filterItems": "Filtrar itens",
+  "noOptionsFound": "Nenhuma opção encontrada",
+  "loadAgileError": "Não foi possível carregar o agile board! Por favor, tente novamente mais tarde...",
+  "loadIssuesError": "Não foi possível carregar cartões",
+  "orderNotSavedError": "A ordem não foi guardada porque não tem permissões",
+  "backlog": "Backlog",
+  "savedSearch": "Pesquisa savla",
+  "loadingBacklog": "Carregando backlog...",
+  "backlogEmpty": "O backlog está vazio"
+}

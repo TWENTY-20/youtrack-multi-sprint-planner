@@ -1,0 +1,12 @@
+{
+  "loading": "Betöltés...",
+  "filterItems": "Elemek szűrése",
+  "noOptionsFound": "Nem található lehetőség",
+  "loadAgileError": "Nem tudta bepakolni az agilis táblát! Kérjük, próbálja meg később újra...",
+  "loadIssuesError": "Nem tudta betölteni a kártyákat",
+  "orderNotSavedError": "A megrendelés nem lett elmentve, mert nincsenek jogosultságaid.",
+  "backlog": "Hátraléklista",
+  "savedSearch": "Mentett keresés",
+  "loadingBacklog": "Hátraléklista betöltés...",
+  "backlogEmpty": "A hátraléklista üres"
+}

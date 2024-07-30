@@ -1,0 +1,12 @@
+{
+  "loading": "読み込んでいます...",
+  "filterItems": "フィルターアイテム",
+  "noOptionsFound": "オプションが見つかりません",
+  "loadAgileError": "アジャイルボードをロードできませんでした！後で再試行してください...",
+  "loadIssuesError": "カードをロードできませんでした",
+  "orderNotSavedError": "権限がないため、注文が保存されませんでした。",
+  "backlog": "バックログ",
+  "savedSearch": "保存した検索条件",
+  "loadingBacklog": "バックログを読み込んでいます...",
+  "backlogEmpty": "バックログが空です"
+}

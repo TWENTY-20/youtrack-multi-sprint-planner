@@ -1,0 +1,12 @@
+{
+  "loading": "Cargando...",
+  "filterItems": "Filtrar elementos",
+  "noOptionsFound": "No se han encontrado opciones",
+  "loadAgileError": "No se ha podido cargar el panel ágil. Por favor, inténtelo más tarde...",
+  "loadIssuesError": "No se pueden cargar tarjetas",
+  "orderNotSavedError": "El pedido no se ha guardado, porque no tiene permisos",
+  "backlog": "Trabajo pendiente",
+  "savedSearch": "Búsqueda guardada",
+  "loadingBacklog": " Cargando trabajo pendiente...",
+  "backlogEmpty": "El trabajo pendiente está vacío"
+}

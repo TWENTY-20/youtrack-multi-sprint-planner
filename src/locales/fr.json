@@ -1,0 +1,12 @@
+{
+  "loading": "Chargement en cours...",
+  "filterItems": "Filter items",
+  "noOptionsFound": "Aucune option trouvée",
+  "loadAgileError": "Impossible de charger le tableau agile! Veuillez réessayer plus tard...",
+  "loadIssuesError": "Impossible de charger les cartes",
+  "orderNotSavedError": "L'ordre n'a pas été sauvegardé, car vous n'avez pas d'autorisation.",
+  "backlog": "Backlog",
+  "savedSearch": "Recherche enregistrée",
+  "loadingBacklog": " Chargement du backlog...",
+  "backlogEmpty": "Le backlog est vide"
+}

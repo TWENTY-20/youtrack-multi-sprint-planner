@@ -1,7 +1,7 @@
 import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
 import SavedQueriesSelect from "./SavedSearchSelect";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { host } from "./index";
+import { host } from "./youTrackApp.ts";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";

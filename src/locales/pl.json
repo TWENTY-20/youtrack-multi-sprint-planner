@@ -1,0 +1,12 @@
+{
+  "loading": "Ładowanie...",
+  "filterItems": "Filtruj pozycje",
+  "noOptionsFound": "Nie znaleziono opcji",
+  "loadAgileError": "Nie można załadować tablicy agile! Spróbuj ponownie później...",
+  "loadIssuesError": "Nie można załadować kart",
+  "orderNotSavedError": "Zamówienie nie zostało zapisane, ponieważ nie masz uprawnień",
+  "backlog": "Backlog",
+  "savedSearch": "Zapisane wyszukiwanie",
+  "loadingBacklog": "Ładowanie backlogu...",
+  "backlogEmpty": "Backlog jest pusty"
+}

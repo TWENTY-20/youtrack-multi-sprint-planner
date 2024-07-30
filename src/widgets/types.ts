@@ -6,7 +6,7 @@ import { AlertItem } from "@jetbrains/ring-ui-built/components/alert-service/ale
 export interface Host {
     alert: (message: ReactNode, type?: AlertType, timeout?: number, options?: Partial<AlertItem>) => void;
     fetchYouTrack: (relativeURL: string, requestParams?: RequestParams) => Promise<any>;
-    fetchApp: (relativeURL: string, requestParams?: RequestParams & { scope: boolean }) => Promise<any>;
+    fetchApp: (relativeURL: string, requestParams: RequestParams & { scope?: boolean }) => Promise<any>;
 }
 
 export interface Agile {

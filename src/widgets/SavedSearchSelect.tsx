@@ -1,7 +1,7 @@
 import Select, { Type } from "@jetbrains/ring-ui-built/components/select/select";
 import { useState } from "react";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
-import { host } from "./index";
+import { host } from "./youTrackApp.ts";
 import { SavedQuery } from "./types";
 import { useTranslation } from "react-i18next";
 

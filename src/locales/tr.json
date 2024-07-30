@@ -1,0 +1,12 @@
+{
+  "loading": "Yükleniyor...",
+  "filterItems": "Öğeleri filtrele",
+  "noOptionsFound": "Seçenek bulunamadı",
+  "loadAgileError": "Çevik pano yüklenemedi! Lütfen daha sonra tekrar deneyin...",
+  "loadIssuesError": "Kartlar yüklenemedi",
+  "orderNotSavedError": "Sipariş kaydedilmedi, çünkü izniniz yok",
+  "backlog": "Bekleme listesi",
+  "savedSearch": "Kaydedilmiş arama",
+  "loadingBacklog": "Bekleme listesi yükleniyor...",
+  "backlogEmpty": "Birikmiş iş listesi boş"
+}

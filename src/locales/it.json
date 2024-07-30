@@ -1,0 +1,12 @@
+{
+  "loading": "Caricamento...",
+  "filterItems": "Filtra elementi",
+  "noOptionsFound": "Nessuna opzione trovata",
+  "loadAgileError": "Impossibile caricare la bacheca agile! Riprovare più tardi...",
+  "loadIssuesError": "Impossibile caricare le carte",
+  "orderNotSavedError": "L'ordine non è stato salvato, perché l'utente non ha i permessi.",
+  "backlog": "Ricerca salvata",
+  "savedSearch": "Ricerca salvata",
+  "loadingBacklog": "Caricamento backlog...",
+  "backlogEmpty": "Il backlog è vuoto"
+}

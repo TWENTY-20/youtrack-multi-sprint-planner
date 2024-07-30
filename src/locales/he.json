@@ -1,0 +1,12 @@
+{
+  "loading": "טוען...",
+  "filterItems": "סינון פריטים",
+  "noOptionsFound": "לא נמצאו אפשרויות",
+  "loadAgileError": "לא ניתן לטעון לוח זריז! בבקשה נסה שוב מאוחר יותר...",
+  "loadIssuesError": "לא ניתן לטעון כרטיסים",
+  "orderNotSavedError": "ההזמנה לא נשמרה, כי אין לך הרשאות",
+  "backlog": "מצבור",
+  "savedSearch": "חיפוש שמור",
+  "loadingBacklog": "טוען צבר...",
+  "backlogEmpty": "צבר ההזמנות ריק"
+}

@@ -4,7 +4,7 @@ import { ControlsHeight } from "@jetbrains/ring-ui-built/components/global/contr
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
-import { host } from "./index";
+import { host } from "./youTrackApp.ts";
 import { Agile } from "./types";
 import { useTranslation } from "react-i18next";
 

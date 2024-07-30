@@ -1,0 +1,12 @@
+{
+  "loading": "正在加载…",
+  "filterItems": "筛选条目",
+  "noOptionsFound": "找不到选项",
+  "loadAgileError": "无法加载敏捷板！请稍后再试…",
+  "loadIssuesError": "无法装卡",
+  "orderNotSavedError": "未保存订单，因为您没有权限",
+  "backlog": "待办事项",
+  "savedSearch": "保存的搜索",
+  "loadingBacklog": "正在加载待办事项…",
+  "backlogEmpty": "待办事项为空"
+}
