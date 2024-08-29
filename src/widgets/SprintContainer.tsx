@@ -70,10 +70,15 @@ export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueR
                     aria-controls={`collapse-sprint-${sprint.id}`}
                     aria-expanded={!collapsed}
             >
-                <span className="-ml-4 mr-4">
-                {collapsed ? <IconSVG src={ChevronDownIcon}/> : <IconSVG src={ChevronUpIcon}/>}
-                </span>
-                <span className="text-2xl font-normal">{sprint.name}</span>
+                <div className="flex flex-col">
+                    <span>
+                    <span className="-ml-4 mr-4">
+                    {collapsed ? <IconSVG src={ChevronDownIcon}/> : <IconSVG src={ChevronUpIcon}/>}
+                    </span>
+                    <span className="text-xl font-normal">{sprint.name}</span>
+                    </span>
+                    <div className="h-2"></div>
+                </div>
             </Header>
             <div className="relative overflow-hidden will-change-[height,opacity]"
                  id={`collapse-sprint-${sprint.id}`} style={style}>

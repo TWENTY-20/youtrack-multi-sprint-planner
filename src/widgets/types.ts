@@ -25,7 +25,7 @@ export interface ExtendedAgile extends Agile {
     sprintsSettings: {
         cardOnSeveralSprints: boolean
     }
-    backlog: SavedQuery
+    backlog?: SavedQuery
 }
 
 export interface Sprint {

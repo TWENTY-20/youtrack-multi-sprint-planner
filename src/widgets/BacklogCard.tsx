@@ -17,7 +17,7 @@ const TOP_ISSUE_AMOUNT = 40;
 export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
     const { t } = useTranslation();
 
-    const [currentQuery, setCurrentQuery] = useState<SavedQuery>(currentAgile.backlog);
+    const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
     const [issues, setIssues] = useState<Issue[]>([]);
     const [isLoading, setLoading] = useState(true);
     const [loadingMoreIssues, setLoadingMoreIssues] = useState(false);
@@ -26,6 +26,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
     const scrollContainer = useRef<HTMLDivElement>(null);
 
     const loadIssuesPaginated = useCallback(async (start: number) => {
+        if (currentQuery == null) return;
         return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
             .then((issues: Issue[]) => {
                 if (issues.length < TOP_ISSUE_AMOUNT) setMoreIssuesToLoad(false);
@@ -37,11 +38,11 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
         setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
             .then((issues) => {
+                if (!issues) return;
                 setIssues(issues);
-                setLoading(false);
             }).catch(() => {
             host.alert(t("loadIssuesError"), AlertType.ERROR);
-        });
+        }).finally(() => setLoading(false));
     }, [loadIssuesPaginated, currentQuery, t]);
 
     useEffect(() => {
@@ -60,6 +61,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
 
             setLoadingMoreIssues(true);
             loadIssuesPaginated(issues.length).then((newIssues) => {
+                if (!newIssues) return;
                 setIssues((issues) => [...issues, ...newIssues]);
                 setLoadingMoreIssues(false);
             }).catch(() => {
@@ -154,16 +156,20 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
             <Header border>
                 <div className="font-normal">
                     <h2 className="text-2xl mb-3">{t("backlog")}</h2>
-                    <span className="mr-1">{t("savedSearch")}:</span>
-                    <SavedQueriesSelect
-                        defaultSavedQuery={currentQuery}
-                        onSelect={onSavedQuerySelect}
-                        className="mr-3.5"
-                    />
-                    <ClickableLink target="_blank" href={"/issues?q=" + encodeURIComponent(currentQuery.query)}>
-                        <Icon glyph={NewWindow}
-                              className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"/>
-                    </ClickableLink>
+                    {currentQuery &&
+                        <>
+                            <span className="mr-1">{t("savedSearch")}:</span>
+                            <SavedQueriesSelect
+                                defaultSavedQuery={currentQuery}
+                                onSelect={onSavedQuerySelect}
+                                className="mr-3.5"
+                            />
+                            <ClickableLink target="_blank" href={"/issues?q=" + encodeURIComponent(currentQuery.query)}>
+                                <Icon glyph={NewWindow}
+                                      className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"/>
+                            </ClickableLink>
+                        </>
+                    }
                 </div>
 
             </Header>
@@ -175,13 +181,19 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                     </div>
                 }
                 {
-                    !isLoading && issues.length == 0 &&
+                    !isLoading && !currentQuery &&
+                    <div className="flex mt-12 justify-center">
+                        <span className="text-base font-bold">{t("backlogNoPermission")}</span>
+                    </div>
+                }
+                {
+                    !isLoading && currentQuery && issues.length == 0 &&
                     <div className="flex mt-12 justify-center">
                         <span className="text-base font-bold">{t("backlogEmpty")}</span>
                     </div>
                 }
                 {
-                    !isLoading &&
+                    !isLoading && currentQuery &&
                     <IssueSortableList
                         id="backlog"
                         originalIssues={issues}

@@ -3,8 +3,8 @@ import { initReactI18next } from "react-i18next";
 import YTApp, { host } from "./youTrackApp.ts";
 import English from "../locales/en.json";
 
-console.log(await host.fetchApp("backend/translate", {}));
-console.log(await host.fetchApp("backend/translate?lang=en", {}));
+// console.log(await host.fetchApp("backend/translate", {}));
+// console.log(await host.fetchApp("backend/translate?lang=en", {}));
 
 let translations;
 if (YTApp.locale !== "en") {
@@ -29,7 +29,7 @@ await i18next
                 }
             })
         },
-        debug: true,
+        // debug: true,
         supportedLngs: ["en"].concat(translations ? [YTApp.locale] : []),
         nonExplicitSupportedLngs: true,
         interpolation: {

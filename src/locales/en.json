@@ -8,5 +8,6 @@
   "backlog": "Backlog",
   "savedSearch": "Saved search",
   "loadingBacklog": "Loading Backlog...",
-  "backlogEmpty": "The backlog is empty"
+  "backlogEmpty": "The backlog is empty",
+  "backlogNoPermission": "You have no permissions to use the backlog!"
 }
