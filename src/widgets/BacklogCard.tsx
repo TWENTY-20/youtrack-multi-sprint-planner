@@ -129,7 +129,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
         // Currently, I can't think of a solution to resolve this that would not be dirty.
         // await host.fetchYouTrack(`agiles/${currentAgile.id}/backlog/issues/${issue.id}?fields=id,idReadable,summary,project(id,name)`)
         //     .then(async (issue: Issue) => {
-        const leadingId = newIndex <= 0 ? null : issues[newIndex == issues.length - 1 ? newIndex - 1 : newIndex].id;
+        const leadingId = newIndex <= 0 ? null : issues[newIndex == issues.length ? newIndex - 1 : newIndex].id;
 
         await updateSortOrder(leadingId, issue.id);
 
