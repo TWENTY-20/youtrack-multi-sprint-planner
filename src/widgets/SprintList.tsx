@@ -67,6 +67,8 @@ export default function SprintList({ agile }: { agile: ExtendedAgile }) {
             throw new Error(error.data.error_description);
         });
 
+        issue.loading = false;
+
         const issues = sprint.issues;
         issues.splice(newIndex, 0, issue);
         setIssues(issues, sprint);

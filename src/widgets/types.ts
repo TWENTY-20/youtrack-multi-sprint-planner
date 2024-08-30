@@ -45,7 +45,8 @@ export interface Issue {
     idReadable: string,
     summary: string,
     project: Project,
-    isDraft?: boolean
+    isDraft?: boolean,
+    loading?: boolean
 }
 
 export interface APIError {

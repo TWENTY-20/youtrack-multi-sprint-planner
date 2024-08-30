@@ -8,7 +8,7 @@ export default function DraggableIssueItem({ issue }: { issue: Issue }) {
         listeners,
         setNodeRef,
         isDragging,
-    } = useSortable({ id: issue.id, data: issue });
+    } = useSortable({ id: issue.id, data: issue, disabled: issue.loading });
 
     return (
         <IssueItem

@@ -2,6 +2,7 @@ import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLin
 import { Issue } from "./types";
 import { forwardRef } from "react";
 import { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
+import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
 
 const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,
@@ -37,9 +38,14 @@ const IssueItem = forwardRef<HTMLDivElement, {
                     >
                         {issue.idReadable}
                     </ClickableLink>
-                    <span className="truncate mr-auto">{issue.summary}</span>
+                    {
+                        issue.loading ?
+                            <span className="ml-auto"><LoaderInline/></span>
+                            :
+                            <span className="truncate">{issue.summary}</span>
+                    }
                     <ClickableLink
-                        className="text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline truncate"
+                        className="ml-auto text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline truncate"
                         target="_blank" href={`/projects/${issue.project.id}`}
                     >
                         {issue.project.name}

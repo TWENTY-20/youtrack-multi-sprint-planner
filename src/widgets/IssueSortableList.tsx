@@ -164,6 +164,8 @@ export default function IssueSortableList(
                     }
                 }
 
+                movedIssue.loading = true;
+
                 const newIndex = activeIndex < 0 ? newIssues.length + activeIndex : activeIndex;
                 newIssues.splice(newIndex, 0, prefixIssue(movedIssue, prefix));
 
@@ -175,6 +177,13 @@ export default function IssueSortableList(
                     } else {
                         await onIssueAdd?.(movedIssue, newIndex);
                     }
+
+                    const movedIssueId = prefixIssue(movedIssue, prefix).id;
+                    newIssues.forEach((issue) => {
+                        if (issue.id === movedIssueId)
+                            issue.loading = false;
+                    });
+
                     setIssues(newIssues);
                 } catch (_) {
                     setIssues(clonedIssues);

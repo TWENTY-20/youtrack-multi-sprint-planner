@@ -133,6 +133,8 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
 
         await updateSortOrder(leadingId, issue.id);
 
+        issue.loading = false;
+
         issues.splice(newIndex, 0, issue);
         setIssues(issues);
         // })
