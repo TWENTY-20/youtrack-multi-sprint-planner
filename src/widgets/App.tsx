@@ -85,7 +85,7 @@ export default function App() {
                 <div
                     className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 lg:overflow-y-hidden lg:h-full overflow-x-hidden">
                     <div className="w-full lg:w-1/2">
-                        <BacklogCard currentAgile={currentAgile}/>
+                        <BacklogCard currentAgile={currentAgile} key={currentAgile.backlog?.id}/>
                     </div>
                     <div className="w-full lg:w-1/2">
                         <SprintList agile={currentAgile}/>
