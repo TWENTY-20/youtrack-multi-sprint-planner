@@ -100,9 +100,6 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
                     id: movedId
                 }
             }
-        }).catch(() => {
-            host.alert(t("orderNotSavedError"), AlertType.WARNING);
-            throw new Error("Could not reorder issues!");
         });
     }
 
@@ -121,7 +118,13 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
             //  Check if it was dragged to the same position
             if (issueIndex == newIndex || issueIndex == newIndex + 1) return;
 
-            await onIssueReorder(issue, issueIndex, newIndex);
+            const leadingId = newIndex <= 0 ? null : issues[newIndex].id;
+            await updateSortOrder(leadingId, issue.id).catch(() => {
+            });
+
+            const newOrder = arrayMove(issues, issueIndex, newIndex);
+            setIssues(newOrder);
+
             return;
         }
 
@@ -148,7 +151,10 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
 
     async function onIssueReorder(issue: Issue, oldIndex: number, newIndex: number) {
         const leadingId = newIndex <= 0 ? null : issues[newIndex].id;
-        await updateSortOrder(leadingId, issue.id);
+        await updateSortOrder(leadingId, issue.id).catch(() => {
+            host.alert(t("orderNotSavedError"), AlertType.WARNING);
+            throw new Error("Could not reorder issues!");
+        });
         const newOrder = arrayMove(issues, oldIndex, newIndex);
         setIssues(newOrder);
     }
