@@ -41,15 +41,15 @@ export default function App() {
             body: {
                 defaultAgile: { id: agile.id }
             },
-        }).then(({ defaultAgile }: { defaultAgile: ExtendedAgile }) => {
-            if (defaultAgile.id != agile.id)
-                return host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
+        }).then(async (result: { defaultAgile: ExtendedAgile }) => {
+            if (result.defaultAgile.id != agile.id)
+                return await host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
                     method: "POST",
                     body: {
                         defaultAgile: { id: agile.id }
                     },
-                });
-            return defaultAgile;
+                }) as typeof result;
+            return result;
         }).then(({ defaultAgile }: { defaultAgile: ExtendedAgile }) => {
             setCurrentAgile(defaultAgile);
         }).catch(() => {
