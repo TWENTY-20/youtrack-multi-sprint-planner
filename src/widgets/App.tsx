@@ -3,21 +3,15 @@ import { host } from "./youTrackApp.ts";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import AgileSelection from "./AgileSelection";
 import BacklogCard from "./BacklogCard";
-import {
-    closestCenter,
-    DndContext,
-    DragOverlay,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors
-} from "@dnd-kit/core";
+import { closestCenter, DndContext, DragOverlay, useSensor, useSensors } from "@dnd-kit/core";
 import { Agile, ExtendedAgile } from "./types";
 import IssueItem from "./IssueItem";
 import { useDraggedIssue } from "./DraggedIssueProvider";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import SprintList from "./SprintList.tsx";
 import { useTranslation } from "react-i18next";
+import { PointerSensor } from "./sensor/PointerSensor.ts";
+import { KeyboardSensor } from "./sensor/KeyboardSensor.ts";
 
 
 //Todo: Localization
