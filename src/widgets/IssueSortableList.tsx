@@ -106,6 +106,8 @@ export default function IssueSortableList(
                 ]);
         },
         onDragEnd({ active }: DragEndEvent) {
+            if (draggedIssue)
+                draggedIssue.loading = true;
             (async () => {
                 // over.id and active.id are the same because list moving happens in onDragOver
                 // activeId still has the prefix of its original list
