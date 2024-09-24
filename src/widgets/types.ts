@@ -30,8 +30,9 @@ export interface ExtendedAgile extends Agile {
 
 export interface Sprint {
     id: string,
+    agile?: Agile,
     name: string,
-    agile?: Agile
+    archived: boolean,
     issues: Issue[],
 }
 

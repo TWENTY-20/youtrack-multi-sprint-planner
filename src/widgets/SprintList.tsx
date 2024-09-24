@@ -11,13 +11,19 @@ export default function SprintList({ agile }: { agile: ExtendedAgile }) {
 
     useEffect(() => {
         setSprints([]);
-        host.fetchYouTrack(`agiles/${agile.id}/sprints?fields=id,name,issues(id,idReadable,summary,project(id,name),isDraft)`)
+        host.fetchYouTrack(`agiles/${agile.id}/sprints?fields=id,name,archived,issues(id,idReadable,summary,project(id,name),isDraft)&top=-1`)
             .then((sprints: Sprint[]) => {
-                // Filter out draft issues and add currentAgile as property
-                const cleanedSprints = sprints.map(((sprint) => {
+                const cleanedSprints = [];
+
+                for (const sprint of sprints) {
+                    // Skip archived sprints
+                    if (sprint.archived) continue;
+
+                    // Filter out draft issues and add currentAgile as property
                     const cleanedIssues = sprint.issues.filter(issue => !issue.isDraft);
-                    return { ...sprint, agile: agile, issues: cleanedIssues };
-                }));
+                    cleanedSprints.push({ ...sprint, agile: agile, issues: cleanedIssues });
+                }
+
                 setSprints(cleanedSprints);
             }).catch((e) => {
             console.error(e);
