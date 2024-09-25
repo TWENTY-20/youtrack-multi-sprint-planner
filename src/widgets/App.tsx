@@ -36,21 +36,11 @@ export default function App() {
     }, []);
 
     const updateUserDefaultAgile = useCallback((agile: Agile) => {
-        // Endpoint seems to be somehow messed up?? todo: observe future behaviour
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
             method: "POST",
             body: {
                 defaultAgile: { id: agile.id }
             },
-        }).then(async (result: { defaultAgile: ExtendedAgile }) => {
-            if (result.defaultAgile.id != agile.id)
-                return await host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`, {
-                    method: "POST",
-                    body: {
-                        defaultAgile: { id: agile.id }
-                    },
-                }) as typeof result;
-            return result;
         }).then(({ defaultAgile }: { defaultAgile: ExtendedAgile }) => {
             setCurrentAgile(defaultAgile);
             setSprintFilter("");
