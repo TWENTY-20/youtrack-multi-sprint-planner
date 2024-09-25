@@ -3,6 +3,10 @@ import IssueSortableList from "./IssueSortableList";
 import { Issue, Sprint } from "./types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BASE_ANIMATION_DURATION } from "@jetbrains/ring-ui-built/components/collapse/consts";
+import { host } from "./youTrackApp.ts";
+import { useTranslation } from "react-i18next";
+import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
+import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
@@ -13,14 +17,29 @@ const DEFAULT_HEIGHT = 0;
 const VISIBLE = 1;
 const HIDDEN = 0;
 
-export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder }: {
-    sprint: Sprint,
-    cardOnSeveralSprints: boolean,
-    onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
-    onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
-    onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
-}) {
-    const [collapsed, toggle] = useState(false);
+export default function SprintContainer(
+    {
+        sprint,
+        cardOnSeveralSprints,
+        defaultCollapsed: defaultCollapsed,
+        onIssueRemove,
+        onIssueAdd,
+        onIssueReorder,
+        onExpand
+    }: {
+        sprint: Sprint,
+        cardOnSeveralSprints: boolean,
+        defaultCollapsed?: boolean,
+        onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
+        onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
+        onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
+        onExpand?: () => void | Promise<void>,
+    }) {
+
+    const { t } = useTranslation();
+
+    const [collapsed, toggle] = useState(defaultCollapsed ?? false);
+    const [loading, setLoading] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement | null>(null);
     const initialContentHeight = useRef<number>(DEFAULT_HEIGHT);
     const contentHeight = useRef<number>(DEFAULT_HEIGHT);
@@ -29,6 +48,12 @@ export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueR
         height: 0
     });
     const [height, setHeight] = useState<string>(`${initialContentHeight.current}px`);
+
+    // Should happen only once when the sprint receives its issues
+    useEffect(() => {
+        if (defaultCollapsed !== undefined)
+            toggle(defaultCollapsed);
+    }, [defaultCollapsed]);
 
     useEffect(() => {
         if (contentRef.current) {
@@ -64,16 +89,32 @@ export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueR
     }, [height, collapsed]);
 
     return (
-        <Island>
-            <Header border
-                    onClick={() => toggle(!collapsed)}
-                    aria-controls={`collapse-sprint-${sprint.id}`}
-                    aria-expanded={!collapsed}
+        <Island className="relative">
+            <Header
+                border
+                aria-controls={`collapse-sprint-${sprint.id}`}
+                aria-expanded={!collapsed}
+                onClick={() => {
+                    void (async () => {
+                        setLoading(true);
+                        try {
+                            await onExpand?.();
+                        } catch (_) {
+                            host.alert(t("loadIssuesError"), AlertType.ERROR);
+                        }
+                        setLoading(false);
+                        toggle(!collapsed);
+                    })();
+                }}
             >
                 <div className="flex flex-col">
                     <span>
                     <span className="-ml-4 mr-4">
-                    {collapsed ? <IconSVG src={ChevronDownIcon}/> : <IconSVG src={ChevronUpIcon}/>}
+                        {
+                            loading ? <LoaderInline className="!align-middle"/>
+                                : collapsed ? <IconSVG src={ChevronDownIcon}/>
+                                    : <IconSVG src={ChevronUpIcon}/>
+                        }
                     </span>
                     <span className="text-xl font-normal">{sprint.name}</span>
                     </span>
@@ -83,14 +124,17 @@ export default function SprintContainer({ sprint, cardOnSeveralSprints, onIssueR
             <div className="relative overflow-hidden will-change-[height,opacity]"
                  id={`collapse-sprint-${sprint.id}`} style={style}>
                 <div ref={contentRef} className="min-h-10 bg-[var(--ring-sidebar-background-color)] p-2 ">
-                    <IssueSortableList
-                        id={sprint.id}
-                        originalIssues={sprint.issues}
-                        cardOnSeveralSprints={cardOnSeveralSprints}
-                        onIssueRemove={onIssueRemove}
-                        onIssueAdd={onIssueAdd}
-                        onIssueReorder={onIssueReorder}
-                    />
+                    {
+                        !collapsed &&
+                        <IssueSortableList
+                            id={sprint.id}
+                            originalIssues={sprint.issues ?? []}
+                            cardOnSeveralSprints={cardOnSeveralSprints}
+                            onIssueRemove={onIssueRemove}
+                            onIssueAdd={onIssueAdd}
+                            onIssueReorder={onIssueReorder}
+                        />
+                    }
                 </div>
             </div>
         </Island>

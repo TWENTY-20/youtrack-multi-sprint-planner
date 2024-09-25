@@ -8,5 +8,8 @@
   "backlog": "백로그",
   "savedSearch": "저장된 검색",
   "loadingBacklog": "백로그를 로드하는 중...",
-  "backlogEmpty": "백로그가 비어 있음"
+  "backlogEmpty": "백로그가 비어 있음",
+  "searchSprintPlaceholder": "이름별로 스프린트 필터링",
+  "searchSprint": "필터 스프린트",
+  "clearInput": "입력 지우기"
 }

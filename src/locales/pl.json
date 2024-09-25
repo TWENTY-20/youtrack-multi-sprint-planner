@@ -8,5 +8,8 @@
   "backlog": "Backlog",
   "savedSearch": "Zapisane wyszukiwanie",
   "loadingBacklog": "Ładowanie backlogu...",
-  "backlogEmpty": "Backlog jest pusty"
+  "backlogEmpty": "Backlog jest pusty",
+  "searchSprintPlaceholder": "Filtruj sprinty według nazwy",
+  "searchSprint": "Filtruj sprinty",
+  "clearInput": "Wyczyść wejście"
 }

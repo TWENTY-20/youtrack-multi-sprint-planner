@@ -8,5 +8,8 @@
   "backlog": "Очередь задач",
   "savedSearch": " Сохраненный поиск",
   "loadingBacklog": "Вариантов не найдено...",
-  "backlogEmpty": "Очередь пуста"
+  "backlogEmpty": "Очередь пуста",
+  "searchSprintPlaceholder": "Фильтруйте спринты по имени",
+  "searchSprint": "Фильтр спринтов",
+  "clearInput": "Очистить вход"
 }

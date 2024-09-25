@@ -9,5 +9,8 @@
   "savedSearch": "Gespeicherte Suche",
   "loadingBacklog": "Backlog wird geladen...",
   "backlogEmpty": "Das Backlog ist leer",
-  "backlogNoPermission": "Sie haben keine Berechtigungen, um den Backlog zu nutzen!"
+  "backlogNoPermission": "Sie haben keine Berechtigungen, um den Backlog zu nutzen!",
+  "searchSprintPlaceholder": "Sprint mit Name suchen",
+  "searchSprint": "Sprint suchen",
+  "clearInput": "Eingabe löschen"
 }

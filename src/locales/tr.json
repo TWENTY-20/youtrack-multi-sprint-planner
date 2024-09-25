@@ -8,5 +8,8 @@
   "backlog": "Bekleme listesi",
   "savedSearch": "Kaydedilmiş arama",
   "loadingBacklog": "Bekleme listesi yükleniyor...",
-  "backlogEmpty": "Birikmiş iş listesi boş"
+  "backlogEmpty": "Birikmiş iş listesi boş",
+  "searchSprintPlaceholder": "Sprintleri ada göre filtreleme",
+  "searchSprint": "Filtre sprintleri",
+  "clearInput": "Girişi temizle"
 }

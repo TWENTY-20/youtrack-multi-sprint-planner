@@ -8,5 +8,8 @@
   "backlog": "待办事项",
   "savedSearch": "保存的搜索",
   "loadingBacklog": "正在加载待办事项…",
-  "backlogEmpty": "待办事项为空"
+  "backlogEmpty": "待办事项为空",
+  "searchSprintPlaceholder": "按名称筛选冲刺",
+  "searchSprint": "过滤冲刺",
+  "clearInput": "清除输入"
 }

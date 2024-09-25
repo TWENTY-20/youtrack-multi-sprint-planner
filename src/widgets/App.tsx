@@ -12,13 +12,14 @@ import SprintList from "./SprintList.tsx";
 import { useTranslation } from "react-i18next";
 import { PointerSensor } from "./sensor/PointerSensor.ts";
 import { KeyboardSensor } from "./sensor/KeyboardSensor.ts";
+import SprintSearch from "./SprintSearch.tsx";
 
 
-//Todo: Localization
 export default function App() {
     const { t } = useTranslation();
 
     const [currentAgile, setCurrentAgile] = useState<ExtendedAgile | null>(null);
+    const [sprintFilter, setSprintFilter] = useState("");
 
     const { draggedIssue } = useDraggedIssue();
 
@@ -52,6 +53,7 @@ export default function App() {
             return result;
         }).then(({ defaultAgile }: { defaultAgile: ExtendedAgile }) => {
             setCurrentAgile(defaultAgile);
+            setSprintFilter("");
         }).catch(() => {
             setCurrentAgile(null);
         });
@@ -79,16 +81,17 @@ export default function App() {
                 collisionDetection={closestCenter}
                 sensors={sensors}
             >
-                <AgileSelection defaultAgile={currentAgile} onSelect={(agile) => {
-                    updateUserDefaultAgile(agile);
-                }}/>
+                <div className="flex justify-between">
+                    <AgileSelection defaultAgile={currentAgile} onSelect={updateUserDefaultAgile}/>
+                    <SprintSearch key={sprintFilter} defaultSearch={sprintFilter} onSearch={setSprintFilter}/>
+                </div>
                 <div
                     className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 lg:overflow-y-hidden lg:h-full overflow-x-hidden">
                     <div className="w-full lg:w-1/2">
                         <BacklogCard currentAgile={currentAgile} key={currentAgile.backlog?.id}/>
                     </div>
                     <div className="w-full lg:w-1/2">
-                        <SprintList agile={currentAgile}/>
+                        <SprintList agile={currentAgile} search={sprintFilter}/>
                     </div>
                 </div>
                 <DragOverlay>

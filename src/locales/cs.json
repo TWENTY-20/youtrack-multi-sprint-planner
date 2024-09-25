@@ -8,5 +8,8 @@
   "backlog": "Nevyřízené položky",
   "savedSearch": "Uložené hledání",
   "loadingBacklog": "Načítání čekajících položek...",
-  "backlogEmpty": "Nevyřízené záležitosti jsou prázdné"
+  "backlogEmpty": "Nevyřízené záležitosti jsou prázdné",
+  "searchSprintPlaceholder": "Filtrování sprintů podle názvu",
+  "searchSprint": "Filtrování sprintů",
+  "clearInput": "Vymazat vstup"
 }

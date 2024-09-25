@@ -8,5 +8,8 @@
   "backlog": "מצבור",
   "savedSearch": "חיפוש שמור",
   "loadingBacklog": "טוען צבר...",
-  "backlogEmpty": "צבר ההזמנות ריק"
+  "backlogEmpty": "צבר ההזמנות ריק",
+  "searchSprintPlaceholder": "סנן ספרינטים לפי שם",
+  "searchSprint": "ספרינטים מסננים",
+  "clearInput": "נקה קלט"
 }

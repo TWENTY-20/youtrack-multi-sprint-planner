@@ -8,5 +8,8 @@
   "backlog": "Trabajo pendiente",
   "savedSearch": "Búsqueda guardada",
   "loadingBacklog": " Cargando trabajo pendiente...",
-  "backlogEmpty": "El trabajo pendiente está vacío"
+  "backlogEmpty": "El trabajo pendiente está vacío",
+  "searchSprintPlaceholder": "Filtrar sprints por nombre",
+  "searchSprint": "Filtrar sprints",
+  "clearInput": "Borrar entradas"
 }

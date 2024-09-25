@@ -8,5 +8,8 @@
   "backlog": "バックログ",
   "savedSearch": "保存した検索条件",
   "loadingBacklog": "バックログを読み込んでいます...",
-  "backlogEmpty": "バックログが空です"
+  "backlogEmpty": "バックログが空です",
+  "searchSprintPlaceholder": "名前でスプリントをフィルタリング",
+  "searchSprint": "フィルタースプリント",
+  "clearInput": "クリア入力"
 }

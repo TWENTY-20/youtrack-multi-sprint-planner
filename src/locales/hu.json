@@ -8,5 +8,8 @@
   "backlog": "Hátraléklista",
   "savedSearch": "Mentett keresés",
   "loadingBacklog": "Hátraléklista betöltés...",
-  "backlogEmpty": "A hátraléklista üres"
+  "backlogEmpty": "A hátraléklista üres",
+  "searchSprintPlaceholder": "Szűrje a sprinteket név szerint",
+  "searchSprint": "Szűrő sprintek",
+  "clearInput": "Tiszta bemenet"
 }

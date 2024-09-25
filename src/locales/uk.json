@@ -8,5 +8,8 @@
   "backlog": "Відставання",
   "savedSearch": "Збережений пошуковий запит",
   "loadingBacklog": "Завантаження відставання...",
-  "backlogEmpty": "Відставання порожній"
+  "backlogEmpty": "Відставання порожній",
+  "searchSprintPlaceholder": "Фільтрувати спринти за назвою",
+  "searchSprint": "Фільтруйте спринти",
+  "clearInput": "Чіткий вхід"
 }
