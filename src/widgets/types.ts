@@ -33,6 +33,8 @@ export interface Sprint {
     name: string,
     archived: boolean,
     issues?: Issue[],
+    start?: number,
+    finish?: number
 }
 
 export interface Project {

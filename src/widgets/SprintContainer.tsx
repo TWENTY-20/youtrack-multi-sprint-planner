@@ -1,11 +1,11 @@
-import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
+import Island, {Header} from "@jetbrains/ring-ui-built/components/island/island";
 import IssueSortableList from "./IssueSortableList";
-import { Issue, Sprint } from "./types";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { BASE_ANIMATION_DURATION } from "@jetbrains/ring-ui-built/components/collapse/consts";
-import { host } from "./youTrackApp.ts";
-import { useTranslation } from "react-i18next";
-import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
+import {Issue, Sprint} from "./types";
+import {useEffect, useMemo, useRef, useState} from "react";
+import {BASE_ANIMATION_DURATION} from "@jetbrains/ring-ui-built/components/collapse/consts";
+import {host} from "./youTrackApp.ts";
+import {useTranslation} from "react-i18next";
+import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
@@ -36,7 +36,7 @@ export default function SprintContainer(
         onExpand?: () => void | Promise<void>,
     }) {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const [collapsed, toggle] = useState(defaultCollapsed ?? false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -70,9 +70,9 @@ export default function SprintContainer(
         if (!contentRef.current) return;
         const observer = new ResizeObserver(([entry]) => {
             if (entry && entry.borderBoxSize) {
-                const { inlineSize, blockSize } = entry.borderBoxSize[0];
+                const {inlineSize, blockSize} = entry.borderBoxSize[0];
 
-                setDimensions({ width: inlineSize, height: blockSize });
+                setDimensions({width: inlineSize, height: blockSize});
             }
         });
         observer.observe(contentRef.current);
@@ -87,6 +87,7 @@ export default function SprintContainer(
             opacity: collapsed ? HIDDEN : VISIBLE
         };
     }, [height, collapsed]);
+
 
     return (
         <Island className="relative">
@@ -117,6 +118,10 @@ export default function SprintContainer(
                         }
                     </span>
                     <span className="text-xl font-normal">{sprint.name}</span>
+                        {sprint.start !== undefined && sprint.finish !== undefined &&
+                            <span
+                                className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
+                        }
                     </span>
                     <div className="h-2"></div>
                 </div>
@@ -139,4 +144,14 @@ export default function SprintContainer(
             </div>
         </Island>
     );
+}
+
+function formattedDate(date?: number) {
+    if (date === undefined) return
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    };
+    return new Date(date).toLocaleDateString(undefined, options);
 }

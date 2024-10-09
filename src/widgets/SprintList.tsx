@@ -32,13 +32,13 @@ export default function SprintList({ agile, search }: { agile: ExtendedAgile, se
     useEffect(() => {
         setSprints([]);
         (async () => {
-            const sprints = await host.fetchYouTrack(`agiles/${agile.id}/sprints?fields=id,name,archived&$top=-1`)
+            const sprints = await host.fetchYouTrack(`agiles/${agile.id}/sprints?fields=id,name,archived,start,finish&$top=-1`)
                 .then((sprints: Sprint[]) => {
                     const cleanedSprints = sprints.filter((sprint) => !sprint.archived);
+                    cleanedSprints.reverse()
                     setSprints(cleanedSprints);
                     return cleanedSprints;
                 });
-
             const previewSprints = sprints
                 .filter((sprint) => sprint.name.toLowerCase().includes(lowerCaseSearch))
                 .slice(0, 5);
@@ -121,13 +121,13 @@ export default function SprintList({ agile, search }: { agile: ExtendedAgile, se
     return (
         <div className="flex flex-col space-y-8 h-full overflow-y-auto">
             {
-                sprints.map((sprint) =>
+                sprints.map((sprint, index ) =>
                     sprint.name.toLowerCase().includes(lowerCaseSearch) &&
                     <SprintContainer
                         key={sprint.id}
                         sprint={sprint}
                         cardOnSeveralSprints={agile.sprintsSettings.cardOnSeveralSprints}
-                        defaultCollapsed={sprint.issues === undefined}
+                        defaultCollapsed={index > 2}
                         onIssueRemove={(issue, oldIndex) => onIssueRemove(issue, oldIndex, sprint)}
                         onIssueAdd={(issue, newIndex) => onIssueAdd(issue, newIndex, sprint)}
                         onIssueReorder={(issue, oldIndex, newIndex) => onIssueReorder(issue, oldIndex, newIndex, sprint)}
