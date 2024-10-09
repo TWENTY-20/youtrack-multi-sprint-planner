@@ -49,6 +49,16 @@ export interface Issue {
     project: Project,
     isDraft?: boolean,
     loading?: boolean
+    customFields?: CustomField[]
+}
+
+export interface CustomField{
+    name: string,
+    value: CustomFieldValue
+}
+
+export interface CustomFieldValue {
+    name: string
 }
 
 export interface APIError {

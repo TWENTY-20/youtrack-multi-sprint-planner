@@ -1,7 +1,7 @@
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
-import { Issue } from "./types";
-import { forwardRef } from "react";
-import { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
+import {Issue} from "./types";
+import {forwardRef} from "react";
+import {DraggableAttributes, DraggableSyntheticListeners} from "@dnd-kit/core";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
 
 const IssueItem = forwardRef<HTMLDivElement, {
@@ -10,13 +10,13 @@ const IssueItem = forwardRef<HTMLDivElement, {
     listeners?: DraggableSyntheticListeners,
     isDragging?: boolean,
     className?: string,
-}>(({ issue, attributes, listeners, isDragging, className }, ref) => {
-
+}>(({issue, attributes, listeners, isDragging, className}, ref) => {
+    (issue)
     return (
         isDragging ?
             <div className="h-8 w-full"
                  ref={ref}
-                 style={{ background: "rgba(var(--ring-border-hover-components), 0.5)" }}
+                 style={{background: "rgba(var(--ring-border-hover-components), 0.5)"}}
                  {...attributes}
                  {...listeners}
             ></div>
@@ -44,12 +44,11 @@ const IssueItem = forwardRef<HTMLDivElement, {
                             :
                             <span className="truncate">{issue.summary}</span>
                     }
-                    <ClickableLink
-                        className="ml-auto text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline truncate"
-                        target="_blank" href={`/projects/${issue.project.id}`}
+                    <p
+                        className="ml-auto text-[var(--ring-secondary-color)] truncate"
                     >
-                        {issue.project.name}
-                    </ClickableLink>
+                        {issue.customFields?.find(f => f.name === "Assignee")?.value?.name}
+                    </p>
                 </div>
             </div>
     );

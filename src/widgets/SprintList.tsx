@@ -11,7 +11,7 @@ export default function SprintList({ agile, search }: { agile: ExtendedAgile, se
     const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
 
     const loadIssuesOfSprint = useCallback(async (sprint: Sprint) => {
-        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,project(id,name),isDraft&$top=-1`)
+        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,customFields(name,value(name)),project(id,name),isDraft&$top=-1`)
             .then((issues: Issue[]) => {
                 return issues.filter(issue => !issue.isDraft);
             });
@@ -24,7 +24,6 @@ export default function SprintList({ agile, search }: { agile: ExtendedAgile, se
                 ...sprint,
                 issues: newIssues
             } as Sprint;
-            console.log(sprints);
             return sprints.slice(0);
         });
     }, []);

@@ -1,21 +1,21 @@
-import Island, { Header } from "@jetbrains/ring-ui-built/components/island/island";
+import Island, {Header} from "@jetbrains/ring-ui-built/components/island/island";
 import SavedQueriesSelect from "./SavedSearchSelect";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { host } from "./youTrackApp.ts";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {host} from "./youTrackApp.ts";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
 import IssueSortableList from "./IssueSortableList";
-import { ExtendedAgile, Issue, SavedQuery } from "./types";
-import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
-import { arrayMove } from "@dnd-kit/sortable";
-import { useTranslation } from "react-i18next";
+import {ExtendedAgile, Issue, SavedQuery} from "./types";
+import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
+import {arrayMove} from "@dnd-kit/sortable";
+import {useTranslation} from "react-i18next";
 
 const TOP_ISSUE_AMOUNT = 40;
 
-export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAgile }) {
-    const { t } = useTranslation();
+export default function BacklogCard({currentAgile}: { currentAgile: ExtendedAgile }) {
+    const {t} = useTranslation();
 
     const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
     const [issues, setIssues] = useState<Issue[]>([]);
@@ -27,13 +27,12 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
 
     const loadIssuesPaginated = useCallback(async (start: number) => {
         if (currentQuery == null) return;
-        return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
+        return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,customFields(name,value(name)),project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
             .then((issues: Issue[]) => {
                 if (issues.length < TOP_ISSUE_AMOUNT) setMoreIssuesToLoad(false);
                 return issues;
             });
     }, [currentQuery]);
-
     useEffect(() => {
         setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
@@ -76,7 +75,7 @@ export default function BacklogCard({ currentAgile }: { currentAgile: ExtendedAg
         host.fetchYouTrack(`agiles/${currentAgile.id}`, {
             method: "POST",
             body: {
-                backlog: { id: savedQuery.id }
+                backlog: {id: savedQuery.id}
             },
         }).catch((e) => {
             console.error(e);

@@ -6,7 +6,7 @@
   "version": "1.1.0",
   "icon": "logo.svg",
   "minYouTrackVersion": "2024.3.0",
-  "changeNotes": "Version 1.1.0:\nHiding archived sprints\nNew search bar for sprints",
+  "changeNotes": "See https://plugins.jetbrains.com/plugin/25341-multi-sprint-planner/release-notes",
   "widgets": [
     {
       "key": "main-menu",
