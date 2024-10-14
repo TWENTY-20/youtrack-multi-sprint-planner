@@ -12,5 +12,7 @@
   "backlogNoPermission": "You have no permissions to use the backlog!",
   "searchSprintPlaceholder": "Search sprint by name",
   "searchSprint": "Search sprint",
-  "clearInput": "Clear input"
+  "clearInput": "Clear input",
+  "visibleFields": "Visible Fields",
+  "addField": "Add field"
 }

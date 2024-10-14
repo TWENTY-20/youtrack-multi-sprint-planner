@@ -6,6 +6,7 @@ import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
+
 import IssueSortableList from "./IssueSortableList";
 import {ExtendedAgile, Issue, SavedQuery} from "./types";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
@@ -14,7 +15,7 @@ import {useTranslation} from "react-i18next";
 
 const TOP_ISSUE_AMOUNT = 40;
 
-export default function BacklogCard({currentAgile}: { currentAgile: ExtendedAgile }) {
+export default function BacklogCard({currentAgile, selectedCustomFields}: { currentAgile: ExtendedAgile, selectedCustomFields: string[] }) {
     const {t} = useTranslation();
 
     const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
@@ -38,6 +39,7 @@ export default function BacklogCard({currentAgile}: { currentAgile: ExtendedAgil
         loadIssuesPaginated(0)
             .then((issues) => {
                 if (!issues) return;
+                console.log(issues)
                 setIssues(issues);
             }).catch(() => {
             host.alert(t("loadIssuesError"), AlertType.ERROR);
@@ -207,6 +209,7 @@ export default function BacklogCard({currentAgile}: { currentAgile: ExtendedAgil
                         onIssueRemove={onIssueRemove}
                         onIssueAdd={onIssueAdd}
                         onIssueReorder={onIssueReorder}
+                        selectedCustomFields={selectedCustomFields}
                     />
                 }
             </div>

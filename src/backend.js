@@ -33,15 +33,41 @@ languages.set("tr", Turkish)
 languages.set("uk", Ukrainian)
 languages.set("zh", Chinese)
 
+// eslint-disable-next-line no-undef,@typescript-eslint/no-unsafe-member-access
 exports.httpHandler = {
     endpoints: [
         {
             method: 'GET',
             path: 'translate',
             handle: (ctx) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
                 const lang = ctx.request.getParameter('lang')
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
                 ctx.response.json({translation: languages.get(lang)});
+
             }
         },
+        {
+            method: 'POST',
+            path: 'test1',
+            handle: (ctx) => {
+                ctx.globalStorage.extensionProperties.selectedCustomFields = 'test1';
+                const result = ctx.globalStorage.extensionProperties.selectedCustomFields
+                ctx.response.json({
+                    context: ctx,
+                    test: "test",
+                    result: result
+                })
+            }
+        },
+        {
+            method: 'GET',
+            path: 'test2',
+            handle: (ctx) => {
+                const t = ctx.globalStorage.extensionProperties.selectedCustomFields
+                ctx.response.json(t)
+            }
+        }
     ]
 };
+

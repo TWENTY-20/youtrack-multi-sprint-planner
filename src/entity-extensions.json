@@ -1,0 +1,12 @@
+{
+  "entityTypeExtensions": [
+    {
+      "entityType": "AppGlobalStorage",
+      "properties": {
+        "selectedCustomFields": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

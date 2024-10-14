@@ -1,0 +1,95 @@
+
+.yt-issues-settings__dropdown {
+    display: flex;
+    flex-direction: column;
+    max-height: 50vh;
+    min-width: 300px;
+    max-width: 40vw;
+}
+
+.yt-box {
+    padding: calc(2 * var(--ring-unit));
+}
+
+.yt-dropdown-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(var(--ring-content-background-color), var(--ring-content-background-color)) 0 100%, radial-gradient(var(--ring-line-color), var(--ring-line-color)) 0 100%;
+    background-repeat: no-repeat;
+    background-color: var(--ring-content-background-color);
+    background-size: 100% 2px, 100% 1px;
+    background-attachment: local, scroll;
+}
+
+.yt-icon-action {
+    color: var(--ring-link-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.yt-compensate-top-1 {
+    position: relative;
+    top: -1px;
+}
+
+.yt-icon {
+    display: inline-flex;
+    vertical-align: -0.1875em;
+    fill: currentColor;
+}
+
+.inner-popup {
+    min-width: 240px;
+    overscroll-behavior: contain;
+    z-index: var(--ring-overlay-z-index);
+    overflow-y: auto;
+    box-sizing: border-box;
+    border: 1px solid var(--ring-popup-border-color);
+    border-radius: var(--ring-border-radius);
+    background-color: var(--ring-popup-background-color);
+    box-shadow: var(--ring-popup-shadow);
+}
+
+.filterWrapper {
+    position: relative;
+    display: flex;
+    margin: 0;
+    padding: 10px 8px 5px 8px;
+    border-bottom: 1px solid var(--ring-borders-color);
+}
+
+input.filterInput, input.filterInput:focus {
+    background-color: transparent;
+    border-color: transparent;
+    outline: none;
+
+    ::placeholder {
+        color: var(--ring-icon-color);
+    }
+}
+
+.itemButton {
+    text-align: left;
+    outline: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 8px 16px 8px 16px !important;
+    transition: none !important;
+    border-radius: unset !important;
+    box-shadow: none !important;
+    margin-bottom: 0.25rem !important;
+    margin-top: 0.2rem !important;
+    display: flex !important;
+    align-items: center !important;
+
+}
+
+.itemButton:hover {
+    background-color: var(--ring-selected-background-color) !important;
+}
+.itemButtonIcon{
+    color: var(--ring-icon-color);
+}
+.itemButtonIcon:hover{
+    color: #d671b3;
+}

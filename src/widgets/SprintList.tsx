@@ -5,7 +5,7 @@ import { APIError, ExtendedAgile, Issue, Sprint } from "./types.ts";
 import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
 import { arrayMove } from "@dnd-kit/sortable";
 
-export default function SprintList({ agile, search }: { agile: ExtendedAgile, search: string }) {
+export default function SprintList({ agile, search, selectedCustomFields }: { agile: ExtendedAgile, search: string , selectedCustomFields: string[] }) {
     const [sprints, setSprints] = useState<Sprint[]>([]);
 
     const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
@@ -135,6 +135,7 @@ export default function SprintList({ agile, search }: { agile: ExtendedAgile, se
 
                             setIssues(await loadIssuesOfSprint(sprint), sprint);
                         }}
+                        selectedCustomFields={selectedCustomFields}
                     />)
             }
         </div>

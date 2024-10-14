@@ -1,3 +1,5 @@
+@import "customFieldsPopUp.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,3 +11,4 @@ body.app {
     font-size: var(--ring-font-size);
     height: 100%;
 }
+

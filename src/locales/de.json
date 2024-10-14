@@ -12,5 +12,7 @@
   "backlogNoPermission": "Sie haben keine Berechtigungen, um den Backlog zu nutzen!",
   "searchSprintPlaceholder": "Sprint mit Name suchen",
   "searchSprint": "Sprint suchen",
-  "clearInput": "Eingabe löschen"
+  "clearInput": "Eingabe löschen",
+  "visibleFields": "Sichtbare Felder",
+  "addField": "Feld hinzufügen"
 }

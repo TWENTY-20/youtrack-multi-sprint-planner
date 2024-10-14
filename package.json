@@ -15,6 +15,7 @@
     "@jetbrains/icons": "^4.4.0",
     "@jetbrains/ring-ui-built": "6.0.55",
     "@jetbrains/youtrack-scripting": "^0.2.1",
+    "@jetbrains/youtrack-scripting-api": "^2022.1.46592",
     "@rollup/plugin-replace": "^5.0.7",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
@@ -40,4 +41,3 @@
     "typescript": "^5.5.4"
   }
 }
-

@@ -28,14 +28,16 @@ function removeIssuePrefix(issue: Issue) {
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder
+        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields
     }: {
         id: string,
         originalIssues: Issue[],
         cardOnSeveralSprints?: boolean,
         onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
-        onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
+        onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>,
+        selectedCustomFields: string[]
+
     }) {
 
     const prefix = useMemo(() => id + prefixDivisionSign, [id]);
@@ -215,7 +217,7 @@ export default function IssueSortableList(
                         id={id}
                         strategy={verticalListSortingStrategy}
                     >
-                        {issues.map(issue => <DraggableIssueItem key={issue.id} issue={issue}/>)}
+                        {issues.map(issue => <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields} />)}
                     </SortableContext>
                     :
                     <EmptyDropzone id={id}/>

@@ -51,6 +51,9 @@ export interface Issue {
     loading?: boolean
     customFields?: CustomField[]
 }
+export interface CustomFieldWrapper{
+    field: CustomField
+}
 
 export interface CustomField{
     name: string,
