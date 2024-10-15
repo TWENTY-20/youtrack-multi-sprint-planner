@@ -16,7 +16,6 @@ export async function saveSelectedCustomFields(agileId: string, customFields: st
                     return agile[0]
                 else return 'no-id'
             })
-            console.log(ids)
             const index = ids.indexOf(agileId)
             if (index > -1) {
                 fields[index] = values
@@ -30,8 +29,6 @@ export async function saveSelectedCustomFields(agileId: string, customFields: st
         void host.fetchApp(`backend/saveCustomFields`, {
             method: 'POST',
             body: {customFields: fieldsString},
-        }).then(result => {
-            console.log(result);
         })
     })
 }
@@ -52,15 +49,11 @@ export async function getSelectedCustomFields(): Promise<string[][] | null> {
 export async function getSelectedCustomFieldsById(agileId: string): Promise<string[] | null> {
     return await getSelectedCustomFields().then(entries => {
         if (entries !== null) {
-            console.log(entries)
             const fields = entries.find(e => {
-                console.log("entry")
-                console.log(e)
                 if (e.length > 0)
                     return e[0] === agileId
                 else return false;
             })
-            console.log(fields);
 
             return fields?.slice(1) ?? null
         } else {
