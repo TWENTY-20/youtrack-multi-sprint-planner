@@ -14,5 +14,6 @@
   "searchSprint": "Search sprint",
   "clearInput": "Clear input",
   "visibleFields": "Visible Fields",
-  "addField": "Add field"
+  "addField": "Add field",
+  "noFieldsSelected": "No fields selected"
 }

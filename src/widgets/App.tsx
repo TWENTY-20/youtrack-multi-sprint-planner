@@ -53,11 +53,9 @@ export default function App() {
             return result;
         }).then(({defaultAgile}: { defaultAgile: ExtendedAgile }) => {
             setCurrentAgile(defaultAgile);
-            console.log(defaultAgile)
             setSprintFilter("");
         }).catch(() => {
             setCurrentAgile(null);
-            console.log("null")
 
         });
     }, []);

@@ -14,5 +14,6 @@
   "searchSprint": "Sprint suchen",
   "clearInput": "Eingabe löschen",
   "visibleFields": "Sichtbare Felder",
-  "addField": "Feld hinzufügen"
+  "addField": "Feld hinzufügen",
+  "noFieldsSelected": "Keine Felder ausgewählt"
 }

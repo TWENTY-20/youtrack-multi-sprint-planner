@@ -17,7 +17,6 @@ const IssueItem = forwardRef<HTMLDivElement, {
     const [customFields, setCustomFields] = useState<string[]>([])
 
     useEffect(() => {
-        console.log("issue")
         const fields = issue.customFields?.filter(f => {
             return selectedCustomFields.indexOf(f.name) > -1
         })

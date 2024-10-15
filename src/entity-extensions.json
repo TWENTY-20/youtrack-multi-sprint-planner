@@ -4,7 +4,8 @@
       "entityType": "AppGlobalStorage",
       "properties": {
         "selectedCustomFields": {
-          "type": "string"
+          "type": "string",
+          "multi": false
         }
       }
     }

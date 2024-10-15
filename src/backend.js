@@ -33,6 +33,41 @@ languages.set("tr", Turkish)
 languages.set("uk", Ukrainian)
 languages.set("zh", Chinese)
 
+
+function indexOfId(input, customFieldsString) {
+    if (input === null) return -1
+    const ids = input.map(i => {
+        const idd = readCustomFields(i)?.id
+        if (idd === undefined) {
+            return 'no-id';
+        }
+        return idd
+    })
+    const search = readCustomFields(customFieldsString)?.id
+    if (search === undefined) {
+        return -1
+    }
+    return ids.indexOf(search);
+}
+
+export function readCustomFields(input) {
+    const splitted = input.split('&', 2)
+    if (splitted.length !== 2) {
+        return null
+    }
+    try {
+        const fields = JSON.parse(splitted[1])
+        return {
+            id: splitted[0],
+            fields: fields
+        }
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
+
+
 // eslint-disable-next-line no-undef,@typescript-eslint/no-unsafe-member-access
 exports.httpHandler = {
     endpoints: [
@@ -46,28 +81,34 @@ exports.httpHandler = {
                 ctx.response.json({translation: languages.get(lang)});
 
             }
-        },
-        {
+        }, {
             method: 'POST',
-            path: 'test1',
-            handle: (ctx) => {
-                ctx.globalStorage.extensionProperties.selectedCustomFields = 'test1';
-                const result = ctx.globalStorage.extensionProperties.selectedCustomFields
-                ctx.response.json({
-                    context: ctx,
-                    test: "test",
-                    result: result
-                })
+            path: 'saveCustomFields',
+            handle: function handle(ctx) {
+                const body = JSON.parse(ctx.request.body)
+                ctx.globalStorage.extensionProperties.selectedCustomFields = body.customFields;
+                ctx.response.json({body: body});
+            }
+        }, {
+            method: 'GET',
+            path: 'getCustomFields',
+            handle: function handle(ctx) {
+                const fields = ctx.globalStorage.extensionProperties.selectedCustomFields;
+                if (fields === undefined) {
+                    ctx.response.json({result: null});
+                    return;
+                }
+                ctx.response.json({result: fields});
             }
         },
         {
             method: 'GET',
-            path: 'test2',
-            handle: (ctx) => {
-                const t = ctx.globalStorage.extensionProperties.selectedCustomFields
-                ctx.response.json(t)
+            path: 'test',
+            handle: function handle(ctx) {
+                ctx.response.json({result: "test"});
             }
         }
+
     ]
 };
 

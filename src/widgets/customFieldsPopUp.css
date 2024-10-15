@@ -2,7 +2,6 @@
 .yt-issues-settings__dropdown {
     display: flex;
     flex-direction: column;
-    max-height: 50vh;
     min-width: 300px;
     max-width: 40vw;
 }
@@ -12,8 +11,7 @@
 }
 
 .yt-dropdown-content {
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     background: linear-gradient(var(--ring-content-background-color), var(--ring-content-background-color)) 0 100%, radial-gradient(var(--ring-line-color), var(--ring-line-color)) 0 100%;
     background-repeat: no-repeat;
     background-color: var(--ring-content-background-color);
@@ -42,7 +40,7 @@
     min-width: 240px;
     overscroll-behavior: contain;
     z-index: var(--ring-overlay-z-index);
-    overflow-y: auto;
+    overflow: hidden;
     box-sizing: border-box;
     border: 1px solid var(--ring-popup-border-color);
     border-radius: var(--ring-border-radius);

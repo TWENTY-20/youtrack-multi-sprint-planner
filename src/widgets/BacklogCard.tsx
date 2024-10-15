@@ -39,7 +39,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
         loadIssuesPaginated(0)
             .then((issues) => {
                 if (!issues) return;
-                console.log(issues)
                 setIssues(issues);
             }).catch(() => {
             host.alert(t("loadIssuesError"), AlertType.ERROR);

@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
             targets: [
                 { src: "../../src/logo.svg", dest: ".." },
                 { src: "../../src/manifest.json", dest: ".." },
+                { src: "../../src/entity-extensions.json", dest: ".." },
                 { src: "../../src/settings.json", dest: ".." },
             ]
         })],

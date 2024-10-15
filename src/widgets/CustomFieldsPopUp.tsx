@@ -10,6 +10,7 @@ import {useTranslation} from "react-i18next";
 import {host} from "./youTrackApp.ts";
 import {CustomFieldWrapper, ExtendedAgile} from "./types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
+import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "./util.ts";
 
 export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelectedCustomFields}: {
     agile: ExtendedAgile
@@ -26,29 +27,37 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
     const [searchText, setSearchText] = useState("")
 
     useEffect(() => {
-        /*void host.fetchApp(`backend/test1`, {
-            method: 'POST',
-        }).then((i)=> {
-            console.log(i)
-        }).then(()=>{
-            void host.fetchApp(`backend/test2`, {}).then((i) => {
-                console.log(i)
+        void getSelectedCustomFieldsById(agile.id).then(storageFields => {
+            const projects: string[] = agile.projects.map(p => p.id)
+            projects.forEach((p) => {
+                let customFields: string[] = []
+                void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
+                    .then((fields: CustomFieldWrapper[]) => {
+                        const mapped = fields.map(f => f.field.name)
+                        const unique = [...new Set([...customFields, ...mapped])]
+                        customFields = unique
+                        const unselected = mergeUnselectedFields(storageFields, unique)
+                        setUnselectedCustomFields(unselected)
+                        setUnSearchedCustomFields(unselected)
+                        setSelectedCustomFields(removeOldFields(storageFields, unique)) // todo
+                    }).catch()
+            })
         })
-        })*/
-        const projects: string[] = agile.projects.map(p => p.id)
-        projects.forEach((p) => {
-            let customFields: string[] = []
-            void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
-                .then((fields: CustomFieldWrapper[]) => {
-                    const mapped = fields.map(f => f.field.name)
-                    const unique = [...new Set([...customFields, ...mapped])]
-                    customFields = unique
-                    //setUnselectedCustomFields(unique)
-                    //setUnSearchedCustomFields(unique)
-                    setSelectedCustomFields(unique) // todo
-                }).catch()
+    }, [agile]);
+
+    const removeOldFields = (storageFields: string[] | null, apiFields: string[]): string[] => {
+        if (storageFields === null) return []
+        return storageFields.filter(f => {
+            return apiFields.indexOf(f) > -1
         })
-    }, []);
+    }
+
+    const mergeUnselectedFields = (storageFields: string[] | null, apiFields: string[]) => {
+        const selectedFields = removeOldFields(storageFields, apiFields)
+        return apiFields.filter(f => {
+            return selectedFields.indexOf(f) === -1
+        })
+    }
 
     const onSearchTextChanged = (text: string) => {
         setSearchText(text)
@@ -67,10 +76,13 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
         const s = [...selectedCustomFields]
         s.push(item)
         setSelectedCustomFields(s)
+        void saveSelectedCustomFields(agile.id, s)
     }, [selectedCustomFields, unselectedCustomFields])
 
     const onUnselectItem = useCallback((item: string) => {
-        setSelectedCustomFields(removeItem(item, selectedCustomFields))
+        const selected = removeItem(item, selectedCustomFields)
+        setSelectedCustomFields(selected)
+        void saveSelectedCustomFields(agile.id, selected)
         const u = [...unselectedCustomFields]
         u.push(item)
         setUnselectedCustomFields(u)
@@ -107,18 +119,25 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
                     </div>
                     <div className={"yt-dropdown-content"}>
                         <div className={"flex flex-col pt-1 pb-2"} style={{overflow: "hidden"}}>
-                            {selectedCustomFields.map((f, index) =>
-                                <div className={"itemButton flex justify-between"} key={index}>
-                                    {f}
-                                    <ClickableLink className={"itemButtonIcon"} onClick={() => {
-                                        onUnselectItem(f)
-                                    }}>
-                                        <Icon glyph={Close}
-                                              style={{height: "14px", width: "14px"}}
-                                        />
-                                    </ClickableLink>
+                            {selectedCustomFields.length === 0 ? (
+                                <div className={"flex justify-center align-middle p-2"}>
+                                    <p style={{color: "var(--ring-secondary-color)"}}>{t('noFieldsSelected')}</p>
                                 </div>
-                            )}
+                            ) : (selectedCustomFields.map((f, index) =>
+                                    <div className={"itemButton flex justify-between"} key={index}>
+                                        {f}
+                                        <ClickableLink className={"itemButtonIcon"} onClick={() => {
+                                            onUnselectItem(f)
+                                        }}>
+                                            <Icon glyph={Close}
+                                                  style={{height: "14px", width: "14px"}}
+                                            />
+                                        </ClickableLink>
+                                    </div>
+                                )
+                            )
+                            }
+
 
                         </div>
                     </div>

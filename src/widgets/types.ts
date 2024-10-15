@@ -12,8 +12,12 @@ export interface Host {
 export interface Agile {
     id: string;
     name: string;
+    sprintsSettings: SprintsSettings
 }
-
+export interface SprintsSettings{
+    disableSprints: boolean;
+    cardOnSeveralSprints: boolean
+}
 export interface SavedQuery {
     id: string,
     name: string,
@@ -22,9 +26,6 @@ export interface SavedQuery {
 
 export interface ExtendedAgile extends Agile {
     projects: Pick<Project, "id">[],
-    sprintsSettings: {
-        cardOnSeveralSprints: boolean
-    }
     backlog?: SavedQuery
 }
 
