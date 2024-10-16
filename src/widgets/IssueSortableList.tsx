@@ -209,13 +209,10 @@ export default function IssueSortableList(
             })().catch(() => {
             });
             if (sprint !== undefined) {
-                console.log(sprint.id)
-                console.log(issues)
                 const currentSorting = removeIssuesPrefix(issues).map(issue => {
                     return issue.id
                 });
                 if (currentSorting.toString() !== lastSorting.toString()) {
-                    console.log('saved ' + sprint.id);
                     void saveIssueSorting(sprint.id, currentSorting)
                     setLastSorting(currentSorting)
                 }
