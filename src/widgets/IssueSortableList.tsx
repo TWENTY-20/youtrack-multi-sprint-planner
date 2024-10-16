@@ -22,8 +22,14 @@ function removePrefix(id: string) {
     return id.split(prefixDivisionSign)[1];
 }
 
-function removeIssuePrefix(issue: Issue) {
+function removeIssuePrefix(issue: Issue): Issue {
     return {...issue, id: removePrefix(issue.id)};
+}
+
+function removeIssuesPrefix(issues: Issue[]): Issue[] {
+    return issues.map(issue => {
+        return removeIssuePrefix(issue)
+    })
 }
 
 // if performance becomes a problem consider switching to virtualizing the list
@@ -48,12 +54,10 @@ export default function IssueSortableList(
     const [issues, setIssues] = useState<Issue[]>(prefixIssues(originalIssues, prefix));
 
     useEffect(() => {
-        setIssues(applySorting(issueSorting, prefixIssues(originalIssues, prefix)));
+        setIssues(prefixIssues(applySorting(issueSorting, originalIssues), prefix));
     }, [originalIssues, prefix, issueSorting]);
 
-    useEffect(() => {
-        console.log(issues)
-    }, [issues]);
+
     const [clonedIssues, setClonedIssues] = useState<Issue[] | null>(null);
     const [lastSorting, setLastSorting] = useState<string[]>([]);
 
@@ -205,10 +209,13 @@ export default function IssueSortableList(
             })().catch(() => {
             });
             if (sprint !== undefined) {
-                const currentSorting = issues.map(issue => {
+                console.log(sprint.id)
+                console.log(issues)
+                const currentSorting = removeIssuesPrefix(issues).map(issue => {
                     return issue.id
                 });
                 if (currentSorting.toString() !== lastSorting.toString()) {
+                    console.log('saved ' + sprint.id);
                     void saveIssueSorting(sprint.id, currentSorting)
                     setLastSorting(currentSorting)
                 }
@@ -240,7 +247,7 @@ export default function IssueSortableList(
         result.filter(i => {
             return i !== undefined
         })
-        return [...result, ...others]
+        return [...result, ...others].filter(i => i !== undefined)
     }
 
 
@@ -254,7 +261,6 @@ export default function IssueSortableList(
                         strategy={verticalListSortingStrategy}
                     >
                         {issues.map(issue =>
-                            issue !== undefined &&
                             <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields}/>
                         )}
                     </SortableContext>
