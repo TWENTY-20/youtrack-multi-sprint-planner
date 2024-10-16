@@ -86,7 +86,7 @@ exports.httpHandler = {
             path: 'saveCustomFields',
             handle: function handle(ctx) {
                 const body = JSON.parse(ctx.request.body)
-                ctx.globalStorage.extensionProperties.selectedCustomFields = body.customFields;
+                ctx.globalStorage.extensionProperties.selectedCustomFields = body.value;
                 ctx.response.json({body: body});
             }
         }, {
@@ -102,10 +102,23 @@ exports.httpHandler = {
             }
         },
         {
-            method: 'GET',
-            path: 'test',
+            method: 'POST',
+            path: 'saveIssueSorting',
             handle: function handle(ctx) {
-                ctx.response.json({result: "test"});
+                const body = JSON.parse(ctx.request.body)
+                ctx.globalStorage.extensionProperties.issueSorting = body.value;
+                ctx.response.json({body: body});
+            }
+        }, {
+            method: 'GET',
+            path: 'getIssueSorting',
+            handle: function handle(ctx) {
+                const sorting = ctx.globalStorage.extensionProperties.issueSorting;
+                if (sorting === undefined) {
+                    ctx.response.json({result: null});
+                    return;
+                }
+                ctx.response.json({result: sorting});
             }
         }
 

@@ -1,15 +1,16 @@
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor } from "@dnd-kit/core";
-import { useEffect, useMemo, useState } from "react";
-import { Issue } from "./types";
+import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor} from "@dnd-kit/core";
+import {useEffect, useMemo, useState} from "react";
+import {Issue, Sprint} from "./types";
 import DraggableIssueItem from "./DraggableIssueItem";
-import { useDraggedIssue } from "./DraggedIssueProvider";
+import {useDraggedIssue} from "./DraggedIssueProvider";
 import EmptyDropzone from "./EmptyDropzone";
+import {saveIssueSorting} from "./globalStorageAccess.ts";
 
 const prefixDivisionSign = "_";
 
-function prefixIssue(issue: Issue, prefix: string) {
-    return { ...issue, id: prefix + issue.id };
+function prefixIssue(issue: Issue, prefix: string): Issue {
+    return {...issue, id: prefix + issue.id};
 }
 
 function prefixIssues(issues: Issue[], prefix: string) {
@@ -22,13 +23,13 @@ function removePrefix(id: string) {
 }
 
 function removeIssuePrefix(issue: Issue) {
-    return { ...issue, id: removePrefix(issue.id) };
+    return {...issue, id: removePrefix(issue.id)};
 }
 
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields
+        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting
     }: {
         id: string,
         originalIssues: Issue[],
@@ -36,7 +37,9 @@ export default function IssueSortableList(
         onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
         onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>,
-        selectedCustomFields: string[]
+        selectedCustomFields: string[],
+        sprint?: Sprint,
+        issueSorting?: string[]
 
     }) {
 
@@ -45,15 +48,19 @@ export default function IssueSortableList(
     const [issues, setIssues] = useState<Issue[]>(prefixIssues(originalIssues, prefix));
 
     useEffect(() => {
-        setIssues(prefixIssues(originalIssues, prefix));
-    }, [originalIssues, prefix]);
+        setIssues(applySorting(issueSorting, prefixIssues(originalIssues, prefix)));
+    }, [originalIssues, prefix, issueSorting]);
 
+    useEffect(() => {
+        console.log(issues)
+    }, [issues]);
     const [clonedIssues, setClonedIssues] = useState<Issue[] | null>(null);
+    const [lastSorting, setLastSorting] = useState<string[]>([]);
 
-    const { draggedIssue, setDraggedIssue } = useDraggedIssue();
+    const {draggedIssue, setDraggedIssue} = useDraggedIssue();
 
     useDndMonitor({
-        onDragStart({ active }: DragStartEvent) {
+        onDragStart({active}: DragStartEvent) {
             const activeId = active.id;
             if (typeof activeId !== "string") return;
 
@@ -64,7 +71,7 @@ export default function IssueSortableList(
 
             setClonedIssues([...issues]);
         },
-        onDragOver({ active, over }: DragOverEvent) {
+        onDragOver({active, over}: DragOverEvent) {
             const overId = over?.id;
             const activeId = active.id;
 
@@ -107,7 +114,7 @@ export default function IssueSortableList(
                     ...issues.slice(newIndex, issues.length)
                 ]);
         },
-        onDragEnd({ active }: DragEndEvent) {
+        onDragEnd({active}: DragEndEvent) {
             if (draggedIssue)
                 draggedIssue.loading = true;
             (async () => {
@@ -197,6 +204,15 @@ export default function IssueSortableList(
                 setClonedIssues(null);
             })().catch(() => {
             });
+            if (sprint !== undefined) {
+                const currentSorting = issues.map(issue => {
+                    return issue.id
+                });
+                if (currentSorting.toString() !== lastSorting.toString()) {
+                    void saveIssueSorting(sprint.id, currentSorting)
+                    setLastSorting(currentSorting)
+                }
+            }
         },
         onDragCancel() {
             if (clonedIssues) {
@@ -208,6 +224,26 @@ export default function IssueSortableList(
         }
     });
 
+    function applySorting(sorting: string[] | undefined, issues: Issue[]): Issue[] {
+        if (sorting === undefined) return issues;
+        const others: Issue[] = []
+        const result: Issue[] = [];
+
+        issues.forEach(issue => {
+            const index = sorting.indexOf(issue.id)
+            if (index > -1) {
+                result[index] = issue
+            } else {
+                others.push(issue)
+            }
+        })
+        result.filter(i => {
+            return i !== undefined
+        })
+        return [...result, ...others]
+    }
+
+
     return (
         <div>
             {
@@ -217,7 +253,10 @@ export default function IssueSortableList(
                         id={id}
                         strategy={verticalListSortingStrategy}
                     >
-                        {issues.map(issue => <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields} />)}
+                        {issues.map(issue =>
+                            issue !== undefined &&
+                            <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields}/>
+                        )}
                     </SortableContext>
                     :
                     <EmptyDropzone id={id}/>

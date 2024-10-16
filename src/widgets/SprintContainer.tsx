@@ -10,6 +10,7 @@ import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/load
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
+import {getIssueSortingBySprintId} from "./globalStorageAccess.ts";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
@@ -50,7 +51,7 @@ export default function SprintContainer(
         height: 0
     });
     const [height, setHeight] = useState<string>(`${initialContentHeight.current}px`);
-
+    const [issueSorting, setIssueSorting] = useState<string[]>([])
     // Should happen only once when the sprint receives its issues
     useEffect(() => {
         if (defaultCollapsed !== undefined)
@@ -69,6 +70,11 @@ export default function SprintContainer(
     }, [collapsed, dimensions.height]);
 
     useEffect(() => {
+        void getIssueSortingBySprintId(sprint.id).then(sorting => {
+            if (sorting !== null) setIssueSorting(sorting);
+
+        })
+
         if (!contentRef.current) return;
         const observer = new ResizeObserver(([entry]) => {
             if (entry && entry.borderBoxSize) {
@@ -141,6 +147,8 @@ export default function SprintContainer(
                             onIssueAdd={onIssueAdd}
                             onIssueReorder={onIssueReorder}
                             selectedCustomFields={selectedCustomFields}
+                            sprint={sprint}
+                            issueSorting={issueSorting}
                         />
                     }
                 </div>

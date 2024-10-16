@@ -6,6 +6,10 @@
         "selectedCustomFields": {
           "type": "string",
           "multi": false
+        },
+        "issueSorting": {
+          "type": "string",
+          "multi": false
         }
       }
     }
