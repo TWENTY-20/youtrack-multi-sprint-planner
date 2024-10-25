@@ -11,6 +11,7 @@ import {host} from "./youTrackApp.ts";
 import {CustomFieldWrapper, ExtendedAgile} from "./types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "./globalStorageAccess.ts";
+import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts";
 
 export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelectedCustomFields}: {
     agile: ExtendedAgile
@@ -157,6 +158,7 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
                                 dontCloseOnAnchorClick={true}
                                 left={170}
                                 top={10}
+                                directions={[Directions.BOTTOM_LEFT]}
                             >
                                 <div className={"filterWrapper"}>
                                     <Icon glyph={Search}

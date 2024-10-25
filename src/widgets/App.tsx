@@ -77,7 +77,7 @@ export default function App() {
     }
 
     return (
-        <div className="flex flex-col space-y-4 h-full">
+        <div className="flex flex-col space-y-4 h-full" style={{height: '100rem'}}>
             <DndContext
                 collisionDetection={closestCenter}
                 sensors={sensors}
