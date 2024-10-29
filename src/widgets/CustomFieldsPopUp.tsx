@@ -30,8 +30,8 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
     useEffect(() => {
         void getSelectedCustomFieldsById(agile.id).then(storageFields => {
             const projects: string[] = agile.projects.map(p => p.id)
+            let customFields: string[] = []
             projects.forEach((p) => {
-                let customFields: string[] = []
                 void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
                     .then((fields: CustomFieldWrapper[]) => {
                         const mapped = fields.map(f => f.field.name)
