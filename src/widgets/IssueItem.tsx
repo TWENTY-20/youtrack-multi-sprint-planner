@@ -15,8 +15,17 @@ const IssueItem = forwardRef<HTMLDivElement, {
     (issue)
 
     const [customFields, setCustomFields] = useState<string[]>([])
+    const [assignee, setAssignee] = useState<string>("")
 
     useEffect(() => {
+
+        const a = issue.customFields?.find(f => f.name === "Assignee")?.value
+        if (a !== null && a !== undefined) {
+            if (!Array.isArray(a)) {
+                setAssignee(a.name)
+            }
+        }
+
         const fields = issue.customFields?.filter(f => {
             return selectedCustomFields.indexOf(f.name) > -1
         })
@@ -24,10 +33,19 @@ const IssueItem = forwardRef<HTMLDivElement, {
             return;
         }
         const cf: string[] = fields.map(f => {
-            if (f.value === null) return "?"
-            return f.value.name ?? "?"
+            if (Array.isArray(f.value)) {
+                if (f.value.length === 0) return "?"
+                return f.value.map(f => {
+                    return f.name
+                }).join(', ')
+            } else {
+                if (f.value === null) return "?"
+                return f.value.name ?? "?"
+            }
         })
         setCustomFields(cf)
+
+
     }, [issue.customFields, selectedCustomFields]);
 
 
@@ -68,7 +86,7 @@ const IssueItem = forwardRef<HTMLDivElement, {
                         <p
                             className="ml-auto text-[var(--ring-secondary-color)] truncate"
                         >
-                            {issue.customFields?.find(f => f.name === "Assignee")?.value?.name}
+                            {assignee}
                         </p>
                     </div>
 

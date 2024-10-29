@@ -1,7 +1,7 @@
-import { RequestParams } from "@jetbrains/ring-ui-built/components/http/http";
-import { ReactNode } from "react";
-import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
-import { AlertItem } from "@jetbrains/ring-ui-built/components/alert-service/alert-service";
+import {RequestParams} from "@jetbrains/ring-ui-built/components/http/http";
+import {ReactNode} from "react";
+import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
+import {AlertItem} from "@jetbrains/ring-ui-built/components/alert-service/alert-service";
 
 export interface Host {
     alert: (message: ReactNode, type?: AlertType, timeout?: number, options?: Partial<AlertItem>) => void;
@@ -14,10 +14,12 @@ export interface Agile {
     name: string;
     sprintsSettings: SprintsSettings
 }
-export interface SprintsSettings{
+
+export interface SprintsSettings {
     disableSprints: boolean;
     cardOnSeveralSprints: boolean
 }
+
 export interface SavedQuery {
     id: string,
     name: string,
@@ -52,13 +54,14 @@ export interface Issue {
     loading?: boolean
     customFields?: CustomField[]
 }
-export interface CustomFieldWrapper{
+
+export interface CustomFieldWrapper {
     field: CustomField
 }
 
-export interface CustomField{
+export interface CustomField {
     name: string,
-    value: CustomFieldValue
+    value: CustomFieldValue | CustomFieldValue[]
 }
 
 export interface CustomFieldValue {
