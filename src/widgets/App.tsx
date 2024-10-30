@@ -15,7 +15,6 @@ import {KeyboardSensor} from "./sensor/KeyboardSensor.ts";
 import SprintSearch from "./SprintSearch.tsx";
 import CustomFieldsPopUp from "./CustomFieldsPopUp.tsx";
 
-
 export default function App() {
     const {t} = useTranslation();
     const [currentAgile, setCurrentAgile] = useState<ExtendedAgile | null>(null);
@@ -23,6 +22,7 @@ export default function App() {
     const {draggedIssue} = useDraggedIssue();
     const [isLoading, setLoading] = useState(true);
     const [selectedCustomFields, setSelectedCustomFields] = useState<string[]>([])
+
 
     useEffect(() => {
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints),backlog(id,name,query))`)
@@ -69,12 +69,14 @@ export default function App() {
         useSensor(KeyboardSensor)
     );
 
+
     if (isLoading) return <LoaderScreen message={t("loading")}/>;
 
     if (!currentAgile) {
         host.alert(t("loadAgileError"), AlertType.ERROR);
         return <></>;
     }
+
 
     return (
         <div className="flex flex-col space-y-4 h-full" style={{height: '100rem'}}>

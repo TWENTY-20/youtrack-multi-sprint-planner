@@ -100,6 +100,7 @@ export default function SprintContainer(
     return (
         <Island className="relative">
             <Header
+                className={"disable-float"}
                 border
                 aria-controls={`collapse-sprint-${sprint.id}`}
                 aria-expanded={!collapsed}
@@ -117,20 +118,23 @@ export default function SprintContainer(
                 }}
             >
                 <div className="flex flex-col">
-                    <span>
-                    <span className="-ml-4 mr-4">
-                        {
-                            loading ? <LoaderInline className="!align-middle"/>
-                                : collapsed ? <IconSVG src={ChevronDownIcon}/>
-                                    : <IconSVG src={ChevronUpIcon}/>
-                        }
-                    </span>
-                    <span className="text-xl font-normal">{sprint.name}</span>
-                        {sprint.start !== undefined && sprint.finish !== undefined &&
-                            <span
-                                className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
-                        }
-                    </span>
+                    <div className={"flex flex-row w-full"}>
+                        <span className="-ml-4 mr-4">
+                            {
+                                loading ? <LoaderInline className="!align-middle"/>
+                                    : collapsed ? <IconSVG src={ChevronDownIcon}/>
+                                        : <IconSVG src={ChevronUpIcon}/>
+                            }
+                        </span>
+                        <span className={"flex flex-row justify-between w-full"}>
+                            <span className="text-xl font-normal">{sprint.name}</span>
+                                {sprint.start !== undefined && sprint.finish !== undefined &&
+                                    <span
+                                        className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
+                                }
+
+                          </span>
+                    </div>
                     <div className="h-2"></div>
                 </div>
             </Header>

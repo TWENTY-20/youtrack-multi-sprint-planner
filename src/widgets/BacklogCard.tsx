@@ -12,6 +12,9 @@ import {ExtendedAgile, Issue, SavedQuery} from "./types";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import {arrayMove} from "@dnd-kit/sortable";
 import {useTranslation} from "react-i18next";
+import Input from "@jetbrains/ring-ui-built/components/input/input";
+import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
+import Search from "@jetbrains/icons/search";
 
 const TOP_ISSUE_AMOUNT = 40;
 
@@ -20,11 +23,19 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
 
     const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
     const [issues, setIssues] = useState<Issue[]>([]);
+    const [searchedIssues, setSearchedIssues] = useState<Issue[]>([])
     const [isLoading, setLoading] = useState(true);
     const [loadingMoreIssues, setLoadingMoreIssues] = useState(false);
     const [moreIssuesToLoad, setMoreIssuesToLoad] = useState(true);
+    const [searchText, setSearchText] = useState<string>("")
+
 
     const scrollContainer = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setSearchedIssues(applySearch(issues, searchText))
+    }, [issues, searchText]);
+
 
     const loadIssuesPaginated = useCallback(async (start: number) => {
         if (currentQuery == null) return;
@@ -35,6 +46,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
             });
     }, [currentQuery]);
     useEffect(() => {
+        console.log(searchText)
         setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
             .then((issues) => {
@@ -62,7 +74,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
             setLoadingMoreIssues(true);
             loadIssuesPaginated(issues.length).then((newIssues) => {
                 if (!newIssues) return;
-                setIssues((issues) => [...issues, ...newIssues]);
+                setIssues([...issues, ...newIssues]);
                 setLoadingMoreIssues(false);
             }).catch(() => {
             });
@@ -159,11 +171,33 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
         setIssues(newOrder);
     }
 
+    function applySearch(issues: Issue[], searchText: string) {
+        const searchable = issues.map((i)=>{
+            return {
+                issue: i,
+                text: i.idReadable + i.summary
+            }
+        })
+        return searchable.filter((i) => i.text.toLowerCase().includes(searchText.toLowerCase())).map(i => i.issue);
+    }
+
+    const onSearchChanged = useCallback((text: string) => {
+        setSearchText(text);
+        console.log(searchText)
+    }, [searchText])
+
+
+
     return (
         <Island className="w-full h-full">
-            <Header border>
+            <Header border className={"disable-float"}>
                 <div className="font-normal">
-                    <h2 className="text-2xl mb-3">{t("backlog")}</h2>
+                    <div className={"flex flex-row justify-between"}>
+                        <h2 className="text-2xl mb-3">{t("backlog")}</h2>
+                        <Input className={"no-padding"} height={ControlsHeight.L} onChange={(i) => onSearchChanged(i.target.value)} value={searchText} icon={Search}
+                               placeholder={t('searchInBacklog')}></Input>
+
+                    </div>
                     {currentQuery &&
                         <>
                             <span className="mr-1">{t("savedSearch")}:</span>
@@ -204,7 +238,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                     !isLoading && currentQuery &&
                     <IssueSortableList
                         id="backlog"
-                        originalIssues={issues}
+                        originalIssues={searchedIssues}
                         onIssueRemove={onIssueRemove}
                         onIssueAdd={onIssueAdd}
                         onIssueReorder={onIssueReorder}

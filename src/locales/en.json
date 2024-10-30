@@ -15,5 +15,6 @@
   "clearInput": "Clear input",
   "visibleFields": "Visible Fields",
   "addField": "Add field",
-  "noFieldsSelected": "No fields selected"
+  "noFieldsSelected": "No fields selected",
+  "searchInBacklog": "Search the backlog"
 }

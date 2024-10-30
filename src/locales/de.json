@@ -15,5 +15,6 @@
   "clearInput": "Eingabe löschen",
   "visibleFields": "Sichtbare Felder",
   "addField": "Feld hinzufügen",
-  "noFieldsSelected": "Keine Felder ausgewählt"
+  "noFieldsSelected": "Keine Felder ausgewählt",
+  "searchInBacklog": "Durchsuche den Backlog"
 }

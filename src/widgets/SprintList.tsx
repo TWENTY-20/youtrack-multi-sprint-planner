@@ -22,7 +22,7 @@ export default function SprintList({ agile, search, selectedCustomFields }: { ag
             const index = sprints.findIndex(s => s.id === sprint.id);
             sprints[index] = {
                 ...sprint,
-                issues: newIssues
+                issue: newIssues
             } as Sprint;
             return sprints.slice(0);
         });
@@ -44,7 +44,7 @@ export default function SprintList({ agile, search, selectedCustomFields }: { ag
 
             const promises = previewSprints.map(async (sprint) => {
                 const issues = await loadIssuesOfSprint(sprint);
-                return { ...sprint, issues: issues } as Sprint;
+                return { ...sprint, issue: issues } as Sprint;
             });
 
             const results = await Promise.allSettled(promises);

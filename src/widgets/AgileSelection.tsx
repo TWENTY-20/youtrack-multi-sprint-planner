@@ -43,11 +43,12 @@ export default function AgileSelection({defaultAgile, onSelect}: {
                     }
                     onSelect?.(item.model);
                 }}
+                height={ControlsHeight.L}
                 type={Type.CUSTOM}
                 selected={toSelectItem(defaultAgile)}
                 customAnchor={(props) => {
                     return (
-                        <div {...props.wrapperProps} className="sizeM_rui_e9c2">
+                        <div {...props.wrapperProps} className="">
                             <Button height={ControlsHeight.L} primary
                                     {...props.buttonProps}
                             >
