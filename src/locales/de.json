@@ -16,5 +16,21 @@
   "visibleFields": "Sichtbare Felder",
   "addField": "Feld hinzufügen",
   "noFieldsSelected": "Keine Felder ausgewählt",
-  "searchInBacklog": "Durchsuche den Backlog"
+  "searchInBacklog": "Durchsuche den Backlog",
+  "createNewScrumBoard": "Neues Scrum-Board erstellen",
+  "noBoardsAvailable": "Aktuell sind keine Scrum-Boards verfügbar.",
+  "noBoardsAvailable2": "Um Sprints planen zu können, erstelle ein neues Scrum-Board",
+  "hideFinishedSprints": "Beendete Sprints ausblenden",
+  "newSprint": "Neuen Sprint",
+  "sprintName": "Sprint Name",
+  "goal": "Ziel",
+  "schedule": "Zeitplan",
+  "cancel": "Abbrechen",
+  "createSprint": "Sprint erstellen",
+  "notScheduled": "Nicht geplant",
+  "addIssues1": "Hinzufügen ",
+  "addIssues2": " ungelöste Tickets aus Sprint: ",
+  "nameExits_error": "Der Sprintname existiert bereits!",
+  "error": "Etwas ist schief gelaufen"
+
 }

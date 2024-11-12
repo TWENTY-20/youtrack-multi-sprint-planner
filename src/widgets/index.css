@@ -12,10 +12,41 @@ body.app {
     height: 100%;
 }
 
-.no-padding{
+.no-padding {
     padding-left: 0 !important;
 }
 
-.disable-float h2{
+.disable-float h2 {
     float: none;
+}
+
+.forceCenter {
+    align-items: center !important;
+}
+
+.add-popup {
+    /*position: absolute;*/
+    top: 40% !important;
+    left: calc(50% - 300px) !important;
+    width: 600px !important;
+}
+
+.forceWidthAuto {
+    width: auto !important;
+}
+
+.forceTextareaHeight {
+    height: 64px !important;
+}
+
+.forceMargin {
+    margin-right: 8px !important
+}
+.yt-text{
+    font-size: var(--ring-font-size);
+    font-family: var(--ring-font-family);
+    color: var(--ring-text-color);
+}
+.pop-width{
+    width: 100px !important;
 }

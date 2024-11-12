@@ -105,7 +105,7 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
         <ClickableLink className="" onClick={() => setPopUpHidden(!popUpHidden)}>
             <Icon glyph={Settings}
                   className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"
-                  style={{paddingTop: "6px", paddingLeft: "15px"}}
+                  style={{paddingTop: "6px",}}
                   height={20}
                   width={20}
             />

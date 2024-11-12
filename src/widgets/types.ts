@@ -53,6 +53,7 @@ export interface Issue {
     isDraft?: boolean,
     loading?: boolean
     customFields?: CustomField[]
+    resolved?: number
 }
 
 export interface CustomFieldWrapper {

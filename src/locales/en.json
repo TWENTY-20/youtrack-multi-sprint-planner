@@ -16,5 +16,20 @@
   "visibleFields": "Visible Fields",
   "addField": "Add field",
   "noFieldsSelected": "No fields selected",
-  "searchInBacklog": "Search the backlog"
+  "searchInBacklog": "Search the backlog",
+  "createNewScrumBoard": "Create new scrum board",
+  "noBoardsAvailable": "Currently there are no scrum boards available.",
+  "noBoardsAvailable2": "To plan sprints, create a new scrum board.",
+  "hideFinishedSprints": "Hide finished Sprints",
+  "newSprint": "New Sprint",
+  "sprintName": "Sprint name",
+  "goal": "Goal",
+  "schedule": "Schedule",
+  "cancel": "Cancel",
+  "createSprint": "Create Sprint",
+  "notScheduled": "Not scheduled",
+  "addIssues1": "Add ",
+  "addIssues2": " unresolved issues from sprint: ",
+  "nameExits_error": "The sprint name already exists!",
+  "error": "Something went wrong"
 }

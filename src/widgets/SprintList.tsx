@@ -1,12 +1,22 @@
 import SprintContainer from "./SprintContainer.tsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { host } from "./youTrackApp.ts";
-import { APIError, ExtendedAgile, Issue, Sprint } from "./types.ts";
-import { AlertType } from "@jetbrains/ring-ui-built/components/alert/alert";
-import { arrayMove } from "@dnd-kit/sortable";
+import {useCallback, useEffect, useMemo} from "react";
+import {host} from "./youTrackApp.ts";
+import {APIError, ExtendedAgile, Issue, Sprint} from "./types.ts";
+import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
+import {arrayMove} from "@dnd-kit/sortable";
+import {sortSprints} from "./util.ts";
 
-export default function SprintList({ agile, search, selectedCustomFields }: { agile: ExtendedAgile, search: string , selectedCustomFields: string[] }) {
-    const [sprints, setSprints] = useState<Sprint[]>([]);
+export default function SprintList({agile, search, selectedCustomFields, hideFinishedSprints, sprints, setSprints, setIssues}:
+                                       {
+                                           agile: ExtendedAgile,
+                                           search: string,
+                                           selectedCustomFields: string[],
+                                           hideFinishedSprints: boolean
+                                           sprints: Sprint[]
+                                           setSprints: (sprints: Sprint[]) => void
+                                           setIssues: (issues: Issue[],sprint: Sprint) => void
+                                       }
+) {
 
     const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
 
@@ -15,26 +25,16 @@ export default function SprintList({ agile, search, selectedCustomFields }: { ag
             .then((issues: Issue[]) => {
                 return issues.filter(issue => !issue.isDraft);
             });
-    }, [agile.id]);
+    }, [agile.id, sprints]);
 
-    const setIssues = useCallback((newIssues: Issue[], sprint: Sprint) => {
-        setSprints((sprints) => {
-            const index = sprints.findIndex(s => s.id === sprint.id);
-            sprints[index] = {
-                ...sprint,
-                issue: newIssues
-            } as Sprint;
-            return sprints.slice(0);
-        });
-    }, []);
 
     useEffect(() => {
         setSprints([]);
         (async () => {
             const sprints = await host.fetchYouTrack(`agiles/${agile.id}/sprints?fields=id,name,archived,start,finish&$top=-1`)
                 .then((sprints: Sprint[]) => {
-                    const cleanedSprints = sprints.filter((sprint) => !sprint.archived);
-                    cleanedSprints.reverse()
+                    let cleanedSprints = sprints.filter((sprint) => !sprint.archived);
+                    cleanedSprints = cleanedSprints.sort(sortSprints)
                     setSprints(cleanedSprints);
                     return cleanedSprints;
                 });
@@ -44,7 +44,7 @@ export default function SprintList({ agile, search, selectedCustomFields }: { ag
 
             const promises = previewSprints.map(async (sprint) => {
                 const issues = await loadIssuesOfSprint(sprint);
-                return { ...sprint, issue: issues } as Sprint;
+                return {...sprint, issues: issues} as Sprint;
             });
 
             const results = await Promise.allSettled(promises);
@@ -117,11 +117,20 @@ export default function SprintList({ agile, search, selectedCustomFields }: { ag
         setIssues(issues, sprint);
     }
 
+    const isNotFinished = useCallback((sprint: Sprint): boolean => {
+        if (hideFinishedSprints) {
+            if (sprint.finish === null || sprint.finish === undefined) return true;
+            return sprint.finish >= Date.now() ;
+        }
+        return true
+    }, [hideFinishedSprints])
+
     return (
         <div className="flex flex-col space-y-8 h-full overflow-y-auto">
             {
-                sprints.map((sprint, index ) =>
-                    sprint.name.toLowerCase().includes(lowerCaseSearch) &&
+                sprints.map((sprint, index) =>
+
+                    sprint.name.toLowerCase().includes(lowerCaseSearch) && isNotFinished(sprint) &&
                     <SprintContainer
                         key={sprint.id}
                         sprint={sprint}

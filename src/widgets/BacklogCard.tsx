@@ -46,7 +46,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
             });
     }, [currentQuery]);
     useEffect(() => {
-        console.log(searchText)
         setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
             .then((issues) => {
@@ -183,7 +182,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
 
     const onSearchChanged = useCallback((text: string) => {
         setSearchText(text);
-        console.log(searchText)
     }, [searchText])
 
 
@@ -223,13 +221,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                     </div>
                 }
                 {
-                    !isLoading && !currentQuery &&
-                    <div className="flex mt-12 justify-center">
-                        <span className="text-base font-bold">{t("backlogNoPermission")}</span>
-                    </div>
-                }
-                {
-                    !isLoading && currentQuery && issues.length == 0 &&
+                    !isLoading && issues.length == 0 &&
                     <div className="flex mt-12 justify-center">
                         <span className="text-base font-bold">{t("backlogEmpty")}</span>
                     </div>

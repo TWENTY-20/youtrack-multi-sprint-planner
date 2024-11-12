@@ -1,6 +1,6 @@
-import i18next, { ResourceLanguage } from "i18next";
-import { initReactI18next } from "react-i18next";
-import YTApp, { host } from "./youTrackApp.ts";
+import i18next, {ResourceLanguage} from "i18next";
+import {initReactI18next} from "react-i18next";
+import YTApp, {host} from "./youTrackApp.ts";
 import English from "../locales/en.json";
 
 // console.log(await host.fetchApp("backend/translate", {}));
@@ -8,10 +8,9 @@ import English from "../locales/en.json";
 
 let translations;
 if (YTApp.locale !== "en") {
-    translations = await host.fetchApp(`backend/translate?lang${YTApp.locale}`, {}).then(({ translation }: {
-        translation: ResourceLanguage
-    }) => translation).catch(() => {
-    });
+    translations = await host.fetchApp(`backend/translate?lang=${YTApp.locale}`, {})
+        .then(({translation}: { translation: ResourceLanguage }) => translation).catch(() => {
+        });
 }
 
 await i18next

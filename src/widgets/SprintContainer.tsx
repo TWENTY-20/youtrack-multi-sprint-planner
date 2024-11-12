@@ -96,7 +96,6 @@ export default function SprintContainer(
         };
     }, [height, collapsed]);
 
-
     return (
         <Island className="relative">
             <Header
@@ -128,10 +127,11 @@ export default function SprintContainer(
                         </span>
                         <span className={"flex flex-row justify-between w-full"}>
                             <span className="text-xl font-normal">{sprint.name}</span>
-                                {sprint.start !== undefined && sprint.finish !== undefined &&
-                                    <span
-                                        className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
-                                }
+                            {sprint.start && sprint.finish ?
+                                <span className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
+                                :
+                                <span className="font-normal ml-5">{t('notScheduled')}</span>
+                            }
 
                           </span>
                     </div>
