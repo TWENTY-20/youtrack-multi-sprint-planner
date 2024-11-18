@@ -26,7 +26,7 @@ body.app {
 
 .add-popup {
     /*position: absolute;*/
-    top: 40% !important;
+    top: 12rem !important;
     left: calc(50% - 300px) !important;
     width: 600px !important;
 }

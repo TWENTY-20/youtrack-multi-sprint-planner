@@ -120,11 +120,11 @@ export default function App() {
                     </div>
                 }
                 {currentAgile ?
-                    <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 lg:overflow-y-hidden lg:h-full overflow-x-hidden">
-                        <div className="w-full lg:w-1/2">
+                    <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:overflow-y-hidden lg:h-full overflow-x-hidden">
+                        <div className="w-full lg:w-1/2 lg:pr-4">
                             <BacklogCard currentAgile={currentAgile} key={currentAgile.backlog?.id} selectedCustomFields={selectedCustomFields}/>
                         </div>
-                        <div className="w-full lg:w-1/2">
+                        <div className="w-full lg:w-1/2 lg:pl-4">
                             <SprintList sprints={sprints} setSprints={setSprints} setIssues={setIssues} agile={currentAgile} search={sprintFilter} selectedCustomFields={selectedCustomFields} hideFinishedSprints={hideFinished}/>
                         </div>
                     </div>

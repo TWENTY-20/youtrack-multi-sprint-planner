@@ -102,6 +102,7 @@ export default function CreateSprintPopUp({agile, sprints, setSprints}: { agile:
             onCloseAttempt={() => setPopUpHidden(true)}
             dontCloseOnAnchorClick={true}
             className={'add-popup'}
+            trapFocus={true}
         >
             <div className={"flex flex-col"} style={{padding: "32px"}}>
                 <h1 className={"pb-2"} style={{fontSize: '24px', fontWeight: 600}}> {t('newSprint')}</h1>
