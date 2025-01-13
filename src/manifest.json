@@ -3,7 +3,7 @@
   "name": "multi-sprint-planner",
   "title": "Multi Sprint Planner",
   "description": "Plan backlog items for multiple sprints",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "icon": "logo.svg",
   "iconDark": "logoDark.svg",
   "minYouTrackVersion": "2024.3.0",

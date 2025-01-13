@@ -16,7 +16,7 @@ import Input from "@jetbrains/ring-ui-built/components/input/input";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Search from "@jetbrains/icons/search";
 
-const TOP_ISSUE_AMOUNT = 40;
+const TOP_ISSUE_AMOUNT = 50;
 
 export default function BacklogCard({currentAgile, selectedCustomFields}: { currentAgile: ExtendedAgile, selectedCustomFields: string[] }) {
     const {t} = useTranslation();
@@ -39,12 +39,14 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
 
     const loadIssuesPaginated = useCallback(async (start: number) => {
         if (currentQuery == null) return;
+
         return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,customFields(name,value(name)),project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
             .then((issues: Issue[]) => {
                 if (issues.length < TOP_ISSUE_AMOUNT) setMoreIssuesToLoad(false);
                 return issues;
             });
     }, [currentQuery]);
+
     useEffect(() => {
         setMoreIssuesToLoad(true);
         loadIssuesPaginated(0)
