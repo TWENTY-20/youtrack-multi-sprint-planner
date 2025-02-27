@@ -21,7 +21,8 @@ export default function SprintSearch({ defaultSearch, onSearch }: {
                 onKeyDown={(event) => event.key === "Enter" && onSearch(value)}
             />
             <button
-                className="-ml-11 mr-2 text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"
+                className="mr-2 text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"
+                style={{marginLeft: "-3.75rem"}}
                 onClick={() => {
                     setValue("");
                     onSearch("");
