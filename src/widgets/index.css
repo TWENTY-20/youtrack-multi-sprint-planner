@@ -50,3 +50,7 @@ body.app {
 .pop-width{
     width: 100px !important;
 }
+
+.yt-issue-resolved {
+    text-decoration: line-through;
+}

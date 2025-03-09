@@ -72,7 +72,7 @@ const IssueItem = forwardRef<HTMLDivElement, {
                     <div className={"flex"}>
 
                         <ClickableLink
-                            className="mr-4 text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline"
+                            className={`mr-4 ${issue.resolved ? 'yt-issue-resolved' : ''} text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline`}
                             target="_blank" href={`/issue/${issue.idReadable}`}
                         >
                             {issue.idReadable}
