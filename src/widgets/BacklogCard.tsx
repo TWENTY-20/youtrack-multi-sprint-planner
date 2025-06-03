@@ -15,6 +15,7 @@ import {useTranslation} from "react-i18next";
 import Input from "@jetbrains/ring-ui-built/components/input/input";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Search from "@jetbrains/icons/search";
+import {updateSortOrder} from "./util.ts";
 
 const TOP_ISSUE_AMOUNT = 50;
 
@@ -102,19 +103,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
         setLoading(true);
     }
 
-    async function updateSortOrder(leadingId: string | null, movedId: string): Promise<void> {
-        await host.fetchYouTrack(`agiles/${currentAgile.id}/backlog/sortOrder`, {
-            method: "POST",
-            body: {
-                leading: !leadingId ? null : {
-                    id: leadingId
-                },
-                moved: {
-                    id: movedId
-                }
-            }
-        });
-    }
+
 
     function onIssueRemove(issue: Issue, oldIndex: number) {
         if (currentAgile.sprintsSettings.cardOnSeveralSprints) throw "Issue can be assigned to multiple sprints!";
@@ -132,7 +121,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
             if (issueIndex == newIndex || issueIndex == newIndex + 1) return;
 
             const leadingId = newIndex <= 0 ? null : issues[newIndex].id;
-            await updateSortOrder(leadingId, issue.id).catch(() => {
+            await updateSortOrder(leadingId, issue.id, currentAgile.id).catch(() => {
             });
 
             const newOrder = arrayMove(issues, issueIndex, newIndex);
@@ -147,7 +136,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
         //     .then(async (issue: Issue) => {
         const leadingId = newIndex <= 0 ? null : issues[newIndex == issues.length ? newIndex - 1 : newIndex].id;
 
-        await updateSortOrder(leadingId, issue.id);
+        await updateSortOrder(leadingId, issue.id, currentAgile.id);
 
         issue.loading = false;
 
@@ -164,7 +153,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
 
     async function onIssueReorder(issue: Issue, oldIndex: number, newIndex: number) {
         const leadingId = newIndex <= 0 ? null : issues[newIndex].id;
-        await updateSortOrder(leadingId, issue.id).catch(() => {
+        await updateSortOrder(leadingId, issue.id, currentAgile.id).catch(() => {
             host.alert(t("orderNotSavedError"), AlertType.WARNING);
             throw new Error("Could not reorder issues!");
         });

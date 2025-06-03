@@ -1,6 +1,6 @@
-import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor} from "@dnd-kit/core";
-import {useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {Issue, Sprint} from "./types";
 import DraggableIssueItem from "./DraggableIssueItem";
 import {useDraggedIssue} from "./DraggedIssueProvider";
@@ -35,7 +35,7 @@ function removeIssuesPrefix(issues: Issue[]): Issue[] {
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting
+        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting, onChangeSorting
     }: {
         id: string,
         originalIssues: Issue[],
@@ -46,6 +46,7 @@ export default function IssueSortableList(
         selectedCustomFields: string[],
         sprint?: Sprint,
         issueSorting?: string[]
+        onChangeSorting?: (newSorting: string[]) => void
 
     }) {
 
@@ -247,6 +248,18 @@ export default function IssueSortableList(
         return [...result, ...others].filter(i => i !== undefined)
     }
 
+    const onIssueTop = useCallback((issue: Issue) => {
+        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), issues.indexOf(issue), 0)
+        const newSorting = arrayMove(removeIssuesPrefix(issues), issues.indexOf(issue), 0).map(issue => issue.id)
+        if (onChangeSorting) onChangeSorting(newSorting)
+    }, [issues])
+
+    const onIssueBottom = useCallback((issue: Issue) => {
+        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), issues.indexOf(issue), issues.length - 1)
+        const newSorting = arrayMove(removeIssuesPrefix(issues), issues.indexOf(issue), issues.length - 1).map(issue => issue.id)
+        if (onChangeSorting) onChangeSorting(newSorting)
+    }, [issues])
+
 
     return (
         <div>
@@ -258,7 +271,7 @@ export default function IssueSortableList(
                         strategy={verticalListSortingStrategy}
                     >
                         {issues.map(issue =>
-                            <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields}/>
+                            <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields} onIssueBottom={onIssueBottom} onIssueTop={onIssueTop}/>
                         )}
                     </SortableContext>
                     :

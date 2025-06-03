@@ -10,7 +10,7 @@ import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/load
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
-import {getIssueSortingBySprintId} from "./globalStorageAccess.ts";
+import {getIssueSortingBySprintId, saveIssueSorting} from "./globalStorageAccess.ts";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
@@ -72,7 +72,6 @@ export default function SprintContainer(
     useEffect(() => {
         void getIssueSortingBySprintId(sprint.id).then(sorting => {
             if (sorting !== null) setIssueSorting(sorting);
-
         })
 
         if (!contentRef.current) return;
@@ -95,6 +94,11 @@ export default function SprintContainer(
             opacity: collapsed ? HIDDEN : VISIBLE
         };
     }, [height, collapsed]);
+
+    const onChangeSorting = (sorting: string[]) => {
+        setIssueSorting(sorting)
+        void saveIssueSorting(sprint.id, sorting)
+    }
 
     return (
         <Island className="relative">
@@ -149,10 +153,16 @@ export default function SprintContainer(
                             cardOnSeveralSprints={cardOnSeveralSprints}
                             onIssueRemove={onIssueRemove}
                             onIssueAdd={onIssueAdd}
-                            onIssueReorder={onIssueReorder}
+                            onIssueReorder={(a, b, c) => {
+                                if (onIssueReorder) {
+                                    onIssueReorder(a, b, c)
+
+                                }
+                            }}
                             selectedCustomFields={selectedCustomFields}
                             sprint={sprint}
                             issueSorting={issueSorting}
+                            onChangeSorting={onChangeSorting}
                         />
                     }
                 </div>

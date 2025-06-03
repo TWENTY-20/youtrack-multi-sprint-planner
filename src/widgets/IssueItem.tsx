@@ -3,6 +3,9 @@ import {Issue} from "./types";
 import {forwardRef, useEffect, useState} from "react";
 import {DraggableAttributes, DraggableSyntheticListeners} from "@dnd-kit/core";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
+import Icon from "@jetbrains/ring-ui-built/components/icon";
+import ArrowUp from "@jetbrains/icons/arrow-up";
+import ArrowDown from "@jetbrains/icons/arrow-down";
 
 const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,
@@ -11,11 +14,14 @@ const IssueItem = forwardRef<HTMLDivElement, {
     isDragging?: boolean,
     className?: string,
     selectedCustomFields: string[]
-}>(({issue, attributes, listeners, isDragging, className, selectedCustomFields}, ref) => {
+    onIssueTop?: (issue: Issue) => void
+    onIssueBottom?: (issue: Issue) => void
+}>(({issue, attributes, listeners, isDragging, className, selectedCustomFields, onIssueTop, onIssueBottom}, ref) => {
     (issue)
 
     const [customFields, setCustomFields] = useState<string[]>([])
     const [assignee, setAssignee] = useState<string>("")
+    const [hover, setHover] = useState(false)
 
     useEffect(() => {
 
@@ -67,12 +73,14 @@ const IssueItem = forwardRef<HTMLDivElement, {
                 ref={ref}
                 {...attributes}
                 {...listeners}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
             >
                 <div className="flex flex-col">
                     <div className={"flex"}>
 
                         <ClickableLink
-                            className={`mr-4 ${issue.resolved ? 'yt-issue-resolved': ''} text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline`}
+                            className={`mr-4 ${issue.resolved ? 'yt-issue-resolved' : ''} text-[var(--ring-secondary-color)] hover:text-[var(--ring-link-hover-color)] hover:outline-none hover:underline`}
                             target="_blank" href={`/issue/${issue.idReadable}`}
                         >
                             {issue.idReadable}
@@ -83,11 +91,27 @@ const IssueItem = forwardRef<HTMLDivElement, {
                                 :
                                 <span className="truncate">{issue.summary}</span>
                         }
-                        <p
-                            className="ml-auto text-[var(--ring-secondary-color)] truncate"
-                        >
+                        <p className="ml-auto text-[var(--ring-secondary-color)] truncate">
                             {assignee}
                         </p>
+                        {hover &&
+                            <div className={'ps-2'}>
+                                <ClickableLink onClick={() => {
+                                    if (onIssueTop) onIssueTop(issue)
+                                }}>
+                                    <Icon
+                                        glyph={ArrowUp}
+                                    />
+                                </ClickableLink>
+                                <ClickableLink onClick={() => {
+                                    if (onIssueBottom) onIssueBottom(issue)
+                                }}>
+                                    <Icon
+                                        glyph={ArrowDown}
+                                    />
+                                </ClickableLink>
+                            </div>
+                        }
                     </div>
 
                     <div className={"flex, flex-row pt-1 pl-2"}>

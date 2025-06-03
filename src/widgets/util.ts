@@ -33,4 +33,18 @@ async function fetchPaginated<T>(path: string): Promise<T[]> {
     return result
 }
 
-export {sortSprints, fetchPaginated}
+async function updateSortOrder(leadingId: string | null, movedId: string, agileId: string): Promise<void> {
+    await host.fetchYouTrack(`agiles/${agileId}/backlog/sortOrder`, {
+        method: "POST",
+        body: {
+            leading: !leadingId ? null : {
+                id: leadingId
+            },
+            moved: {
+                id: movedId
+            }
+        }
+    });
+}
+
+export {sortSprints, fetchPaginated, updateSortOrder}

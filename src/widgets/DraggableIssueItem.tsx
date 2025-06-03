@@ -2,7 +2,15 @@ import {useSortable} from "@dnd-kit/sortable";
 import {Issue} from "./types";
 import IssueItem from "./IssueItem";
 
-export default function DraggableIssueItem({issue, selectedCustomFields}: { issue: Issue, selectedCustomFields: string[] }) {
+export default function DraggableIssueItem(
+    {issue, selectedCustomFields, onIssueTop, onIssueBottom}:
+    {
+        issue: Issue,
+        selectedCustomFields: string[]
+        onIssueTop: (issue: Issue ) => void
+        onIssueBottom: (issue: Issue) => void
+
+    }) {
     const {
         attributes,
         listeners,
@@ -18,6 +26,8 @@ export default function DraggableIssueItem({issue, selectedCustomFields}: { issu
             listeners={listeners}
             isDragging={isDragging}
             selectedCustomFields={selectedCustomFields}
+            onIssueTop={onIssueTop}
+            onIssueBottom={onIssueBottom}
         />
     );
 }
