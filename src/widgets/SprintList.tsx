@@ -21,7 +21,7 @@ export default function SprintList({agile, search, selectedCustomFields, hideFin
     const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
 
     const loadIssuesOfSprint = useCallback(async (sprint: Sprint) => {
-        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,customFields(name,value(name)),project(id,name),isDraft&$top=-1`)
+        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,resolved,customFields(name,value(name)),project(id,name),isDraft&$top=-1`)
             .then((issues: Issue[]) => {
                 return issues.filter(issue => !issue.isDraft);
             });
