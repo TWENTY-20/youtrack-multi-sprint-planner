@@ -120,8 +120,26 @@ exports.httpHandler = {
                 }
                 ctx.response.json({result: sorting});
             }
+        }, {
+            method: 'POST',
+            path: 'saveHideFinished',
+            handle: function handle(ctx) {
+                const body = JSON.parse(ctx.request.body)
+                ctx.globalStorage.extensionProperties.hideFinished = body.value;
+                ctx.response.json({ body: body });
+            }
+        }, {
+            method: 'GET',
+            path: 'getHideFinished',
+            handle: function handle(ctx) {
+                const hideFinished = ctx.globalStorage.extensionProperties.hideFinished;
+                if (hideFinished === undefined) {
+                    ctx.response.json({ result: null });
+                    return;
+                }
+                ctx.response.json({ result: hideFinished });
+            }
         }
-
     ]
 };
 

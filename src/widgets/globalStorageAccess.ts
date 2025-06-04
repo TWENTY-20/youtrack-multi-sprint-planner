@@ -88,6 +88,21 @@ export async function getIssueSortingBySprintId(sprintId: string) {
     })
 }
 
+// Hide Finished Sprints
 
+export async function saveHideFinished(hideFinished: any) {
+    await host.fetchApp(`backend/saveHideFinished`, {
+        method: 'POST',
+        body: {value: hideFinished},
+    })
+}
+
+export async function getHideFinished() {
+    const res = await host.fetchApp(`backend/getHideFinished`, {
+        method: 'GET',
+    });
+
+    return res.result;
+}
 
 

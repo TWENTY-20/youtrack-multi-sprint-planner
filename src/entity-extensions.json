@@ -10,6 +10,10 @@
         "issueSorting": {
           "type": "string",
           "multi": false
+        },
+        "hideFinished": {
+          "type": "boolean",
+          "multi": false
         }
       }
     }
