@@ -150,6 +150,7 @@ export default function SprintContainer(
                         <IssueSortableList
                             id={sprint.id}
                             originalIssues={sprint.issues ?? []}
+                            unsearchedIssues={sprint.issues ?? []}
                             cardOnSeveralSprints={cardOnSeveralSprints}
                             onIssueRemove={onIssueRemove}
                             onIssueAdd={onIssueAdd}

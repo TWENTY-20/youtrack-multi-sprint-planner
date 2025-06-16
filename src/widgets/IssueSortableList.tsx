@@ -35,10 +35,11 @@ function removeIssuesPrefix(issues: Issue[]): Issue[] {
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting, onChangeSorting
+        originalIssues, unsearchedIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting, onChangeSorting
     }: {
         id: string,
         originalIssues: Issue[],
+        unsearchedIssues: Issue[],
         cardOnSeveralSprints?: boolean,
         onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
@@ -249,16 +250,26 @@ export default function IssueSortableList(
     }
 
     const onIssueTop = useCallback((issue: Issue) => {
-        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), issues.indexOf(issue), 0)
-        const newSorting = arrayMove(removeIssuesPrefix(issues), issues.indexOf(issue), 0).map(issue => issue.id)
-        if (onChangeSorting) onChangeSorting(newSorting)
-    }, [issues])
+        const index = unsearchedIssues.findIndex(i => i.idReadable === issue.idReadable)
+        console.log(index)
+        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), index, 0)
+
+        if (onChangeSorting) {
+            const newSorting = arrayMove(unsearchedIssues, index, 0).map(issue => issue.id)
+            onChangeSorting(newSorting)
+        }
+    }, [unsearchedIssues])
 
     const onIssueBottom = useCallback((issue: Issue) => {
-        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), issues.indexOf(issue), issues.length - 1)
-        const newSorting = arrayMove(removeIssuesPrefix(issues), issues.indexOf(issue), issues.length - 1).map(issue => issue.id)
-        if (onChangeSorting) onChangeSorting(newSorting)
-    }, [issues])
+        const index = unsearchedIssues.findIndex(i => i.idReadable === issue.idReadable)
+        console.log(index)
+        if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), index, unsearchedIssues.length - 1)
+
+        if (onChangeSorting) {
+            const newSorting = arrayMove(unsearchedIssues, index, unsearchedIssues.length - 1).map(issue => issue.id)
+            onChangeSorting(newSorting)
+        }
+    }, [unsearchedIssues])
 
 
     return (

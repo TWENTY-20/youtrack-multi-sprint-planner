@@ -152,6 +152,8 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
     }
 
     async function onIssueReorder(issue: Issue, oldIndex: number, newIndex: number) {
+         console.log(issue, oldIndex, newIndex)
+
         const leadingId = newIndex <= 0 ? null : issues[newIndex].id;
         await updateSortOrder(leadingId, issue.id, currentAgile.id).catch(() => {
             host.alert(t("orderNotSavedError"), AlertType.WARNING);
@@ -222,6 +224,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                     <IssueSortableList
                         id="backlog"
                         originalIssues={searchedIssues}
+                        unsearchedIssues={issues}
                         onIssueRemove={onIssueRemove}
                         onIssueAdd={onIssueAdd}
                         onIssueReorder={onIssueReorder}
