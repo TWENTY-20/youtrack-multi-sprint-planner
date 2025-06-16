@@ -20,7 +20,7 @@ export default function AgileSelection({defaultAgile, onSelect}: {
 
     function loadAgiles() {
         if (agiles != null) return;
-        host.fetchYouTrack(`agiles?fields=id,name,sprintsSettings(disableSprints)`).then((newAgiles: Agile[]) => {
+        host.fetchYouTrack(`agiles?fields=id,name,sprintsSettings(disableSprints)&$top=1000`).then((newAgiles: Agile[]) => {
             newAgiles = newAgiles.filter(a=> {
                 return !a.sprintsSettings.disableSprints
             })
