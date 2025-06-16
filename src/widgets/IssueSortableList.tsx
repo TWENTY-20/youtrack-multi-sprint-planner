@@ -251,7 +251,6 @@ export default function IssueSortableList(
 
     const onIssueTop = useCallback((issue: Issue) => {
         const index = unsearchedIssues.findIndex(i => i.idReadable === issue.idReadable)
-        console.log(index)
         if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), index, 0)
 
         if (onChangeSorting) {
@@ -262,7 +261,6 @@ export default function IssueSortableList(
 
     const onIssueBottom = useCallback((issue: Issue) => {
         const index = unsearchedIssues.findIndex(i => i.idReadable === issue.idReadable)
-        console.log(index)
         if (onIssueReorder) onIssueReorder(removeIssuePrefix(issue), index, unsearchedIssues.length - 1)
 
         if (onChangeSorting) {
