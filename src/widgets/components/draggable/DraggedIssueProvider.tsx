@@ -1,4 +1,4 @@
-import { Issue } from "./types";
+import { Issue } from "../../types.ts";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 // Used to save the currently dragged issue because dnd-kit looses the data sometimes somehow

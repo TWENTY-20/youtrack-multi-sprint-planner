@@ -1,4 +1,4 @@
-@import "customFieldsPopUp.css";
+@import "components/modal/customFieldsPopUp.css";
 
 @tailwind base;
 @tailwind components;

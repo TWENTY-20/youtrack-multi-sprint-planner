@@ -1,4 +1,4 @@
-import {host} from "./youTrackApp.ts";
+import {host} from "../youTrackApp.ts";
 
 interface GlobalStorageResponse {
     result: string

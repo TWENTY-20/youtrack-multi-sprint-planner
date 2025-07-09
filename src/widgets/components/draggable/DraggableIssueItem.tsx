@@ -1,6 +1,6 @@
 import {useSortable} from "@dnd-kit/sortable";
-import {Issue} from "./types";
-import IssueItem from "./IssueItem";
+import {Issue} from "../../types.ts";
+import IssueItem from "../issue/IssueItem.tsx";
 
 export default function DraggableIssueItem(
     {issue, selectedCustomFields, onIssueTop, onIssueBottom}:

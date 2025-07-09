@@ -1,16 +1,16 @@
 import Island, {Header} from "@jetbrains/ring-ui-built/components/island/island";
-import IssueSortableList from "./IssueSortableList";
-import {Issue, Sprint} from "./types";
+import IssueSortableList from "../issue/IssueSortableList.tsx";
+import {Issue, Sprint} from "../../types.ts";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {BASE_ANIMATION_DURATION} from "@jetbrains/ring-ui-built/components/collapse/consts";
-import {host} from "./youTrackApp.ts";
+import {host} from "../../youTrackApp.ts";
 import {useTranslation} from "react-i18next";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
-import {getIssueSortingBySprintId, saveIssueSorting} from "./globalStorageAccess.ts";
+import {getIssueSortingBySprintId, saveIssueSorting} from "../../util/globalStorageAccess.ts";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;

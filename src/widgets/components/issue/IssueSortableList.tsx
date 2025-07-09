@@ -1,11 +1,11 @@
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {DragEndEvent, DragOverEvent, DragStartEvent, useDndMonitor} from "@dnd-kit/core";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {Issue, Sprint} from "./types";
-import DraggableIssueItem from "./DraggableIssueItem";
-import {useDraggedIssue} from "./DraggedIssueProvider";
-import EmptyDropzone from "./EmptyDropzone";
-import {saveIssueSorting} from "./globalStorageAccess.ts";
+import {Issue, Sprint} from "../../types.ts";
+import DraggableIssueItem from "../draggable/DraggableIssueItem.tsx";
+import {useDraggedIssue} from "../draggable/DraggedIssueProvider.tsx";
+import EmptyDropzone from "../draggable/EmptyDropzone.tsx";
+import {saveIssueSorting} from "../../util/globalStorageAccess.ts";
 
 const prefixDivisionSign = "_";
 

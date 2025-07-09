@@ -1,5 +1,5 @@
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
-import {Issue} from "./types";
+import {Issue} from "../../types.ts";
 import {forwardRef, useEffect, useState} from "react";
 import {DraggableAttributes, DraggableSyntheticListeners} from "@dnd-kit/core";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";

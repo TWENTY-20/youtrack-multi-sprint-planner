@@ -1,21 +1,21 @@
 import {useCallback, useEffect, useState} from "react";
 import {host} from "./youTrackApp.ts";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
-import AgileSelection from "./AgileSelection";
-import BacklogCard from "./BacklogCard";
+import AgileSelection from "./components/AgileSelection.tsx";
+import BacklogCard from "./components/BacklogCard.tsx";
 import {closestCenter, DndContext, DragOverlay, useSensor, useSensors} from "@dnd-kit/core";
 import {Agile, ExtendedAgile, Issue, Sprint} from "./types";
-import IssueItem from "./IssueItem";
-import {useDraggedIssue} from "./DraggedIssueProvider";
-import SprintList from "./SprintList.tsx";
+import IssueItem from "./components/issue/IssueItem.tsx";
+import {useDraggedIssue} from "./components/draggable/DraggedIssueProvider.tsx";
+import SprintList from "./components/sprint/SprintList.tsx";
 import {useTranslation} from "react-i18next";
 import {PointerSensor} from "./sensor/PointerSensor.ts";
 import {KeyboardSensor} from "./sensor/KeyboardSensor.ts";
-import SprintSearch from "./SprintSearch.tsx";
-import CustomFieldsPopUp from "./CustomFieldsPopUp.tsx";
+import SprintSearch from "./components/sprint/SprintSearch.tsx";
+import CustomFieldsPopUp from "./components/modal/CustomFieldsPopUp.tsx";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import Checkbox from "@jetbrains/ring-ui-built/components/checkbox/checkbox";
-import CreateSprintPopUp from "./CreateSprintPopUp.tsx";
+import CreateSprintPopUp from "./components/modal/CreateSprintPopUp.tsx";
 
 export default function App() {
     const {t} = useTranslation();

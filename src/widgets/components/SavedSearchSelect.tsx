@@ -1,8 +1,8 @@
 import Select, { Type } from "@jetbrains/ring-ui-built/components/select/select";
 import { useState } from "react";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
-import { host } from "./youTrackApp.ts";
-import { SavedQuery } from "./types";
+import { host } from "../youTrackApp.ts";
+import { SavedQuery } from "../types.ts";
 import { useTranslation } from "react-i18next";
 
 export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSelect, className }: {

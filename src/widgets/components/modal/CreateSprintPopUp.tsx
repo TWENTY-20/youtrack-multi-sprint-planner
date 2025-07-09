@@ -7,9 +7,9 @@ import DatePicker from "@jetbrains/ring-ui-built/components/date-picker/date-pic
 import Checkbox from "@jetbrains/ring-ui-built/components/checkbox/checkbox";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import {DatePickerChange} from "@jetbrains/ring-ui-built/components/date-picker/consts";
-import {host} from "./youTrackApp.ts";
-import {APIError, ExtendedAgile, Sprint} from "./types.ts";
-import {fetchPaginated, sortSprints} from "./util.ts";
+import {host} from "../../youTrackApp.ts";
+import {APIError, ExtendedAgile, Sprint} from "../../types.ts";
+import {fetchPaginated, sortSprints} from "../../util/util.ts";
 import Select, {Type} from "@jetbrains/ring-ui-built/components/select/select";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 

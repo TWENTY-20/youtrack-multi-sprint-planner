@@ -1,5 +1,5 @@
-import {Sprint} from "./types.ts";
-import {host} from "./youTrackApp.ts";
+import {Sprint} from "../types.ts";
+import {host} from "../youTrackApp.ts";
 
 
 function sortSprints(a: Sprint, b: Sprint) {

@@ -1,10 +1,10 @@
 import SprintContainer from "./SprintContainer.tsx";
 import {useCallback, useEffect, useMemo} from "react";
-import {host} from "./youTrackApp.ts";
-import {APIError, ExtendedAgile, Issue, Sprint} from "./types.ts";
+import {host} from "../../youTrackApp.ts";
+import {APIError, ExtendedAgile, Issue, Sprint} from "../../types.ts";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import {arrayMove} from "@dnd-kit/sortable";
-import {sortSprints} from "./util.ts";
+import {sortSprints} from "../../util/util.ts";
 
 export default function SprintList({agile, search, selectedCustomFields, hideFinishedSprints, sprints, setSprints, setIssues}:
                                        {

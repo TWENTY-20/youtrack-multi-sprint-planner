@@ -7,10 +7,10 @@ import Close from "@jetbrains/icons/close";
 import Search from "@jetbrains/icons/search";
 import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {host} from "./youTrackApp.ts";
-import {CustomFieldWrapper, ExtendedAgile} from "./types.ts";
+import {host} from "../../youTrackApp.ts";
+import {CustomFieldWrapper, ExtendedAgile} from "../../types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
-import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "./globalStorageAccess.ts";
+import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "../../util/globalStorageAccess.ts";
 import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts";
 
 export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelectedCustomFields}: {

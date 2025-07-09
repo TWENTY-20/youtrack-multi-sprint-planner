@@ -4,8 +4,8 @@ import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/control
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
-import {host} from "./youTrackApp.ts";
-import {Agile} from "./types";
+import {host} from "../youTrackApp.ts";
+import {Agile} from "../types.ts";
 import {useTranslation} from "react-i18next";
 
 export default function AgileSelection({defaultAgile, onSelect}: {

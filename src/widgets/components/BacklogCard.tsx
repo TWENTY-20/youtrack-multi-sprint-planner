@@ -1,21 +1,21 @@
 import Island, {Header} from "@jetbrains/ring-ui-built/components/island/island";
-import SavedQueriesSelect from "./SavedSearchSelect";
+import SavedQueriesSelect from "./SavedSearchSelect.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {host} from "./youTrackApp.ts";
+import {host} from "../youTrackApp.ts";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
 
-import IssueSortableList from "./IssueSortableList";
-import {ExtendedAgile, Issue, SavedQuery} from "./types";
+import IssueSortableList from "./issue/IssueSortableList.tsx";
+import {ExtendedAgile, Issue, SavedQuery} from "../types.ts";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import {arrayMove} from "@dnd-kit/sortable";
 import {useTranslation} from "react-i18next";
 import Input from "@jetbrains/ring-ui-built/components/input/input";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Search from "@jetbrains/icons/search";
-import {updateSortOrder} from "./util.ts";
+import {updateSortOrder} from "../util/util.ts";
 
 const TOP_ISSUE_AMOUNT = 50;
 
