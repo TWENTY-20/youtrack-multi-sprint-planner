@@ -16,75 +16,22 @@ import Input from "@jetbrains/ring-ui-built/components/input/input";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Search from "@jetbrains/icons/search";
 import {updateSortOrder} from "../util/util.ts";
+import useBacklogIssues from "../util/useBacklogIssues.tsx";
 
-const TOP_ISSUE_AMOUNT = 50;
+//const TOP_ISSUE_AMOUNT = 50;
 
 export default function BacklogCard({currentAgile, selectedCustomFields}: { currentAgile: ExtendedAgile, selectedCustomFields: string[] }) {
     const {t} = useTranslation();
 
     const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
-    const [issues, setIssues] = useState<Issue[]>([]);
     const [searchedIssues, setSearchedIssues] = useState<Issue[]>([])
-    const [isLoading, setLoading] = useState(true);
-    const [loadingMoreIssues, setLoadingMoreIssues] = useState(false);
-    const [moreIssuesToLoad, setMoreIssuesToLoad] = useState(true);
     const [searchText, setSearchText] = useState<string>("")
-
-
     const scrollContainer = useRef<HTMLDivElement>(null);
+    const {issues, loading, setIssues} =  useBacklogIssues(currentQuery?.id)
 
     useEffect(() => {
         setSearchedIssues(applySearch(issues, searchText))
     }, [issues, searchText]);
-
-
-    const loadIssuesPaginated = useCallback(async (start: number) => {
-        if (currentQuery == null) return;
-
-        return await host.fetchYouTrack(`savedQueries/${currentQuery.id}/issues?fields=id,idReadable,summary,customFields(name,value(name)),project(id,name)&$skip=${start}&$top=${TOP_ISSUE_AMOUNT}`)
-            .then((issues: Issue[]) => {
-                if (issues.length < TOP_ISSUE_AMOUNT) setMoreIssuesToLoad(false);
-                return issues;
-            });
-    }, [currentQuery]);
-
-    useEffect(() => {
-        setMoreIssuesToLoad(true);
-        loadIssuesPaginated(0)
-            .then((issues) => {
-                if (!issues) return;
-                setIssues(issues);
-            }).catch(() => {
-            host.alert(t("loadIssuesError"), AlertType.ERROR);
-        }).finally(() => setLoading(false));
-    }, [loadIssuesPaginated, currentQuery, t]);
-
-    useEffect(() => {
-        const scrollable = scrollContainer.current;
-        if (!scrollable) return;
-        const handleScroll = () => {
-            // Users only have to scroll near the bottom
-            const offset = 16;
-            if (
-                scrollable.scrollHeight == 0
-                || scrollable.scrollHeight > scrollable.scrollTop + scrollable.clientHeight + offset
-                || isLoading
-                || loadingMoreIssues
-                || !moreIssuesToLoad
-            ) return;
-
-            setLoadingMoreIssues(true);
-            loadIssuesPaginated(issues.length).then((newIssues) => {
-                if (!newIssues) return;
-                setIssues([...issues, ...newIssues]);
-                setLoadingMoreIssues(false);
-            }).catch(() => {
-            });
-        };
-        scrollable.addEventListener("scroll", handleScroll);
-
-        return () => scrollable.removeEventListener("scroll", handleScroll);
-    }, [isLoading, issues.length, loadIssuesPaginated, loadingMoreIssues, moreIssuesToLoad]);
 
     const updateUserDefaultSavedQuery = useCallback((savedQuery: SavedQuery) => {
         host.fetchYouTrack(`agiles/${currentAgile.id}`, {
@@ -100,7 +47,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
     function onSavedQuerySelect(savedQuery: SavedQuery) {
         updateUserDefaultSavedQuery(savedQuery);
         setCurrentQuery(savedQuery);
-        setLoading(true);
     }
 
 
@@ -176,7 +122,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
     }, [searchText])
 
 
-
     return (
         <Island className="w-full h-full">
             <Header border className={"disable-float"}>
@@ -206,19 +151,19 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
             </Header>
             <div ref={scrollContainer} className="h-full bg-[var(--ring-sidebar-background-color)] p-2 overflow-y-auto">
                 {
-                    isLoading &&
+                    loading &&
                     <div className="flex mt-8 justify-center h-full text-lg font-bold">
                         <Loader message={t("loadingBacklog")}/>
                     </div>
                 }
                 {
-                    !isLoading && issues.length == 0 &&
+                    !loading && issues.length == 0 &&
                     <div className="flex mt-12 justify-center">
                         <span className="text-base font-bold">{t("backlogEmpty")}</span>
                     </div>
                 }
                 {
-                    !isLoading && currentQuery &&
+                    !loading && currentQuery &&
                     <IssueSortableList
                         id="backlog"
                         originalIssues={searchedIssues}
