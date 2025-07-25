@@ -111,7 +111,7 @@ export default function App() {
                 {currentAgile &&
                     <div className="flex justify-between">
                         <AgileSelection defaultAgile={currentAgile} onSelect={updateUserDefaultAgile}/>
-                        <div className={"flex flex-row space-x-4"}>
+                        <div className={"flex flex-row gap-x-4"}>
                             <Checkbox containerClassName={"forceCenter"} checked={hideFinished} onChange={() => setHideFinished(!hideFinished)} label={t('hideFinishedSprints')}></Checkbox>
                             <CreateSprintPopUp setSprints={setSprints} sprints={sprints} agile={currentAgile}/>
                             <SprintSearch key={sprintFilter} defaultSearch={sprintFilter} onSearch={setSprintFilter}/>

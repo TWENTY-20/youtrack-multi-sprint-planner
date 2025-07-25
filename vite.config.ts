@@ -1,9 +1,10 @@
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
-import { viteStaticCopy } from "vite-plugin-static-copy";
+import {viteStaticCopy} from "vite-plugin-static-copy";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({mode}) => {
     if (mode === "backend") {
         return {
             build: {
@@ -25,12 +26,12 @@ export default defineConfig(({ mode }) => {
 
     return {
         root: "src/widgets",
-        plugins: [react(), viteStaticCopy({
+        plugins: [react(), tailwindcss(), viteStaticCopy({
             targets: [
-                { src: "../../src/logo.png", dest: ".." },
-                { src: "../../src/manifest.json", dest: ".." },
-                { src: "../../src/entity-extensions.json", dest: ".." },
-                { src: "../../src/settings.json", dest: ".." },
+                {src: "../../src/logo.png", dest: ".."},
+                {src: "../../src/manifest.json", dest: ".."},
+                {src: "../../src/entity-extensions.json", dest: ".."},
+                {src: "../../src/settings.json", dest: ".."},
             ]
         })],
         build: {

@@ -1,20 +1,20 @@
 import searchIcon from "@jetbrains/icons/search";
 import closeIcon from "@jetbrains/icons/close";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import {useTranslation} from "react-i18next";
+import {useState} from "react";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 
-export default function SprintSearch({ defaultSearch, onSearch }: {
+export default function SprintSearch({defaultSearch, onSearch}: {
     defaultSearch: string,
     onSearch: (value: string) => void
 }) {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [value, setValue] = useState(defaultSearch);
 
     return (
-        <div className="flex">
+        <div className="flex search-border remove-input-focus">
             <input
-                className="sizeM_rui_1f0c heightM_rui_1f0c input_rui_1f0c !pl-2 !pr-12"
+                className=" !pl-2 !pr-12 "
                 placeholder={t("searchSprintPlaceholder")}
                 value={value}
                 onChange={(event) => setValue(event.currentTarget.value)}

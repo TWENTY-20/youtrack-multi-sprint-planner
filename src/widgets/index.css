@@ -1,8 +1,6 @@
-@import "components/modal/customFieldsPopUp.css";
+@import "tailwindcss";
+@import "./components/modal/customFieldsPopUp.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body.app {
     padding: 32px 32px;
@@ -53,4 +51,12 @@ body.app {
 
 .yt-issue-resolved {
     text-decoration: line-through;
+}
+
+.remove-input-focus input:focus {
+    outline: none !important;
+}
+.search-border{
+    border: 1px solid var(--ring-borders-color);
+    border-radius: var(--ring-border-radius);
 }
