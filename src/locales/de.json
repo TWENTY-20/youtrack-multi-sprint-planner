@@ -32,6 +32,7 @@
   "addIssues2": " ungelöste Tickets aus Sprint: ",
   "nameExits_error": "Der Sprintname existiert bereits!",
   "error": "Etwas ist schief gelaufen",
-  "tooltip_customFields": "Für die Auswahl von Feldern, muss der Nutzer die vollständigen Projektdaten einsehen dürfen."
+  "tooltip_customFields": "Für die Auswahl von Feldern, muss der Nutzer die vollständigen Projektdaten einsehen dürfen.",
+  "currentSprint": "Aktueller Sprint"
 
 }

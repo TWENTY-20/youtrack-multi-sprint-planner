@@ -11,6 +11,8 @@ import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
 import {getIssueSortingBySprintId, saveIssueSorting} from "../../util/globalStorageAccess.ts";
+import {isCurrentSprint} from "../../util/util.ts";
+import Tag from "@jetbrains/ring-ui-built/components/tag/tag";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
@@ -103,7 +105,7 @@ export default function SprintContainer(
     return (
         <Island className="relative">
             <Header
-                className={"disable-float"}
+                className={"disable-float line-height-header"}
                 border
                 aria-controls={`collapse-sprint-${sprint.id}`}
                 aria-expanded={!collapsed}
@@ -131,11 +133,16 @@ export default function SprintContainer(
                         </span>
                         <span className={"flex flex-row justify-between w-full"}>
                             <span className="text-xl font-normal">{sprint.name}</span>
-                            {sprint.start && sprint.finish ?
-                                <span className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
-                                :
-                                <span className="font-normal ml-5">{t('notScheduled')}</span>
-                            }
+                            <div className="flex flex-row items-center">
+                                {isCurrentSprint(sprint) &&
+                                    <Tag>{t('currentSprint')}</Tag>
+                                }
+                                {sprint.start && sprint.finish ?
+                                    <span className="font-normal ml-5">{formattedDate(sprint.start)}-{formattedDate(sprint.finish)} </span>
+                                    :
+                                    <span className="font-normal ml-5">{t('notScheduled')}</span>
+                                }
+                            </div>
 
                           </span>
                     </div>

@@ -17,6 +17,9 @@ body.app {
 .disable-float h2 {
     float: none;
 }
+.line-height-header{
+    line-height: normal !important;
+}
 
 .forceCenter {
     align-items: center !important;

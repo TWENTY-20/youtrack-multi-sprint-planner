@@ -6,6 +6,10 @@ function sortSprints(a: Sprint, b: Sprint) {
     if (a.start === undefined && b.start !== undefined) return 1
     if (a.start !== undefined && b.start === undefined) return -1
     if (a.start === undefined && b.start === undefined) return 0
+
+    if (isCurrentSprint(a) && !isCurrentSprint(b)) return -1
+    if (!isCurrentSprint(a) && isCurrentSprint(b)) return 1
+
     if (a.start! > b.start!) {
         return -1;
     }
@@ -47,4 +51,10 @@ async function updateSortOrder(leadingId: string | null, movedId: string, agileI
     });
 }
 
-export {sortSprints, fetchPaginated, updateSortOrder}
+function isCurrentSprint(sprint: Sprint): boolean {
+    const now = Date.now()
+    if (!sprint.start || !sprint.finish ) return false
+    return now > sprint.start && now < sprint.finish
+}
+
+export {sortSprints, fetchPaginated, updateSortOrder, isCurrentSprint}

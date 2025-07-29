@@ -32,6 +32,7 @@
   "addIssues2": " unresolved issues from sprint: ",
   "nameExits_error": "The sprint name already exists!",
   "error": "Something went wrong",
-  "tooltip_customFields": "To select fields, the user must be able to read the complete project data."
+  "tooltip_customFields": "To select fields, the user must be able to read the complete project data.",
+  "currentSprint": "Current Sprint"
 
 }
