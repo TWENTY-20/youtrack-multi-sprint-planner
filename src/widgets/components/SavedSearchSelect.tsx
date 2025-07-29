@@ -17,7 +17,7 @@ export default function SavedSearchSelect({ defaultSavedQuery, defaultText, onSe
 
     function loadSavedQueries() {
         if (savedQueries != null) return;
-        host.fetchYouTrack(`savedQueries?fields=id,name,query`).then((newSavedQueries: SavedQuery[]) => {
+        host.fetchYouTrack(`savedQueries?fields=id,name,query&$top=-1`).then((newSavedQueries: SavedQuery[]) => {
             setSavedQueries(newSavedQueries);
         }).catch(() => {
         });
