@@ -60,3 +60,10 @@ body.app {
     border: 1px solid var(--ring-borders-color);
     border-radius: var(--ring-border-radius);
 }
+.hoverIcon {
+    color: var(--ring-icon-color) !important;
+}
+
+.hoverIcon:hover {
+    color: #d671b3 !important;
+}

@@ -12,6 +12,8 @@ import {CustomFieldWrapper, ExtendedAgile} from "../../types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "../../util/globalStorageAccess.ts";
 import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts";
+import Tooltip from "@jetbrains/ring-ui-built/components/tooltip/tooltip";
+import Info from "@jetbrains/icons/info";
 
 export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelectedCustomFields}: {
     agile: ExtendedAgile
@@ -40,7 +42,7 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
                         const unselected = mergeUnselectedFields(storageFields, unique)
                         setUnselectedCustomFields(unselected)
                         setUnSearchedCustomFields(unselected)
-                        setSelectedCustomFields(removeOldFields(storageFields, unique)) // todo
+                        setSelectedCustomFields(removeOldFields(storageFields, unique))
                     }).catch()
             })
         })
@@ -115,8 +117,11 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
                 dontCloseOnAnchorClick={true}
             >
                 <div className={"yt-issues-settings__dropdown"}>
-                    <div className={"yt-box"}>
+                    <div className={"yt-box space-x-2"}>
                         <b>{t("visibleFields")}</b>
+                        <Tooltip title={t('tooltip_customFields')}>
+                            <Icon glyph={Info} className={'hoverIcon'}/>
+                        </Tooltip>
                     </div>
                     <div className={"yt-dropdown-content"}>
                         <div className={"flex flex-col pt-1 pb-2"} style={{overflow: "hidden"}}>
