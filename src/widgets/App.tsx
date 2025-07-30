@@ -16,6 +16,7 @@ import CustomFieldsPopUp from "./CustomFieldsPopUp.tsx";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import Checkbox from "@jetbrains/ring-ui-built/components/checkbox/checkbox";
 import CreateSprintPopUp from "./CreateSprintPopUp.tsx";
+import { useHideFinishedSprints } from "./useHideFinishedSprints.tsx";
 
 export default function App() {
     const {t} = useTranslation();
@@ -24,9 +25,8 @@ export default function App() {
     const {draggedIssue} = useDraggedIssue();
     const [isLoading, setLoading] = useState(true);
     const [selectedCustomFields, setSelectedCustomFields] = useState<string[]>([])
-    const [hideFinished, setHideFinished] = useState(true)
+    const [hideFinishedSprints, setHideFinishedSprints] = useHideFinishedSprints(true);
     const [sprints, setSprints] = useState<Sprint[]>([]);
-
 
     useEffect(() => {
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints,disableSprints),backlog(id,name,query))`)
@@ -112,7 +112,7 @@ export default function App() {
                     <div className="flex justify-between">
                         <AgileSelection defaultAgile={currentAgile} onSelect={updateUserDefaultAgile}/>
                         <div className={"flex flex-row space-x-4"}>
-                            <Checkbox containerClassName={"forceCenter"} checked={hideFinished} onChange={() => setHideFinished(!hideFinished)} label={t('hideFinishedSprints')}></Checkbox>
+                            <Checkbox containerClassName={"forceCenter"} checked={hideFinishedSprints} onChange={() => setHideFinishedSprints(!hideFinishedSprints)} label={t('hideFinishedSprints')}></Checkbox>
                             <CreateSprintPopUp setSprints={setSprints} sprints={sprints} agile={currentAgile}/>
                             <SprintSearch key={sprintFilter} defaultSearch={sprintFilter} onSearch={setSprintFilter}/>
                             <CustomFieldsPopUp agile={currentAgile} selectedCustomFields={selectedCustomFields} setSelectedCustomFields={setSelectedCustomFields}></CustomFieldsPopUp>
@@ -125,7 +125,7 @@ export default function App() {
                             <BacklogCard currentAgile={currentAgile} key={currentAgile.backlog?.id} selectedCustomFields={selectedCustomFields}/>
                         </div>
                         <div className="w-full lg:w-1/2 lg:pl-4">
-                            <SprintList sprints={sprints} setSprints={setSprints} setIssues={setIssues} agile={currentAgile} search={sprintFilter} selectedCustomFields={selectedCustomFields} hideFinishedSprints={hideFinished}/>
+                            <SprintList sprints={sprints} setSprints={setSprints} setIssues={setIssues} agile={currentAgile} search={sprintFilter} selectedCustomFields={selectedCustomFields} hideFinishedSprints={hideFinishedSprints}/>
                         </div>
                     </div>
                     :
@@ -145,4 +145,3 @@ export default function App() {
         </div>
     );
 }
-
