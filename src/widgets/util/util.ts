@@ -11,10 +11,10 @@ function sortSprints(a: Sprint, b: Sprint) {
     if (!isCurrentSprint(a) && isCurrentSprint(b)) return 1
 
     if (a.start! > b.start!) {
-        return -1;
+        return 1;
     }
     if (a.start! < b.start!) {
-        return 1;
+        return -1;
     }
     return 0;
 }
