@@ -33,6 +33,8 @@
   "nameExits_error": "Der Sprintname existiert bereits!",
   "error": "Etwas ist schief gelaufen",
   "tooltip_customFields": "Für die Auswahl von Feldern, muss der Nutzer die vollständigen Projektdaten einsehen dürfen.",
-  "currentSprint": "Aktueller Sprint"
+  "currentSprint": "Aktueller Sprint",
+  "noSavedSearch": "Es gibt noch keine gespeicherte Suche für dieses Board.",
+  "createHere": "Hier erstellen"
 
 }

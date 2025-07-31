@@ -33,6 +33,7 @@
   "nameExits_error": "The sprint name already exists!",
   "error": "Something went wrong",
   "tooltip_customFields": "To select fields, the user must be able to read the complete project data.",
-  "currentSprint": "Current Sprint"
-
+  "currentSprint": "Current Sprint",
+  "noSavedSearch": "There is no saved search for this board.",
+  "createHere": "Create here"
 }

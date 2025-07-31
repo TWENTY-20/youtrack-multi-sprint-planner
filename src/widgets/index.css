@@ -70,3 +70,11 @@ body.app {
 .hoverIcon:hover {
     color: #d671b3 !important;
 }
+.linkColor {
+    color: var(--ring-link-color) !important;
+}
+
+.linkColor:hover {
+    color: var(--ring-link-hover-color) !important;
+    text-decoration: underline;
+}

@@ -4,7 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {host} from "../youTrackApp.ts";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
 import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
-import Icon from "@jetbrains/ring-ui-built/components/icon";
+import Icon, {Color} from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
 
 import IssueSortableList from "./issue/IssueSortableList.tsx";
@@ -15,8 +15,10 @@ import {useTranslation} from "react-i18next";
 import Input from "@jetbrains/ring-ui-built/components/input/input";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Search from "@jetbrains/icons/search";
+import Warning from "@jetbrains/icons/warning";
 import {updateSortOrder} from "../util/util.ts";
 import useBacklogIssues from "../util/useBacklogIssues.tsx";
+import Text from "@jetbrains/ring-ui-built/components/text/text";
 
 //const TOP_ISSUE_AMOUNT = 50;
 
@@ -27,7 +29,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
     const [searchedIssues, setSearchedIssues] = useState<Issue[]>([])
     const [searchText, setSearchText] = useState<string>("")
     const scrollContainer = useRef<HTMLDivElement>(null);
-    const {issues, loading, setIssues} =  useBacklogIssues(currentQuery?.id)
+    const {issues, loading, setIssues} = useBacklogIssues(currentQuery?.id)
 
     useEffect(() => {
         setSearchedIssues(applySearch(issues, searchText))
@@ -48,7 +50,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
         updateUserDefaultSavedQuery(savedQuery);
         setCurrentQuery(savedQuery);
     }
-
 
 
     function onIssueRemove(issue: Issue, oldIndex: number) {
@@ -108,7 +109,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
     }
 
     function applySearch(issues: Issue[], searchText: string) {
-        const searchable = issues.map((i)=>{
+        const searchable = issues.map((i) => {
             return {
                 issue: i,
                 text: i.idReadable + i.summary
@@ -132,7 +133,7 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                                placeholder={t('searchInBacklog')}></Input>
 
                     </div>
-                    {currentQuery &&
+                    {currentQuery ?
                         <>
                             <span className="mr-1">{t("savedSearch")}:</span>
                             <SavedQueriesSelect
@@ -141,8 +142,15 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                                 className="mr-3.5"
                             />
                             <ClickableLink target="_blank" href={"/issues?q=" + encodeURIComponent(currentQuery.query)}>
-                                <Icon glyph={NewWindow}
-                                      className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"/>
+                                <Icon glyph={NewWindow} className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"/>
+                            </ClickableLink>
+                        </>
+                        :
+                        <>
+                            <Icon glyph={Warning} color={Color.RED} className={'mr-1'}/>
+                            <Text info className={'mr-1'}>{t('noSavedSearch')}</Text>
+                            <ClickableLink className={'linkColor'} target="_blank" href={`/agiles/${currentAgile.id}/current?backlog`}>
+                                {t('createHere')}
                             </ClickableLink>
                         </>
                     }
