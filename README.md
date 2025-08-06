@@ -1,4 +1,4 @@
-# <img src="/src/logo.svg" alt="" width="35" /> YouTrack Multi Sprint Planner
+# <img src="/src/logo.png" alt="" width="35" /> YouTrack Multi Sprint Planner
 
 Once installed into [JetBrains YouTrack](https://www.jetbrains.com/youtrack/), this App utilizes available extension
 points for sprint planning.
