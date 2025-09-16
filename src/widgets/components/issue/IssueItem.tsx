@@ -6,6 +6,7 @@ import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/load
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import ArrowUp from "@jetbrains/icons/arrow-up";
 import ArrowDown from "@jetbrains/icons/arrow-down";
+import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
 
 const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,
@@ -13,18 +14,18 @@ const IssueItem = forwardRef<HTMLDivElement, {
     listeners?: DraggableSyntheticListeners,
     isDragging?: boolean,
     className?: string,
-    selectedCustomFields: string[]
     onIssueTop?: (issue: Issue) => void
     onIssueBottom?: (issue: Issue) => void
-}>(({issue, attributes, listeners, isDragging, className, selectedCustomFields, onIssueTop, onIssueBottom}, ref) => {
+}>(({issue, attributes, listeners, isDragging, className, onIssueTop, onIssueBottom}, ref) => {
     (issue)
 
     const [customFields, setCustomFields] = useState<string[]>([])
     const [assignee, setAssignee] = useState<string>("")
     const [hover, setHover] = useState(false)
 
-    useEffect(() => {
+    const {selectedCustomFields} = useCustomFieldsContext()
 
+    useEffect(() => {
         const a = issue.customFields?.find(f => f.name === "Assignee")?.value
         if (a !== null && a !== undefined) {
             if (!Array.isArray(a)) {

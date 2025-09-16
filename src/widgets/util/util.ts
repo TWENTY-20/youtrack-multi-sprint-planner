@@ -1,4 +1,4 @@
-import {Sprint} from "../types.ts";
+import {CachedPermission, Sprint} from "../types.ts";
 import {host} from "../youTrackApp.ts";
 
 
@@ -57,4 +57,10 @@ function isCurrentSprint(sprint: Sprint): boolean {
     return now > sprint.start && now < sprint.finish
 }
 
-export {sortSprints, fetchPaginated, updateSortOrder, isCurrentSprint}
+async function checkPermissions(required: string[] = []): Promise<boolean> {
+    const permissions = await host.fetchYouTrack('permissions/cache?fields=permission(key)&$top=-1') as CachedPermission[]
+    const mapped = permissions.map(p => p.permission.key)
+    return required.every(p => mapped.includes(p))
+}
+
+export {sortSprints, fetchPaginated, updateSortOrder, isCurrentSprint, checkPermissions}

@@ -22,7 +22,7 @@ import Text from "@jetbrains/ring-ui-built/components/text/text";
 
 //const TOP_ISSUE_AMOUNT = 50;
 
-export default function BacklogCard({currentAgile, selectedCustomFields}: { currentAgile: ExtendedAgile, selectedCustomFields: string[] }) {
+export default function BacklogCard({currentAgile}: { currentAgile: ExtendedAgile }) {
     const {t} = useTranslation();
 
     const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(currentAgile.backlog ?? null);
@@ -179,7 +179,6 @@ export default function BacklogCard({currentAgile, selectedCustomFields}: { curr
                         onIssueRemove={onIssueRemove}
                         onIssueAdd={onIssueAdd}
                         onIssueReorder={onIssueReorder}
-                        selectedCustomFields={selectedCustomFields}
                     />
                 }
             </div>

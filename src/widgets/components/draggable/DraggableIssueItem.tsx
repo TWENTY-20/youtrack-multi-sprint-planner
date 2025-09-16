@@ -3,10 +3,9 @@ import {Issue} from "../../types.ts";
 import IssueItem from "../issue/IssueItem.tsx";
 
 export default function DraggableIssueItem(
-    {issue, selectedCustomFields, onIssueTop, onIssueBottom}:
+    {issue, onIssueTop, onIssueBottom}:
     {
         issue: Issue,
-        selectedCustomFields: string[]
         onIssueTop: (issue: Issue ) => void
         onIssueBottom: (issue: Issue) => void
 
@@ -25,7 +24,6 @@ export default function DraggableIssueItem(
             attributes={attributes}
             listeners={listeners}
             isDragging={isDragging}
-            selectedCustomFields={selectedCustomFields}
             onIssueTop={onIssueTop}
             onIssueBottom={onIssueBottom}
         />

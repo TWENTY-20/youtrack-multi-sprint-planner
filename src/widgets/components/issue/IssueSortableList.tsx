@@ -35,7 +35,7 @@ function removeIssuesPrefix(issues: Issue[]): Issue[] {
 // if performance becomes a problem consider switching to virtualizing the list
 export default function IssueSortableList(
     {
-        originalIssues, unsearchedIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder, selectedCustomFields, sprint, issueSorting, onChangeSorting
+        originalIssues, unsearchedIssues, id, cardOnSeveralSprints, onIssueRemove, onIssueAdd, onIssueReorder,  sprint, issueSorting, onChangeSorting
     }: {
         id: string,
         originalIssues: Issue[],
@@ -44,7 +44,6 @@ export default function IssueSortableList(
         onIssueRemove?: (issue: Issue, oldIndex: number) => void | Promise<void>
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
         onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>,
-        selectedCustomFields: string[],
         sprint?: Sprint,
         issueSorting?: string[]
         onChangeSorting?: (newSorting: string[]) => void
@@ -280,7 +279,7 @@ export default function IssueSortableList(
                         strategy={verticalListSortingStrategy}
                     >
                         {issues.map(issue =>
-                            <DraggableIssueItem key={issue.id} issue={issue} selectedCustomFields={selectedCustomFields} onIssueBottom={onIssueBottom} onIssueTop={onIssueTop}/>
+                            <DraggableIssueItem key={issue.id} issue={issue} onIssueBottom={onIssueBottom} onIssueTop={onIssueTop}/>
                         )}
                     </SortableContext>
                     :

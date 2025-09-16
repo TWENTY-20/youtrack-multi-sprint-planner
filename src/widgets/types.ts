@@ -77,3 +77,9 @@ export interface APIError {
     message: string,
     status: number
 }
+
+export interface CachedPermission {
+    permission: {
+        key: string
+    }
+}

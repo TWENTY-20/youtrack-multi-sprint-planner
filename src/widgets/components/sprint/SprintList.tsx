@@ -6,11 +6,10 @@ import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import {arrayMove} from "@dnd-kit/sortable";
 import {sortSprints} from "../../util/util.ts";
 
-export default function SprintList({agile, search, selectedCustomFields, hideFinishedSprints, sprints, setSprints, setIssues}:
+export default function SprintList({agile, search, hideFinishedSprints, sprints, setSprints, setIssues}:
                                        {
                                            agile: ExtendedAgile,
                                            search: string,
-                                           selectedCustomFields: string[],
                                            hideFinishedSprints: boolean
                                            sprints: Sprint[]
                                            setSprints: (sprints: Sprint[]) => void
@@ -144,7 +143,6 @@ export default function SprintList({agile, search, selectedCustomFields, hideFin
 
                             setIssues(await loadIssuesOfSprint(sprint), sprint);
                         }}
-                        selectedCustomFields={selectedCustomFields}
                     />)
             }
         </div>

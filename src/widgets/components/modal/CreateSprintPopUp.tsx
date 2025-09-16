@@ -64,7 +64,6 @@ export default function CreateSprintPopUp({agile, sprints, setSprints}: { agile:
             method: "POST",
             body: sprint
         }).then((sprint: Sprint) => {
-            console.log(sprint)
             const newSprints = [...sprints, sprint].sort((a, b) => sortSprints(a, b))
             setSprints(newSprints)
             return sprint

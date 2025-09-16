@@ -28,8 +28,7 @@ export default function SprintContainer(
         onIssueRemove,
         onIssueAdd,
         onIssueReorder,
-        onExpand,
-        selectedCustomFields
+        onExpand
     }: {
         sprint: Sprint,
         cardOnSeveralSprints: boolean,
@@ -38,7 +37,6 @@ export default function SprintContainer(
         onIssueAdd?: (issue: Issue, newIndex: number) => void | Promise<void>,
         onIssueReorder?: (issue: Issue, oldIndex: number, newIndex: number) => void | Promise<void>
         onExpand?: () => void | Promise<void>
-        selectedCustomFields: string[]
     }) {
 
     const {t} = useTranslation();
@@ -167,7 +165,6 @@ export default function SprintContainer(
 
                                 }
                             }}
-                            selectedCustomFields={selectedCustomFields}
                             sprint={sprint}
                             issueSorting={issueSorting}
                             onChangeSorting={onChangeSorting}

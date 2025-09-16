@@ -10,15 +10,14 @@ import {useTranslation} from "react-i18next";
 import {host} from "../../youTrackApp.ts";
 import {CustomFieldWrapper, ExtendedAgile} from "../../types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
-import {getSelectedCustomFieldsById, saveSelectedCustomFields} from "../../util/globalStorageAccess.ts";
+import {saveSelectedCustomFields} from "../../util/globalStorageAccess.ts";
 import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts";
 import Tooltip from "@jetbrains/ring-ui-built/components/tooltip/tooltip";
 import Info from "@jetbrains/icons/info";
+import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
 
-export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelectedCustomFields}: {
+export default function CustomFieldsPopUp({agile}: {
     agile: ExtendedAgile
-    selectedCustomFields: string[]
-    setSelectedCustomFields: (fields: string[]) => void
 }) {
     const {t} = useTranslation();
 
@@ -28,23 +27,21 @@ export default function CustomFieldsPopUp({agile, selectedCustomFields, setSelec
     const [popUpHidden, setPopUpHidden] = useState(true)
     const [innerPopUpHidden, setInnerPopUpHidden] = useState(true)
     const [searchText, setSearchText] = useState("")
+    const {selectedCustomFields, setSelectedCustomFields} = useCustomFieldsContext()
 
     useEffect(() => {
-        void getSelectedCustomFieldsById(agile.id).then(storageFields => {
-            const projects: string[] = agile.projects.map(p => p.id)
-            let customFields: string[] = []
-            projects.forEach((p) => {
-                void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
-                    .then((fields: CustomFieldWrapper[]) => {
-                        const mapped = fields.map(f => f.field.name)
-                        const unique = [...new Set([...customFields, ...mapped])]
-                        customFields = unique
-                        const unselected = mergeUnselectedFields(storageFields, unique)
-                        setUnselectedCustomFields(unselected)
-                        setUnSearchedCustomFields(unselected)
-                        setSelectedCustomFields(removeOldFields(storageFields, unique))
-                    }).catch()
-            })
+        const projects: string[] = agile.projects.map(p => p.id)
+        let customFields: string[] = []
+        projects.forEach((p) => {
+            void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
+                .then((fields: CustomFieldWrapper[]) => {
+                    const mapped = fields.map(f => f.field.name)
+                    const unique = [...new Set([...customFields, ...mapped])]
+                    customFields = unique
+                    const unselected = mergeUnselectedFields(selectedCustomFields, unique)
+                    setUnselectedCustomFields(unselected)
+                    setUnSearchedCustomFields(unselected)
+                }).catch()
         })
     }, [agile]);
 
