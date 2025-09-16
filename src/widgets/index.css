@@ -78,3 +78,8 @@ body.app {
     color: var(--ring-link-hover-color) !important;
     text-decoration: underline;
 }
+
+.ring-loader-screen-loaderScreen{
+    height: 100rem !important;
+    width: 100rem !important;
+}

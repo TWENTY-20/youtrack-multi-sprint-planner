@@ -16,6 +16,7 @@ import usePermissionCheck, {READ_PROJECT} from "../util/usePermissionCheck.tsx";
 import {useCustomFieldsContext} from "./context/CustomFieldsContext.tsx";
 import {useTranslation} from "react-i18next";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
+import useHideFinishedSprints from "../util/useHideFinishedSprints.tsx";
 
 export default function MainView() {
 
@@ -24,12 +25,12 @@ export default function MainView() {
     const [sprintFilter, setSprintFilter] = useState("");
     const {draggedIssue} = useDraggedIssue();
     const [isLoading, setLoading] = useState(true);
-    //const [selectedCustomFields, setSelectedCustomFields] = useState<string[]>([])
-    const [hideFinished, setHideFinished] = useState(true)
     const [sprints, setSprints] = useState<Sprint[]>([]);
 
     const {hasPermission, isLoading: permissionsLoading} = usePermissionCheck([READ_PROJECT])
     const {load: loadCustomFields, loading: loadingCustomFields} = useCustomFieldsContext()
+    const {hideFinishedSprints, setHideFinishedSprints, hideFinishedSprintsLoading} = useHideFinishedSprints(true)
+
 
     useEffect(() => {
         host.fetchYouTrack(`agileUserProfile?fields=defaultAgile(id,name,projects(id),sprintsSettings(cardOnSeveralSprints,disableSprints),backlog(id,name,query))`)
@@ -96,7 +97,7 @@ export default function MainView() {
         });
     }, []);
 
-    if (isLoading || permissionsLoading || loadingCustomFields) return <LoaderScreen message={t("loading")}/>;
+    if (isLoading || permissionsLoading || loadingCustomFields || hideFinishedSprintsLoading ) return <LoaderScreen message={t("loading")}/>;
 
 
     return (
@@ -105,7 +106,7 @@ export default function MainView() {
                 <div className="flex justify-between">
                     <AgileSelection defaultAgile={currentAgile} onSelect={updateUserDefaultAgile}/>
                     <div className={"flex flex-row gap-x-4"}>
-                        <Checkbox containerClassName={"forceCenter"} checked={hideFinished} onChange={() => setHideFinished(!hideFinished)} label={t('hideFinishedSprints')}></Checkbox>
+                        <Checkbox containerClassName={"forceCenter"} checked={hideFinishedSprints} onChange={() => setHideFinishedSprints(!hideFinishedSprints)} label={t('hideFinishedSprints')}/>
                         <CreateSprintPopUp setSprints={setSprints} sprints={sprints} agile={currentAgile}/>
                         <SprintSearch key={sprintFilter} defaultSearch={sprintFilter} onSearch={setSprintFilter}/>
                         {hasPermission &&
@@ -119,7 +120,7 @@ export default function MainView() {
                         <BacklogCard currentAgile={currentAgile} key={currentAgile.backlog?.id}/>
                     </div>
                     <div className="w-full lg:w-1/2 lg:pl-4">
-                        <SprintList sprints={sprints} setSprints={setSprints} setIssues={setIssues} agile={currentAgile} search={sprintFilter} hideFinishedSprints={hideFinished}/>
+                        <SprintList sprints={sprints} setSprints={setSprints} setIssues={setIssues} agile={currentAgile} search={sprintFilter} hideFinishedSprints={hideFinishedSprints}/>
                     </div>
                 </div>
                 :
