@@ -33,9 +33,6 @@ const IssueItem = forwardRef<HTMLDivElement, {
                 if (typeof a === 'object') setAssignee(mapObjectValue(a))
             }
         }
-
-        console.log(issue.customFields)
-
         const fields = issue.customFields?.filter(f => selectedCustomFields.indexOf(f.name) > -1)
         if (fields === undefined) return
         const mappedCustomFields: string[] = fields.map(mapCustomFields)

@@ -32,7 +32,7 @@
   "addIssues2": " unresolved issues from sprint: ",
   "nameExits_error": "The sprint name already exists!",
   "error": "Something went wrong",
-  "tooltip_customFields": "To select fields, the user must be able to read the complete project data.",
+  "tooltip_customFields": "To select fields, the user must be able to read the complete project data. Custom fields of type “Text” are not displayed.",
   "currentSprint": "Current Sprint",
   "noSavedSearch": "There is no saved search for this board.",
   "createHere": "Create here"

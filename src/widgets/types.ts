@@ -58,6 +58,7 @@ export interface Issue {
 
 export interface CustomFieldWrapper {
     field: CustomField
+    $type: string
 }
 
 export interface CustomField {

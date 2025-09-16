@@ -35,6 +35,8 @@ export default function CustomFieldsPopUp({agile}: {
         projects.forEach((p) => {
             void host.fetchYouTrack(`admin/projects/${p}/customFields?fields=field(name)`)
                 .then((fields: CustomFieldWrapper[]) => {
+                    console.log(fields)
+                    fields = fields.filter(f => f.$type !== "TextProjectCustomField")
                     const mapped = fields.map(f => f.field.name)
                     const unique = [...new Set([...customFields, ...mapped])]
                     customFields = unique
