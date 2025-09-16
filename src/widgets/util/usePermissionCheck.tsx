@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {checkPermissions} from "../util/util.ts";
+import {checkPermissions} from "./util.ts";
 
 export const READ_PROJECT = "jetbrains.jetpass.project-read"
 
