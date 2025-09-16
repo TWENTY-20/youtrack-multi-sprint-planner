@@ -13,6 +13,7 @@ import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
 import {getIssueSortingBySprintId, saveIssueSorting} from "../../util/globalStorageAccess.ts";
 import {isCurrentSprint} from "../../util/util.ts";
 import Tag from "@jetbrains/ring-ui-built/components/tag/tag";
+import {formattedDate} from "../../util/dateTimeMapping.ts";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
@@ -176,12 +177,3 @@ export default function SprintContainer(
     );
 }
 
-function formattedDate(date?: number) {
-    if (date === undefined) return
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric'
-    };
-    return new Date(date).toLocaleDateString(undefined, options);
-}

@@ -5,6 +5,7 @@ import {APIError, ExtendedAgile, Issue, Sprint} from "../../types.ts";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import {arrayMove} from "@dnd-kit/sortable";
 import {sortSprints} from "../../util/util.ts";
+import {CUSTOM_FIELDS_FIELDS} from "../../util/useBacklogIssues.tsx";
 
 export default function SprintList({agile, search, hideFinishedSprints, sprints, setSprints, setIssues}:
                                        {
@@ -20,7 +21,7 @@ export default function SprintList({agile, search, hideFinishedSprints, sprints,
     const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
 
     const loadIssuesOfSprint = useCallback(async (sprint: Sprint) => {
-        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,resolved,customFields(name,value(name)),project(id,name),isDraft&$top=-1`)
+        return await host.fetchYouTrack(`agiles/${agile.id}/sprints/${sprint.id}/issues?fields=id,idReadable,summary,resolved,customFields(${CUSTOM_FIELDS_FIELDS}),project(id,name),isDraft&$top=-1`)
             .then((issues: Issue[]) => {
                 return issues.filter(issue => !issue.isDraft);
             });

@@ -7,6 +7,7 @@ import Icon from "@jetbrains/ring-ui-built/components/icon";
 import ArrowUp from "@jetbrains/icons/arrow-up";
 import ArrowDown from "@jetbrains/icons/arrow-down";
 import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
+import {mapCustomFields, mapObjectValue} from "../../util/customFieldMapping.ts";
 
 const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,
@@ -29,32 +30,21 @@ const IssueItem = forwardRef<HTMLDivElement, {
         const a = issue.customFields?.find(f => f.name === "Assignee")?.value
         if (a !== null && a !== undefined) {
             if (!Array.isArray(a)) {
-                setAssignee(a.name)
+                if (typeof a === 'object') setAssignee(mapObjectValue(a))
             }
         }
 
-        const fields = issue.customFields?.filter(f => {
-            return selectedCustomFields.indexOf(f.name) > -1
-        })
-        if (fields === undefined) {
-            return;
-        }
-        const cf: string[] = fields.map(f => {
-            if (Array.isArray(f.value)) {
-                if (f.value.length === 0) return "?"
-                return f.value.map(f => {
-                    return f.name
-                }).join(', ')
-            } else {
-                if (f.value === null) return "?"
-                return f.value.name ?? "?"
-            }
-        })
-        setCustomFields(cf)
+        console.log(issue.customFields)
 
+        const fields = issue.customFields?.filter(f => selectedCustomFields.indexOf(f.name) > -1)
+        if (fields === undefined) return
+        const mappedCustomFields: string[] = fields.map(mapCustomFields)
+        setCustomFields(mappedCustomFields)
 
     }, [issue.customFields, selectedCustomFields]);
 
+
+    // Text-Field will be ignored
 
     return (
         isDragging ?

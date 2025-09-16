@@ -62,11 +62,26 @@ export interface CustomFieldWrapper {
 
 export interface CustomField {
     name: string,
-    value: CustomFieldValue | CustomFieldValue[]
+    value: CustomFieldValue | CustomFieldValue[] | number | string |PeriodValue
+    projectCustomField: ProjectCustomField
+    $type: string
+}
+
+export interface ProjectCustomField {
+    id: string
+    field: CustomFieldInfo
+}
+
+export interface CustomFieldInfo {
+    fieldType: { id: string }
 }
 
 export interface CustomFieldValue {
     name: string
+}
+
+export interface PeriodValue{
+    presentation: string
 }
 
 export interface APIError {
