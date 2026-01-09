@@ -1,4 +1,3 @@
-import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import {Issue} from "../../types.ts";
 import {forwardRef, useEffect, useState} from "react";
 import {DraggableAttributes, DraggableSyntheticListeners} from "@dnd-kit/core";
@@ -8,6 +7,7 @@ import ArrowUp from "@jetbrains/icons/arrow-up";
 import ArrowDown from "@jetbrains/icons/arrow-down";
 import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
 import {mapCustomFields, mapObjectValue} from "../../util/customFieldMapping.ts";
+import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickable-link";
 
 const IssueItem = forwardRef<HTMLDivElement, {
     issue: Issue,

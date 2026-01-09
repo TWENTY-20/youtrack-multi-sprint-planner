@@ -3,7 +3,6 @@ import SavedQueriesSelect from "./SavedSearchSelect.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {host} from "../youTrackApp.ts";
 import Loader from "@jetbrains/ring-ui-built/components/loader/loader";
-import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon, {Color} from "@jetbrains/ring-ui-built/components/icon";
 import NewWindow from "@jetbrains/icons/new-window";
 
@@ -19,6 +18,7 @@ import Warning from "@jetbrains/icons/warning";
 import {updateSortOrder} from "../util/util.ts";
 import useBacklogIssues from "../util/useBacklogIssues.tsx";
 import Text from "@jetbrains/ring-ui-built/components/text/text";
+import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickable-link";
 
 //const TOP_ISSUE_AMOUNT = 50;
 

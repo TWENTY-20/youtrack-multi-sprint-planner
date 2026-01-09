@@ -2,11 +2,11 @@ import {useState} from "react";
 import Select, {Type} from "@jetbrains/ring-ui-built/components/select/select";
 import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
-import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import {host} from "../youTrackApp.ts";
 import {Agile} from "../types.ts";
 import {useTranslation} from "react-i18next";
+import Icon from "@jetbrains/ring-ui-built/components/icon";
 
 export default function AgileSelection({defaultAgile, onSelect}: {
     defaultAgile: Agile,
@@ -54,7 +54,7 @@ export default function AgileSelection({defaultAgile, onSelect}: {
                             >
                                 <div className="flex items-center">
                                     <span className="mr-2">{defaultAgile.name}</span>
-                                    <IconSVG src={ChevronDownIcon}/>
+                                    <Icon glyph={ChevronDownIcon}/>
                                 </div>
                             </Button>
                             {props.popup}

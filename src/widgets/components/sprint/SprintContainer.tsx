@@ -7,13 +7,13 @@ import {host} from "../../youTrackApp.ts";
 import {useTranslation} from "react-i18next";
 import {AlertType} from "@jetbrains/ring-ui-built/components/alert/alert";
 import LoaderInline from "@jetbrains/ring-ui-built/components/loader-inline/loader-inline";
-import IconSVG from "@jetbrains/ring-ui-built/components/icon/icon__svg";
 import ChevronDownIcon from "@jetbrains/icons/chevron-20px-down";
 import ChevronUpIcon from "@jetbrains/icons/chevron-20px-up";
 import {getIssueSortingBySprintId, saveIssueSorting} from "../../util/globalStorageAccess.ts";
 import {isCurrentSprint} from "../../util/util.ts";
 import Tag from "@jetbrains/ring-ui-built/components/tag/tag";
 import {formattedDate} from "../../util/dateTimeMapping.ts";
+import Icon from "@jetbrains/ring-ui-built/components/icon";
 
 // Collapsing was taken from jetbrains ring ui
 const DURATION_FACTOR = 0.5;
@@ -126,8 +126,8 @@ export default function SprintContainer(
                         <span className="-ml-4 mr-4">
                             {
                                 loading ? <LoaderInline className="!align-middle"/>
-                                    : collapsed ? <IconSVG src={ChevronDownIcon}/>
-                                        : <IconSVG src={ChevronUpIcon}/>
+                                    : collapsed ? <Icon glyph={ChevronDownIcon}/>
+                                        : <Icon glyph={ChevronUpIcon}/>
                             }
                         </span>
                         <span className={"flex flex-row justify-between w-full"}>

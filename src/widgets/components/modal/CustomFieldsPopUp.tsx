@@ -1,4 +1,3 @@
-import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickableLink";
 import Icon from "@jetbrains/ring-ui-built/components/icon";
 import Settings from "@jetbrains/icons/settings";
 import Popup from "@jetbrains/ring-ui-built/components/popup/popup";
@@ -15,6 +14,7 @@ import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts
 import Tooltip from "@jetbrains/ring-ui-built/components/tooltip/tooltip";
 import Info from "@jetbrains/icons/info";
 import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
+import ClickableLink from "@jetbrains/ring-ui-built/components/link/clickable-link";
 
 export default function CustomFieldsPopUp({agile}: {
     agile: ExtendedAgile
