@@ -1,5 +1,5 @@
 import Icon from "@jetbrains/ring-ui-built/components/icon";
-import Settings from "@jetbrains/icons/settings";
+import Settings from "@jetbrains/icons/settings-20px";
 import Popup from "@jetbrains/ring-ui-built/components/popup/popup";
 import Add from "@jetbrains/icons/add";
 import Close from "@jetbrains/icons/close";
@@ -10,7 +10,6 @@ import {host} from "../../youTrackApp.ts";
 import {CustomFieldWrapper, ExtendedAgile} from "../../types.ts";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import {saveSelectedCustomFields} from "../../util/globalStorageAccess.ts";
-import {Directions} from "@jetbrains/ring-ui-built/components/popup/popup.consts";
 import Tooltip from "@jetbrains/ring-ui-built/components/tooltip/tooltip";
 import Info from "@jetbrains/icons/info";
 import {useCustomFieldsContext} from "../context/CustomFieldsContext.tsx";
@@ -102,13 +101,14 @@ export default function CustomFieldsPopUp({agile}: {
     }
 
     return (
-        <ClickableLink className="" onClick={() => setPopUpHidden(!popUpHidden)}>
-            <Icon glyph={Settings}
-                  className="text-[var(--ring-icon-color)] hover:text-[var(--ring-link-hover-color)]"
-                  style={{paddingTop: "6px",}}
-                  height={20}
-                  width={20}
-            />
+        <div>
+            <ClickableLink onClick={() => setPopUpHidden(!popUpHidden)}>
+                <Icon glyph={Settings}
+                      className="text-(--ring-icon-color) hover:text-(--ring-link-hover-color)"
+                      style={{paddingTop: "6px",}}
+                />
+            </ClickableLink>
+
             <Popup
                 hidden={popUpHidden}
                 onCloseAttempt={() => setPopUpHidden(true)}
@@ -141,27 +141,25 @@ export default function CustomFieldsPopUp({agile}: {
                                 )
                             )
                             }
-
-
                         </div>
                     </div>
                     <div className={"yt-box"}>
-                        <ClickableLink
-                            className={"yt-icon-action hover:text-[var(--ring-link-hover-color)]"}
-                            onClick={() => setInnerPopUpHidden(!innerPopUpHidden)}>
-                            <Icon glyph={Add}
-                                  className="mr-2"
-                                  style={{height: "14px", width: "14px"}}
-                            />
-                            {t("addField")}
+                        <div>
+                            <ClickableLink
+                                className={"yt-icon-action hover:text-(--ring-link-hover-color)"}
+                                onClick={() => setInnerPopUpHidden(!innerPopUpHidden)}>
+                                <Icon glyph={Add}
+                                      className="mr-2"
+                                      style={{height: "14px", width: "14px"}}
+                                />
+                                {t("addField")}
+
+                            </ClickableLink>
                             <Popup
                                 className={"inner-popup"}
                                 hidden={innerPopUpHidden}
                                 onCloseAttempt={() => setInnerPopUpHidden(true)}
                                 dontCloseOnAnchorClick={true}
-                                left={170}
-                                top={10}
-                                directions={[Directions.BOTTOM_LEFT]}
                             >
                                 <div className={"filterWrapper"}>
                                     <Icon glyph={Search}
@@ -185,13 +183,12 @@ export default function CustomFieldsPopUp({agile}: {
                                             {f}
                                         </Button>
                                     )}
-
                                 </div>
                             </Popup>
-                        </ClickableLink>
+                        </div>
                     </div>
                 </div>
             </Popup>
-        </ClickableLink>
+        </div>
     )
 }
