@@ -1,6 +1,6 @@
 import AgileSelection from "./AgileSelection.tsx";
 import Checkbox from "@jetbrains/ring-ui-built/components/checkbox/checkbox";
-import CreateSprintPopUp from "./modal/CreateSprintPopUp.tsx";
+import {CreateSprintPopUpProps} from "./modal/CreateSprintPopUp.tsx";
 import SprintSearch from "./sprint/SprintSearch.tsx";
 import CustomFieldsPopUp from "./modal/CustomFieldsPopUp.tsx";
 import BacklogCard from "./BacklogCard.tsx";
@@ -17,6 +17,8 @@ import {useCustomFieldsContext} from "./context/CustomFieldsContext.tsx";
 import {useTranslation} from "react-i18next";
 import LoaderScreen from "@jetbrains/ring-ui-built/components/loader-screen/loader-screen";
 import useHideFinishedSprints from "../util/useHideFinishedSprints.tsx";
+import {ControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height";
+import {useModal} from "./context/ModalContext.tsx";
 
 export default function MainView() {
 
@@ -26,6 +28,8 @@ export default function MainView() {
     const {draggedIssue} = useDraggedIssue();
     const [isLoading, setLoading] = useState(true);
     const [sprints, setSprints] = useState<Sprint[]>([]);
+    const {open} = useModal<CreateSprintPopUpProps>('createSprint')
+
 
     const {hasPermission, isLoading: permissionsLoading} = usePermissionCheck([READ_PROJECT])
     const {load: loadCustomFields, loading: loadingCustomFields} = useCustomFieldsContext()
@@ -97,7 +101,7 @@ export default function MainView() {
         });
     }, []);
 
-    if (isLoading || permissionsLoading || loadingCustomFields || hideFinishedSprintsLoading ) return <LoaderScreen message={t("loading")}/>;
+    if (isLoading || permissionsLoading || loadingCustomFields || hideFinishedSprintsLoading) return <LoaderScreen message={t("loading")}/>;
 
 
     return (
@@ -107,7 +111,16 @@ export default function MainView() {
                     <AgileSelection defaultAgile={currentAgile} onSelect={updateUserDefaultAgile}/>
                     <div className={"flex flex-row gap-x-4"}>
                         <Checkbox containerClassName={"forceCenter"} checked={hideFinishedSprints} onChange={() => setHideFinishedSprints(!hideFinishedSprints)} label={t('hideFinishedSprints')}/>
-                        <CreateSprintPopUp setSprints={setSprints} sprints={sprints} agile={currentAgile}/>
+                        <Button height={ControlsHeight.L} onClick={() => open({
+                                agile: currentAgile,
+                                sprints: sprints,
+                                setSprints: setSprints
+                            }
+                        )}>
+                            {t('newSprint')}
+                        </Button>
+
+                        {/*<CreateSprintPopUp setSprints={setSprints} sprints={sprints} agile={currentAgile}/>*/}
                         <SprintSearch key={sprintFilter} defaultSearch={sprintFilter} onSearch={setSprintFilter}/>
                         {hasPermission &&
                             <CustomFieldsPopUp agile={currentAgile}/>}
