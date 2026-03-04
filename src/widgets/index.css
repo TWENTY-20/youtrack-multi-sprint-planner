@@ -83,3 +83,7 @@ body.app {
     height: 100rem !important;
     width: 100rem !important;
 }
+.modal-content {
+    width: fit-content !important;
+    height: fit-content !important;
+}
