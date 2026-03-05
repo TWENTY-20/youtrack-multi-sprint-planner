@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "./components/modal/customFieldsPopUp.css";
 
+:root {
+    --window-height: 1080px;
+}
 
 body.app {
     padding: 32px 32px;
@@ -17,7 +20,8 @@ body.app {
 .disable-float h2 {
     float: none;
 }
-.line-height-header{
+
+.line-height-header {
     line-height: normal !important;
 }
 
@@ -43,12 +47,14 @@ body.app {
 .forceMargin {
     margin-right: 8px !important
 }
-.yt-text{
+
+.yt-text {
     font-size: var(--ring-font-size);
     font-family: var(--ring-font-family);
     color: var(--ring-text-color);
 }
-.pop-width{
+
+.pop-width {
     width: 100px !important;
 }
 
@@ -59,10 +65,12 @@ body.app {
 .remove-input-focus input:focus {
     outline: none !important;
 }
-.search-border{
+
+.search-border {
     border: 1px solid var(--ring-borders-color);
     border-radius: var(--ring-border-radius);
 }
+
 .hoverIcon {
     color: var(--ring-icon-color) !important;
 }
@@ -70,6 +78,7 @@ body.app {
 .hoverIcon:hover {
     color: #d671b3 !important;
 }
+
 .linkColor {
     color: var(--ring-link-color) !important;
 }
@@ -79,11 +88,16 @@ body.app {
     text-decoration: underline;
 }
 
-.ring-loader-screen-loaderScreen{
+.ring-loader-screen-loaderScreen {
     height: 100rem !important;
     width: 100rem !important;
 }
+
 .modal-content {
     width: fit-content !important;
     height: fit-content !important;
+}
+
+.ring-dialog-container {
+    max-height: calc(var(--window-height) - 160px) !important;
 }

@@ -5,8 +5,16 @@ import CustomFieldsContextProvider from "./components/context/CustomFieldsContex
 import MainView from "./components/MainView.tsx";
 import {Modal, ModalProvider} from "./components/context/ModalContext.tsx";
 import CreateSprintPopUp from "./components/modal/CreateSprintPopUp.tsx";
+import {useEffect} from "react";
 
 export default function App() {
+
+    useEffect(() => {
+        window.onresize = () => {
+            document.documentElement.style.setProperty('--window-height', window.outerHeight.toString() + 'px')
+        }
+    }, []);
+
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -18,7 +26,7 @@ export default function App() {
     );
 
     return (
-        <div className="flex flex-col space-y-4 h-full" style={{height: '100rem'}}>
+        <div className="flex flex-col space-y-4 h-full" >
             <CustomFieldsContextProvider>
                 <ModalProvider>
                     <DndContext
